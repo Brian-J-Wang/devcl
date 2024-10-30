@@ -1,0 +1,8 @@
+body {
+  background-color: whitesmoke;
+}
+
+.app {
+  width: 850px;
+  margin: 0px calc(50vw - 400px) 0px calc(50vw - 440px);
+}

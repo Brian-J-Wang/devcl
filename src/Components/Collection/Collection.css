@@ -1,0 +1,48 @@
+.collection {
+    height: calc(100vh - 48px);
+    margin: 24px 0px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.collection::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+.collection__check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0px 5px;
+}
+
+.collection__divider {
+    margin: 15px 8px 0px 52px;
+    border: none;
+    border-top: 3px double rgba(29,29,29);
+    text-align: center;
+    font-size: 24px;
+}
+
+.collection__divider::after {
+    content: 'Patch Notes';
+    background-color: whitesmoke;
+    padding: 0 4px;
+    position: relative;
+    top: -15px
+}
+
+.collection__tool-bar {
+    position: absolute;
+    bottom: 24px;
+    transform: translate(-64px, 0px);
+}
+
+.collection__tool-bar-quick-jump {
+    height: 40px;
+    width: 40px;
+}

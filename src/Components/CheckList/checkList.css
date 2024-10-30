@@ -1,0 +1,52 @@
+.check-list__container {
+  position: relative;
+  min-height: calc(100vh - 48px);
+  margin-left: 40px;
+}
+
+.check-list {
+  box-sizing: border-box;
+  margin: 0px 0px auto 0px;
+}
+
+.check-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid grey;
+  padding-bottom: 8px;
+}
+
+.check-list__name {
+  margin: 0px;
+}
+
+.check-list__version {
+  margin: 0px;
+}
+
+.check-list__tool-bar {
+  display: flex;
+  padding: 4px 4px;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.check-list__empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.check-list__empty-header {
+  text-align: center;
+  margin: 12px auto 0px auto;
+}
+
+.check-list__empty p {
+  text-align: center;
+}
+
+.check-list__empty button {
+  margin: auto;
+}

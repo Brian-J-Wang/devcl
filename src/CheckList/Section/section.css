@@ -1,0 +1,87 @@
+s {
+    opacity: 50%;
+}
+
+.section {
+    color: #292929;
+    padding: 0px;
+    margin-bottom: 4px;
+}
+
+.section__header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.section__add-button {
+    padding: 0px;
+    opacity: 25%;
+    height: 16px;
+    width: 16px;
+    margin: 4px;
+    box-sizing: content-box;
+    border: none;
+    background-color: white;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.section:hover .section__add-button {
+    opacity: 50%;
+}
+
+.section:hover .section__add-button:hover {
+    cursor: pointer;
+    opacity: 100%;
+}
+
+.section__add-button-image {
+    height: 16px;
+    width: 16px;
+}
+
+
+.section__name {
+    margin: 0px;
+}
+
+.section__item {
+    margin-top: 4px;
+    display: flex;
+    max-width: 100%;
+    overflow:hidden;
+    text-wrap: wrap;
+}
+
+.item__checkbox {
+    margin: 2px 4px auto 0px;
+}
+
+.item__label {
+    display: block;
+    text-wrap: wrap;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.section__new-item {
+    margin-top: 4px;
+    opacity: 0%;
+}
+
+.section__new-item:has( .section__new-item-input:focus ) {
+    opacity: 100%;
+}
+
+.section:hover .section__new-item {
+    opacity: 100%;
+}
+
+
+.section__new-item-input {
+    margin-left: 13px;
+    height: 18.39px;
+    box-sizing: border-box;
+    border: 2px rgba(0, 0, 0, 0) solid;
+    outline-width: 0;
+}
+
