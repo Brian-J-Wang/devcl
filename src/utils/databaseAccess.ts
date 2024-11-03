@@ -1,4 +1,4 @@
-import { checkListCollection, CLItem, CLItemTO, DBUpdateObject } from "../CheckList/interfaces";
+import { checkListCollection, CLItem, CLItemTO, DBUpdateObject as DocumentMetadata } from "../CheckList/interfaces";
 import { PatchType } from "../Components/Collection/Collection";
 
 export function getUserCollection(collectionId: string) {
@@ -100,7 +100,7 @@ export function updateTaskDB(collectionId: string, item: CLItemTO) {
     })
 }
 
-export function patchItem(collectionId: string, item: DBUpdateObject) {
+export function patchMetadata(collectionId: string, item: DocumentMetadata) {
     return fetch(`http://localhost:5081/collections/${collectionId}`, {
         method: "PATCH",
         headers: {
@@ -108,8 +108,13 @@ export function patchItem(collectionId: string, item: DBUpdateObject) {
         },
         body: JSON.stringify(item)
     })
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+    })
 }
 
-export function deleteItem(coolectionId: string, item: DBUpdateObject) {
+export function deleteItem(coolectionId: string, item: DocumentMetadata) {
     return Promise.resolve();
 }

@@ -1,10 +1,13 @@
+import './Collection.css';
+import '../CheckList/checkList.css';
 import { useEffect, useState } from "react";
 import { checkListCollection, dummyCheckList, patchNotes, CLItemTO, DBUpdateObject } from '../../CheckList/interfaces';
-import './Collection.css';
 import PatchNotes from "../../pastVersions/patchNotes";
-import { addNewTaskDB, getUserCollection, patchItem, updateTaskDB, updateVersion } from "../../utils/databaseAccess";
-import CheckList from "../CheckList/checkList";
+import { addNewTaskDB, getUserCollection, patchMetadata, updateTaskDB, updateVersion } from "../../utils/databaseAccess";
 import { TextButton } from "../../assets/shared/button/button";
+import { Container } from "../../assets/shared/container/Container";
+import formatMessage from "../../utils/formatMessage";
+import Section from "../../CheckList/Section/section";
 
 interface ICollection {
     url: string
@@ -67,7 +70,12 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
         }
     }
 
-    
+    const copyToClipboard = () => {
+        if (collection) {
+            const message = formatMessage(collection);
+            navigator.clipboard.writeText(message);
+        }
+    }
 
     const pushNewVersion = ( patchType: PatchType) => {
         updateVersion(collection._id, patchType).then((patchNotes : patchNotes) => {
@@ -82,14 +90,40 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
         });        
     }
 
-    const onNameChanged = (newName: string) => {
+    const handleKeyboardInput = (evt : any) => {
+        if (evt.key == "Enter") {
+            updateCheckListName(evt.target.value ?? '')
+            .then(() => {
+                evt.target.blur();
+            })
+        }
+    }
+
+    const handleInputBlur = (evt : any) => {
+        updateCheckListName(evt.target.value);
+    }
+
+    const updateCheckListName = (newName: string) => {
+        if (newName == collection.checklistName) {
+            return Promise.resolve();
+        }
+
         const update : DBUpdateObject= {
             name: newName,
         }
 
-        console.log(JSON.stringify(update));
+        return patchMetadata(collection._id, update)
+        .then(res => {
+            const copy = { ...collection };
 
-        patchItem(collection._id, update);
+            copy.checklistName = res.name;
+
+            setCollection(copy);
+        })
+    }
+
+    const resetNameChange = (evt: any) => {
+        evt.target.value = collection.checklistName;
     }
 
     useEffect(() => {
@@ -110,12 +144,34 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
                     <></>
                 }
                 <hr className="collection__divider"/>
-                <CheckList 
-                handleValueChanged={onValueChanged} 
-                handleNewItemAdded={addNewItem} 
-                handleVersionUpdate={pushNewVersion} 
-                handleNameChanged={onNameChanged}
-                checkList={collection}/>
+                <div className='check-list__container' id='check-list' tabIndex={0}>
+                    <div>
+                        <Container className='check-list__tool-bar'>
+                            <button onClick={copyToClipboard}> Copy </button>
+                            <button onClick={() => pushNewVersion(PatchType.major)}> Major Version </button>
+                            <button onClick={() => pushNewVersion(PatchType.minor)}> Minor Version </button>
+                            <button onClick={() => pushNewVersion(PatchType.patch)}> Patch </button>
+                        </Container>
+                        <Container className='check-list'>
+                            <div className='check-list__header'>
+                                <span id="check-list__dummy-span" className='check-list__dummy-span'></span>
+                                <input id="check-list__name" className='check-list__name' type="text" defaultValue={collection.checklistName} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
+                            </div>
+                            
+
+                            {
+                                collection.checkList.map((section) => {
+                                    return (
+                                        <Section section={section} handleValueChanged={onValueChanged} key={section._id} addNewItem={addNewItem}/>
+                                    )
+                                })
+                            }
+
+                            <div className='check-list__footer'>Version {collection.version} </div>
+                        </Container>                        
+                    </div>
+                    <div className='check-list__padding'/>
+                </div>
                 
             </div>
             <div className="collection__tool-bar">
