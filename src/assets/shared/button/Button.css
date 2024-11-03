@@ -1,0 +1,60 @@
+.button {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    
+    background-color: white;
+    box-shadow: 0px 0px 5px rgba(29, 29, 29, 0.3);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.button:hover {
+    box-shadow: 0px 0px 5px rgba(29, 29, 29, 0.6);
+}
+
+.button__size_s {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+}
+
+.button__size_m {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.button__size_l {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+}
+
+.text-button {
+    width: auto;
+    margin: auto 0px;
+}
+
+.text-button > p {
+    font-size: x-large;
+    margin: auto 14px;
+}
+
+
+.icon-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-button > img {
+    width: 20px;
+    height: 20px;
+    opacity: 50%;
+    transition: opacity 0.2s eas;
+}
+
+.icon-button:hover > img {
+    opacity: 100%;
+}

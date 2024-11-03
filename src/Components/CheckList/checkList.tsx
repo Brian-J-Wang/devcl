@@ -3,7 +3,7 @@ import '../../assets/DevCL.css'
 import {checkListCollection, CLItemTO} from '../../CheckList/interfaces';
 import Section from '../../CheckList/Section/section';
 import formatMessage from '../../utils/formatMessage';
-import { PatchType } from '../Collection/Collection';
+import Collection, { PatchType } from '../Collection/Collection';
 
 const CheckList : React.FC<{
     handleValueChanged: (changedValues : CLItemTO) => void,
@@ -54,7 +54,10 @@ const CheckList : React.FC<{
                                     )
                                 })
                             }
+
+                            <div className='check-list__footer'>Version {checkList.version} </div>
                         </div>
+                        
                     </div>
                     
                 ) : (

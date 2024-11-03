@@ -4,6 +4,7 @@ import './Collection.css';
 import PatchNotes from "../../pastVersions/patchNotes";
 import { addNewTaskDB, getUserCollection, patchItem, updateTaskDB, updateVersion } from "../../utils/databaseAccess";
 import CheckList from "../CheckList/checkList";
+import { TextButton } from "../../assets/shared/button/button";
 
 interface ICollection {
     url: string
@@ -96,9 +97,10 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
             <div className="collection__check-list" id="checkList">
                 {
                     (collection) ?
-                    collection.patchNotes.map((patch) => {
+                    collection.patchNotes.map((patch, index) => {
+                        const isLatest = index == collection.patchNotes.length - 1;
                         return (
-                            <PatchNotes key={patch._id} patch={patch}></PatchNotes>
+                            <PatchNotes key={patch._id} patch={patch} isLatest={isLatest}></PatchNotes>
                         )
                     }) :
                     <></>
@@ -113,7 +115,7 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
                 
             </div>
             <div className="collection__tool-bar">
-                <button className="collection__tool-bar-quick-jump" onClick={jumpToCheckList}>↓</button>
+                <TextButton size="m" onClick={jumpToCheckList}>↓</TextButton>
             </div>
         </div>
         

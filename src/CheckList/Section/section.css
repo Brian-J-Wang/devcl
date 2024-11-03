@@ -64,7 +64,7 @@ s {
 }
 
 .section__new-item {
-    margin-top: 4px;
+    margin-top: 3px;
     opacity: 0%;
 }
 
@@ -76,13 +76,12 @@ s {
     opacity: 100%;
 }
 
-
 .section__new-item-input {
-    margin-left: 13px;
+    margin-left: 15px;
     width: calc(100% - 13px);
     text-wrap: wrap;
     box-sizing: border-box;
-    border: 2px rgba(0, 0, 0, 0) solid;
+    border: 0px;
     outline-width: 0;
 }
 

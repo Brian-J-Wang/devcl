@@ -37,6 +37,8 @@
 }
 
 .collection__tool-bar {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     bottom: 24px;
     transform: translate(-64px, 0px);

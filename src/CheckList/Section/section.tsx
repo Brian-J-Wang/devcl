@@ -55,7 +55,7 @@ const Section : React.FC<sectionProps> = ({ section, handleValueChanged, addNewI
             })}
             
             <div className="section__new-item">
-                <input type="text" className="section__new-item-input" id={section._id} placeholder="click to add something new" onKeyDown={handleKeyboardInput} onBlur={(evt) => { evt.target.value = "" }}/>
+                <input type="text" className="section__new-item-input" id={section._id} placeholder="click to add something new" onKeyDown={handleKeyboardInput} onBlur={(evt) => { evt.target.value = "" }} autoComplete='off'/>
             </div>
         </div>
     )
