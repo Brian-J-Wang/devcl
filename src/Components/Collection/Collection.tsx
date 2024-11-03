@@ -62,8 +62,12 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
     const jumpToCheckList = () => {
         const element = document.getElementById("check-list");
         //@ts-ignore
-        element?.scrollIntoView({behavior: "smooth", block:"start"});
+        if (element) {
+            element.scrollIntoView({behavior: "smooth", block:"start"});
+        }
     }
+
+    
 
     const pushNewVersion = ( patchType: PatchType) => {
         updateVersion(collection._id, patchType).then((patchNotes : patchNotes) => {

@@ -1,13 +1,3 @@
-.patch {
-    display: flex;
-    flex-direction: row;
-}
-
-.patch__container {
-    box-sizing: border-box;
-    flex-grow: 2;
-}
-
 .patch__header {
     margin: 0px;
     display: flex;

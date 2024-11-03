@@ -64,7 +64,6 @@ export function addNewTaskDB(collectionId: string, item: CLItemTO) {
             return res.json();
         }
     }).then((res) => {
-        console.log(res);
         const item : CLItem = {
             title: res.title,
             checked: res.isChecked,

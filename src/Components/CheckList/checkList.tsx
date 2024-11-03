@@ -1,9 +1,11 @@
 import './checkList.css'
 import '../../assets/DevCL.css'
+import { Container } from '../../assets/shared/container/Container';
 import {checkListCollection, CLItemTO} from '../../CheckList/interfaces';
 import Section from '../../CheckList/Section/section';
 import formatMessage from '../../utils/formatMessage';
-import Collection, { PatchType } from '../Collection/Collection';
+import { PatchType } from '../Collection/Collection';
+
 
 const CheckList : React.FC<{
     handleValueChanged: (changedValues : CLItemTO) => void,
@@ -31,17 +33,17 @@ const CheckList : React.FC<{
     }
 
     return(
-        <div className='check-list__container' id='check-list'>
+        <div className='check-list__container' id='check-list' tabIndex={0}>
             {
                 (checkList) ? (
                     <div>
-                        <div className='devcl__container check-list__tool-bar'>
-                                <button onClick={onCopyButtonClick}> Copy </button>
-                                <button onClick={() => handleVersionUpdate(PatchType.major)}> Major Version </button>
-                                <button onClick={() => handleVersionUpdate(PatchType.minor)}> Minor Version </button>
-                                <button onClick={() => handleVersionUpdate(PatchType.patch)}> Patch </button>
-                            </div>
-                        <div className='devcl__container check-list'>
+                        <Container className='check-list__tool-bar'>
+                            <button onClick={onCopyButtonClick}> Copy </button>
+                            <button onClick={() => handleVersionUpdate(PatchType.major)}> Major Version </button>
+                            <button onClick={() => handleVersionUpdate(PatchType.minor)}> Minor Version </button>
+                            <button onClick={() => handleVersionUpdate(PatchType.patch)}> Patch </button>
+                        </Container>
+                        <Container className='check-list'>
                             <div className='check-list__header'>
                                 <input className='check-list__name' type="text" defaultValue={checkList.checklistName} onKeyDown={handleNewNameSubmit} onBlur={resetNameChange}/>
                             </div>
@@ -56,8 +58,7 @@ const CheckList : React.FC<{
                             }
 
                             <div className='check-list__footer'>Version {checkList.version} </div>
-                        </div>
-                        
+                        </Container>                        
                     </div>
                     
                 ) : (
