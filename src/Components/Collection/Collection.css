@@ -21,7 +21,7 @@
 }
 
 .collection__divider {
-    margin: 15px 8px 0px 52px;
+    margin: 10px 8px;
     border: none;
     border-top: 3px double rgba(29,29,29);
     text-align: center;
@@ -45,4 +45,8 @@
 .collection__tool-bar-quick-jump {
     height: 40px;
     width: 40px;
+}
+
+.collection__dummy {
+    height: 0px;
 }

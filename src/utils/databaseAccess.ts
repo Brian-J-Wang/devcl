@@ -1,4 +1,4 @@
-import { checkListCollection, CLItem, CLItemTO } from "../CheckList/interfaces";
+import { checkListCollection, CLItem, CLItemTO, DBUpdateObject } from "../CheckList/interfaces";
 import { PatchType } from "../Components/Collection/Collection";
 
 export function getUserCollection(collectionId: string) {
@@ -99,4 +99,18 @@ export function updateTaskDB(collectionId: string, item: CLItemTO) {
 
         return item;
     })
+}
+
+export function patchItem(collectionId: string, item: DBUpdateObject) {
+    return fetch(`http://localhost:5081/collections/${collectionId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(item)
+    })
+}
+
+export function deleteItem(coolectionId: string, item: DBUpdateObject) {
+    return Promise.resolve();
 }

@@ -3,31 +3,31 @@
     flex-direction: row;
 }
 
-.patch__toolbar {
-    border-radius: 8px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    opacity: 0%;
-    padding: 4px;
-    width: 24px;
-    position: relative;
-    transition: opacity 0.1s ease-in-out;
-}
-
-.patch__toolbar-button {
-    width: 24px;
-    height: 24px;
-}
-
 .patch__container {
     box-sizing: border-box;
-    margin-left: 8px;
     flex-grow: 2;
 }
 
 .patch__header {
     margin: 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.patch__version {
+    margin: 0px;
+    margin-top: 3px;
+}
+
+.patch__button {
+    height: 32px;
+    width: 32px;
+}
+
+.patch__button-image {
+    margin: 6px auto;
+    height: 20px;
+    width: 20px;
 }
 
 .patch__notes {

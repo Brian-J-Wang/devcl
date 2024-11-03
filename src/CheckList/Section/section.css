@@ -79,7 +79,8 @@ s {
 
 .section__new-item-input {
     margin-left: 13px;
-    height: 18.39px;
+    width: calc(100% - 13px);
+    text-wrap: wrap;
     box-sizing: border-box;
     border: 2px rgba(0, 0, 0, 0) solid;
     outline-width: 0;

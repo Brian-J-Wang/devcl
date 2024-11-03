@@ -1,3 +1,4 @@
+import copyIcon from "../assets/copy.svg"
 import { patchNotes } from "../CheckList/interfaces"
 import './patchNotes.css'
 import '../assets/DevCL.css'
@@ -22,11 +23,13 @@ const PatchNotes : React.FC<PatchNote> = ({ patch }) => {
 
     return (
         <div className="patch">
-            <div className="devcl__container patch__toolbar">
-                <button className="patch__toolbar-button" onClick={copyToClipboard}>C</button>
-            </div>
             <div className="devcl__container patch__container">
-                <h2 className="patch__header">{patch.version}</h2>
+                <div className="patch__header">
+                    <h2 className="patch__version">{patch.version}</h2>
+                    <button className="patch__button devcl__icon-button" onClick={copyToClipboard}>
+                        <img src={copyIcon} alt="copy" className="patch__button-image"/>
+                    </button>
+                </div>
                 <div className="patch__notes">
                     {
                         patch.content.map((item) => {

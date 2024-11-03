@@ -54,3 +54,16 @@ export const dummyCheckList : checkListCollection = {
     patchNotes: [],
     checkList: []
 }
+
+export interface DBUpdateObject {
+    name?: string
+    section?: {
+        _id: string,
+        name?: string,
+        item?: {
+            _id: string,
+            title?: string,
+            checked?: boolean
+        }
+    }[]
+}

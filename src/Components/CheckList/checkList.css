@@ -1,7 +1,6 @@
 .check-list__container {
   position: relative;
   min-height: calc(100vh - 48px);
-  margin-left: 40px;
 }
 
 .check-list {
@@ -18,7 +17,24 @@
 }
 
 .check-list__name {
-  margin: 0px;
+  font-size: 2em;
+  font-weight: bold;
+  border: none;
+  padding: 0px;
+  width: fit-content;
+  margin-right: auto;
+  outline-width: 0;
+  border-radius: 5px;
+}
+
+.check-list__name:focus {
+  background-color: whitesmoke;
+  box-shadow: 0px 0px 10px rgba(29,29,29,0.05) inset;
+}
+
+.check-list__name:hover {
+  background-color: whitesmoke;
+  box-shadow: 0px 0px 10px rgba(29,29,29,0.05) inset;
 }
 
 .check-list__version {

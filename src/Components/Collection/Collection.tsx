@@ -1,11 +1,9 @@
-"use strict";
-
 import { useEffect, useState } from "react";
-import { checkListCollection,  CLItem, checkListSection, dummyCheckList, patchNotes, valueChangedData, CLItemTO } from '../../CheckList/interfaces';
-import './Collection.css'
+import { checkListCollection, dummyCheckList, patchNotes, CLItemTO, DBUpdateObject } from '../../CheckList/interfaces';
+import './Collection.css';
 import PatchNotes from "../../pastVersions/patchNotes";
-import CheckList from "../CheckList/checkLIst"
-import { addNewTaskDB, getUserCollection, updateTaskDB, updateVersion } from "../../utils/databaseAccess";
+import { addNewTaskDB, getUserCollection, patchItem, updateTaskDB, updateVersion } from "../../utils/databaseAccess";
+import CheckList from "../CheckList/checkList";
 
 interface ICollection {
     url: string
@@ -61,9 +59,9 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
     }  
 
     const jumpToCheckList = () => {
-        const element = document.getElementById("dummyElement");
+        const element = document.getElementById("check-list");
         //@ts-ignore
-        element?.scrollIntoView({behavior: "smooth", block:"end"});
+        element?.scrollIntoView({behavior: "smooth", block:"start"});
     }
 
     const pushNewVersion = ( patchType: PatchType) => {
@@ -79,8 +77,18 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
         });        
     }
 
+    const onNameChanged = (newName: string) => {
+        const update : DBUpdateObject= {
+            name: newName,
+        }
+
+        console.log(JSON.stringify(update));
+
+        patchItem(collection._id, update);
+    }
+
     useEffect(() => {
-        document.getElementById("checkList")?.scrollIntoView({behavior: "instant", block:"end"});
+        document.getElementById("check-list")?.scrollIntoView({behavior: "instant", block:"end"});
     }, [])
 
     return (
@@ -96,8 +104,13 @@ const Collection : React.FC<ICollection> = ({ url: collectionId }) => {
                     <></>
                 }
                 <hr className="collection__divider"/>
-                <div id="dummyElement"></div>
-                <CheckList handleValueChanged={onValueChanged} handleNewItemAdded={addNewItem} handleVersionUpdate={pushNewVersion} checkList={collection}></CheckList>
+                <CheckList 
+                handleValueChanged={onValueChanged} 
+                handleNewItemAdded={addNewItem} 
+                handleVersionUpdate={pushNewVersion} 
+                handleNameChanged={onNameChanged}
+                checkList={collection}/>
+                
             </div>
             <div className="collection__tool-bar">
                 <button className="collection__tool-bar-quick-jump" onClick={jumpToCheckList}>↓</button>

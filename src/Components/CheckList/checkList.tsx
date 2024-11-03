@@ -7,16 +7,27 @@ import { PatchType } from '../Collection/Collection';
 
 const CheckList : React.FC<{
     handleValueChanged: (changedValues : CLItemTO) => void,
-    handleNewItemAdded: (item: CLItemTO) => void
-    handleVersionUpdate: (version : PatchType) => void
+    handleNewItemAdded: (item: CLItemTO) => void,
+    handleVersionUpdate: (version : PatchType) => void,
+    handleNameChanged: (name: string) => void,
     checkList: checkListCollection | undefined;
-}> = ({ handleValueChanged, handleNewItemAdded, handleVersionUpdate, checkList}) => {
+}> = ({ handleValueChanged, handleNewItemAdded, handleNameChanged, handleVersionUpdate, checkList}) => {
 
     const onCopyButtonClick = () => {
         if (checkList) {
             const message = formatMessage(checkList);
             navigator.clipboard.writeText(message);
         }
+    }
+
+    const handleNewNameSubmit = (evt : any) => {
+        if (evt.key == "Enter") {
+            handleNameChanged(evt.target.value);
+        }
+    }
+
+    const resetNameChange = (evt: any) => {
+        evt.target.value = checkList?.checklistName;
     }
 
     return(
@@ -32,7 +43,7 @@ const CheckList : React.FC<{
                             </div>
                         <div className='devcl__container check-list'>
                             <div className='check-list__header'>
-                                <h1 className='check-list__name'>{checkList.checklistName}</h1>
+                                <input className='check-list__name' type="text" defaultValue={checkList.checklistName} onKeyDown={handleNewNameSubmit} onBlur={resetNameChange}/>
                             </div>
                             
 
