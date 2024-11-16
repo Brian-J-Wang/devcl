@@ -1,17 +1,19 @@
 import React, { createContext, useEffect, useState } from "react"
-import { CLCollection, CLItem, CLItemPatch, CLItemPost, id } from "../DBCollection";
+import { CLCollection, CLItem, CLItemPatch, CLItemPost, emptyCollection, id } from "../DBCollection";
+import { PatchType } from "../Collection/Collection";
 
 //@ts-ignore
 export const DBContext = createContext<DBContextValues>();
 
 type DBFunctions = {
+    postPatch: (patch: PatchType) => Promise<any>
     postItem: (item: CLItemPost) => Promise<any>
     patchItem: (id: id, item: CLItemPatch) => Promise<any>,
     deleteItem: (item: CLItem) => Promise<any>
 }
 
 interface DBContextValues {
-    collection?: CLCollection,
+    collection: CLCollection,
     shared: DBFunctions
 }
 
@@ -42,8 +44,29 @@ function processResult(result: any) {
 
 const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
     const shared: DBFunctions = {
-            postItem: function (item: CLItemPost): Promise<any> {
-                return fetch(`${baseURL}/${collectionId}/category/item?categoryId=${item.category}`, {
+        postPatch: function (patchType: PatchType): Promise<any> {
+            return fetch(`${baseURL}/${collectionId}/version`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    patchType: patchType
+                })
+            }).then((res) => {
+                return res.ok ? res.json() : Promise.reject();
+            }).then((patch) => {
+                const copy = { ...collection };
+
+                copy.patches?.push(patch);
+
+                setCollection(copy);
+
+                return Promise.resolve();
+            })
+        },
+        postItem: function (item: CLItemPost): Promise<any> {
+            return fetch(`${baseURL}/${collectionId}/category/item?categoryId=${item.category}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -51,18 +74,16 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
                 body: JSON.stringify(item)
             }).then((res) => {
                 return res.ok ? res.json() : Promise.reject();
-            }).then((clItem : CLItem) => {
+            }).then((clItem: CLItem) => {
                 const copy = { ...collection };
 
                 copy.categories?.find((category) => category._id == item.category)?.items.push(clItem);
 
-                //@ts-ignore
                 setCollection(copy);
 
                 return copy.categories?.find((category) => category._id == item.category);
             });
         },
-        
         patchItem: function (id: id, item: CLItemPatch): Promise<any> {
             return fetch(`${baseURL}/${collectionId}/category/item?categoryId=${id.category}&itemId=${id.item}`, {
                 method: "PATCH",
@@ -72,23 +93,21 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
                 body: JSON.stringify(item)
             }).then((res) => {
                 return res.ok ? res.json() : Promise.reject();
-            }).then((item : CLItem) => {
+            }).then((item: CLItem) => {
                 const copy = { ...collection };
 
                 const categoryIndex = copy.categories?.findIndex(category => category._id == id.category);
-                //@ts-ignore
+
                 const itemIndex = copy.categories[categoryIndex].items.findIndex(item => item._id == id.item);
 
                 if (categoryIndex != -1 && itemIndex != -1) {
-                    //@ts-ignore
                     copy.categories[categoryIndex].items[itemIndex] = item;
                 }
 
-                //@ts-ignore
                 setCollection(copy);
 
                 return item;
-            })
+            });
         },
         deleteItem: function (item: CLItem): Promise<any> {
             return fetch(`${baseURL}/${collectionId}/category/item?categoryId=${item.section}&itemId=${item._id}`, {
@@ -114,11 +133,12 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
                 setCollection(copy);
             }).catch((err: Error) => {
                 console.log(err.message);
-            })
-        }
+            });
+        },
+        
     }
 
-    const [collection, setCollection] = useState<CLCollection>();
+    const [collection, setCollection] = useState<CLCollection>(emptyCollection);
 
     useEffect(() => {
         fetch(`${baseURL}/${collectionId}`, {

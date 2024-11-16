@@ -1,5 +1,7 @@
 .collection {
     height: calc(100vh - 48px);
+    width: 800px;
+    padding: 0px calc(50% - 400px);
     margin: 24px 0px;
     display: flex;
     flex-direction: column;
@@ -48,12 +50,17 @@
     margin-bottom: 6px;
 }
 
+.collection__items {
+    padding: 12px 0px;
+}
+
 .collection__header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     border-bottom: 1px solid grey;
     padding-bottom: 2px;
+    margin: 0px 12px;
     margin-bottom: 6px;
 }
 
@@ -69,6 +76,7 @@
 }
 
 .collection__footer {
+    padding: 0px 12px;
     display: flex;
     flex-direction: row;
     justify-content: end;

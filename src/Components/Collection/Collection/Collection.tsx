@@ -8,7 +8,7 @@ import DBCollection, { CLCollection, CLPatch, emptyCollection } from '../DBColle
 import CLPatchElement from '../CLPatch/CLPatch';
 
 import './Collection.css';
-import DatabaseContext, {DBContext} from "../CollectionContext/collectionContext";
+import {DBContext} from "../CollectionContext/collectionContext";
 
 interface ICollection {
     collectionId: string
@@ -20,14 +20,8 @@ export enum PatchType {
     patch
 }
 
-const Collection : React.FC<ICollection> = ({ collectionId }) => {
-    const databaseContext = useContext(DBContext);
-    const dbCollection = useRef(new DBCollection(collectionId));
-    const [ collection, setCollection ] = useState<CLCollection>(emptyCollection);
-
-    useEffect(() => {
-        dbCollection.current.init(setCollection);
-    }, []);
+const Collection : React.FC<ICollection> = () => {
+    const database = useContext(DBContext);
 
     const jumpToCheckList = () => {
         const element = document.getElementById("check-list");
@@ -38,28 +32,21 @@ const Collection : React.FC<ICollection> = ({ collectionId }) => {
     }
 
     const copyToClipboard = () => {
-        if (collection) {
-            const message = formatMessage(collection);
+        if (database.collection) {
+            const message = formatMessage(database.collection);
             navigator.clipboard.writeText(message);
         }
     }
 
-    const pushNewVersion = ( patchType: PatchType) => {   
-        dbCollection.current.updateVersion(patchType)
-        .then((patch: CLPatch) => {
-            const copy = { ...collection };
-
-            copy.patches.push(patch);
-
-            setCollection(copy);
-        })
+    const pushNewVersion = ( patchType: PatchType) => {
+        database.shared.postPatch(patchType);
     }
 
-    const handleKeyboardInput = (evt : any) => {
+    const handleKeyboardInput = (evt: any) => {
         if (evt.key == "Enter") {   }
     }
 
-    const handleInputBlur = (evt : any) => {
+    const handleInputBlur = (evt: any) => {
         updateCheckListName(evt.target.value);
     }
 
@@ -70,12 +57,11 @@ const Collection : React.FC<ICollection> = ({ collectionId }) => {
     }, []);
 
     return (
-        <CollectionContext.Provider value={dbCollection.current}>
         <div className="collection">
             <div className="collection__check-list" id="checkList">
                 {
-                    databaseContext.collection?.patches.map((patch, index) => {
-                        const isLatest = collection.patches.length - 1 == index;
+                    database.collection.patches.map((patch, index) => {
+                        const isLatest = database.collection.patches.length - 1 == index;
 
                         return (<CLPatchElement key={patch._id} patch={patch} isLatest={isLatest}></CLPatchElement>)
                     })
@@ -91,17 +77,17 @@ const Collection : React.FC<ICollection> = ({ collectionId }) => {
                         </Container>
                         <Container className="collection__items">
                             <div className='collection__header'>
-                                <input id="check-list__name" className='collection__name' type="text" defaultValue={collection.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
+                                <input id="check-list__name" className='collection__name' type="text" defaultValue={database.collection.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
                             </div>
                             {
-                                databaseContext.collection?.categories.map((category) => {
+                                database.collection.categories.map((category) => {
                                     return (
                                         <Category key={category._id} clCategory={category}/>
                                     )
                                 })
                             }
 
-                            <div className='collection__footer'>Version {collection.version}</div>
+                            <div className='collection__footer'>Version {database.collection.version}</div>
                         </Container>
                     </div>
                 </div>
@@ -110,7 +96,6 @@ const Collection : React.FC<ICollection> = ({ collectionId }) => {
                 <TextButton size="m" onClick={jumpToCheckList}>↓</TextButton>
             </div>
         </div>
-        </CollectionContext.Provider>
     );
 }
 

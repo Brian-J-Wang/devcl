@@ -49,7 +49,7 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
     return (
         <div className="clitem" onClick={openPopup}>
             <input className="clitem__checkbox" type="checkbox" id={clItem._id} checked={clItem.checked} onClick={updateCheckbox} readOnly/>
-            <label className="clitem__label" htmlFor={clItem._id}>{(clItem.checked) ? (<s>{clItem.blurb}</s>) : (<>{clItem.blurb}</>)}</label>
+            <p className="clitem__label">{(clItem.checked) ? (<s>{clItem.blurb}</s>) : (<>{clItem.blurb}</>)}</p>
         </div>
     )
 }

@@ -10,7 +10,19 @@ s {
 
 .section__header {
     display: flex;
-    justify-content: space-between;
+    padding: 0px 6px;
+}
+
+.section__collapse-button {
+    height: 28px;
+    width: 28px;
+    border: 0px;
+    border-radius: 14px;
+    background-color: white;
+}
+
+.section__collapse-button:hover {
+    background-color: lightgrey;
 }
 
 .section__name {
@@ -18,14 +30,18 @@ s {
 }
 
 .section__items {
-    margin-top: 4px;
     display: flex;
     flex-direction: column;
 }
 
 .section__new-item {
-    margin-top: 3px;
+    height: 32px;
     opacity: 0%;
+    display: flex;
+}
+
+.section__new-item:hover {
+    background-color: whitesmoke;
 }
 
 .section__new-item:has( .section__new-item-input:focus ) {
@@ -37,7 +53,9 @@ s {
 }
 
 .section__new-item-input {
-    margin-left: 15px;
+    margin-left: 34px;
+    color: #292929;
+    background-color: rgba(0,0,0,0);
     width: calc(100% - 13px);
     text-wrap: wrap;
     box-sizing: border-box;
