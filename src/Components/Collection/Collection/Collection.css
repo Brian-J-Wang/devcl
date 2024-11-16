@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin: 0px 5px;
+    margin: 0px 0px auto 0px;
 }
 
 .collection__divider {
@@ -36,7 +36,46 @@
     top: -15px
 }
 
-.collection__tool-bar {
+.collection__container {
+    position: relative;
+    min-height: calc(100vh - 48px);
+}
+
+.collection__tool-bar_h {
+    display: flex;
+    padding: 4px;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.collection__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid grey;
+    padding-bottom: 2px;
+    margin-bottom: 6px;
+}
+
+.collection__name {
+    margin-right: auto;
+    font-size: 2em;
+    font-weight: bold;
+    border: none;
+    padding: 0px;
+    outline-width: 0;
+    border-radius: 5px;
+    min-width: 5ch;
+}
+
+.collection__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    opacity: 40%;
+}
+
+.collection__tool-bar_v {
     display: flex;
     flex-direction: column;
     position: absolute;

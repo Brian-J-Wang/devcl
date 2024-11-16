@@ -1,0 +1,20 @@
+.clitem {
+    display: flex;
+    justify-content: baseline;
+    padding: 2px 0px;
+}
+
+.clitem:hover {
+    background-color: whitesmoke;
+}
+
+.clitem__checkbox {
+    width: 14px;
+    height: 14px;
+    margin: auto 0px;
+    margin-right: 6px;
+}
+
+.clitem__label {
+    font-size: 16px;
+}

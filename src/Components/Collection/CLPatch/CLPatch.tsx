@@ -1,18 +1,18 @@
-import copyIcon from "../assets/copy.svg"
-import undoIcon from "../assets/undo.svg"
-import { patchNotes } from "../CheckList/interfaces"
+import copyIcon from "../../../assets/copy.svg"
+import undoIcon from "../../../assets/undo.svg"
 //@ts-ignore
-import { IconButton } from "../assets/shared/button/button"
-import './patchNotes.css'
-import '../assets/DevCL.css'
-import { Container } from "../assets/shared/container/Container"
+import { IconButton } from "../../../assets/shared/button/button"
+import './CLPatch.css'
+import '../../../assets/DevCL.css'
+import { Container } from "../../../assets/shared/container/Container"
+import { CLPatch } from "../DBCollection"
 
 interface PatchNote {
-    patch: patchNotes,
+    patch: CLPatch,
     isLatest: boolean
 }
 
-const PatchNotes : React.FC<PatchNote> = ({ patch, isLatest }) => {
+const CLPatchElement : React.FC<PatchNote> = ({ patch, isLatest }) => {
 
     const copyToClipboard = () => {
         let message = '';
@@ -35,8 +35,8 @@ const PatchNotes : React.FC<PatchNote> = ({ patch, isLatest }) => {
             <div className="patch__header">
                 <h2 className="patch__version">{patch.version}</h2>
                 <div className="patch__tool-bar">
-                    {isLatest ? <IconButton className="patch__button" onClick={undoPatch} icon={undoIcon}/> : <></>}
-                    <IconButton className="patch__button" onClick={copyToClipboard} icon={copyIcon}/>
+                    {isLatest ? <IconButton shape="circle" size="m" onClick={undoPatch} icon={undoIcon}/> : <></>}
+                    <IconButton shape="circle" size="m" className="patch__button" onClick={copyToClipboard} icon={copyIcon}/>
                 </div>
             </div>
             <div className="patch__notes">
@@ -50,4 +50,4 @@ const PatchNotes : React.FC<PatchNote> = ({ patch, isLatest }) => {
     )
 }
 
-export default PatchNotes;
+export default CLPatchElement;

@@ -14,22 +14,74 @@
 }
 
 .button__size_s {
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
+    padding: 4px 8px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .button__size_m {
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 20px;
 }
 
 .button__size_l {
-    width: 48px;
-    height: 48px;
-    border-radius: 24px;
+    padding: 8px 16px;
+    font-size: 22px;
 }
+
+.button__r-style_s {
+    border-radius: 4px;
+}
+
+.button__r-style_m {
+    border-radius: 8px;
+}
+
+.button__r-style_l {
+    border-radius: 12px;
+}
+
+.button__style_primary {
+    background-color: whitesmoke;
+}
+
+.button__style_positive {
+    background-color: #74A12E;
+}
+
+.button__style_negative {
+    background-color: #D73A3A;
+    color: white;
+}
+
+.button__style_neutral {
+    background-color: grey;
+}
+
+.button__shape_circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+}
+
+.button__shape_circle_s {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+}
+
+.button__shape_circle_m {
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+}
+
+.button__shape_circle_l {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+}
+
 
 .text-button {
     width: auto;

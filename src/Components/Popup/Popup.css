@@ -1,0 +1,19 @@
+.popup {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    left: 0px;
+    top: 0px;
+    display: flex;
+}
+
+.popup__hidden {
+    display: none;
+}
+
+.popup__container {
+    width: 600px;
+    margin: auto auto;
+}
