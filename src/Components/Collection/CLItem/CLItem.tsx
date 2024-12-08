@@ -1,7 +1,7 @@
 import "./CLItem.css"
 import { useContext} from "react"
 import { CLItem, CLItemPatch, id } from "../DBCollection"
-import PopupContext from "../../Popup/PopupContext"
+import { popupContext } from "../../Contexts/Popup"
 import { CLItemPopup  } from "./CLItem-Popup"
 import { DBContext } from "../CollectionContext/collectionContext"
 
@@ -13,7 +13,7 @@ type itemProps = {
 
 const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
     const database = useContext(DBContext);
-    const popupContext = useContext(PopupContext);
+    const popup = useContext(popupContext);
 
 
     //in the end, I'll have to update the collection at the top to keep a consistent state
@@ -42,7 +42,7 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
 
     const openPopup = (evt: any) => {
         if (evt.target.id != clItem._id) {
-            popupContext.openPopup(<CLItemPopup item={clItem}></CLItemPopup>);
+            popup.openPopup(<CLItemPopup item={clItem}></CLItemPopup>);
         }
     }
 

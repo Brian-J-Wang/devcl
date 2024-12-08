@@ -1,0 +1,22 @@
+.uc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 48px 0px;
+    gap: 12px;
+}
+
+.uc__header {
+    width: calc(100% - 240px);
+}
+
+.uc__header-title {
+    margin: 0px;
+}
+
+.uc__cc-container {
+    width: calc(100% - 240px);
+    display: flex;
+    gap: 12px;
+}

@@ -1,0 +1,11 @@
+.cc {
+    width: 260px;
+    height: 220px;
+    overflow: hidden;
+    padding: 0px;
+}
+
+.cc__header {
+    margin: 8px;
+}
+

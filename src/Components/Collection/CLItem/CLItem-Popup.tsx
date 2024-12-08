@@ -4,7 +4,7 @@ import { TextButton } from "../../../assets/shared/button/Button"
 import "./CLItemPopup.css"
 import { DBContext } from "../CollectionContext/collectionContext"
 import { useContext } from "react"
-import PopupContext from "../../Popup/PopupContext"
+import { popupContext } from "../../Contexts/Popup"
 
 interface cLItemPopup {
     item: CLItem
@@ -12,12 +12,12 @@ interface cLItemPopup {
 
 export const CLItemPopup: React.FC<cLItemPopup> = ({ item }) => {
     const database = useContext(DBContext);
-    const popup = useContext(PopupContext);
+    const popup = useContext(popupContext);
 
     const deleteItem = () => {
         database.shared.deleteItem(item)
         .then(() => {
-            popup.openPopup(null);
+            popup.closePopup();
         })
     }
 
