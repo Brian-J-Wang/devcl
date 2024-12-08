@@ -8,15 +8,27 @@
 }
 
 .uc__header {
-    width: calc(100% - 240px);
+    width: 800px;
 }
 
 .uc__header-title {
     margin: 0px;
 }
 
-.uc__cc-container {
-    width: calc(100% - 240px);
+.uc__bar {
     display: flex;
-    gap: 12px;
+    width: 784px;
+    border-bottom: 1px solid #292929;
+}
+
+.uc__bar-items {
+    margin: 0px 16px 2px 0px;
+    width: 150px;
+}
+
+.uc__cc-container {
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }

@@ -1,13 +1,25 @@
 import { Container } from "../../../assets/shared/container/Container"
-import generic from "../../../assets/images/light-green-generic.jpeg"
+import { UserCollection } from "../UserCollections"
 
 import "./CollectionCard.css"
 
-const CollectionCard: React.FC = () => {
+type CollectionCardProps = {
+    collection: UserCollection
+    handleDelete: (id: string) => void
+}
+
+const CollectionCard: React.FC<CollectionCardProps> = ({collection, handleDelete}) => {
     return (
         <Container className="cc">
-            <h2 className="cc__header">Collection Name</h2>
-            <img src={generic} alt="background" />
+            <div className="cc__content-left">
+                <p className="cc__collection-details cc__collection-title">{collection.name}</p>
+                <p className="cc__collection-details">{collection.currentVersion}</p>
+                <p className="cc__collection-details">{collection.lastModified}</p>
+            </div>
+            <div className="cc__content-right">
+                <button type="button" onClick={() => {handleDelete(collection.id)}}>Delete</button>
+            </div>
+            
         </Container>
     )
 }
