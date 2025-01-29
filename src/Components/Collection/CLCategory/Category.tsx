@@ -37,12 +37,11 @@ const Category : React.FC<categoryProps> = ({clCategory }) => {
             {
             !isCollapsed && <>
                 <div className='section__items'>
-                    {clCategory.items.map((item) => {
-                        item.section = clCategory._id;
-                        return (
-                            <CLItemElement key={item._id} clItem={item} category={clCategory._id}></CLItemElement>
-                        )
-                    })}
+                    {
+                        database.shared.getItemsInCategory(clCategory._id).map((item) => {
+                            return <CLItemElement key={item._id} clItem={item} category={clCategory._id} />
+                        })
+                    }
                 </div>
                 
                 <div className="section__new-item">

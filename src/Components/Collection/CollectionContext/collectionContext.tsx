@@ -10,11 +10,28 @@ type DBFunctions = {
     postItem: (item: CLItemPost) => Promise<any>
     patchItem: (id: id, item: CLItemPatch) => Promise<any>,
     deleteItem: (item: CLItem) => Promise<any>
+    getItemsInCategory: (id: string) => CLItem[]
 }
 
 interface DBContextValues {
     collection: CLCollection,
     shared: DBFunctions
+}
+
+interface CheckList {
+    [key: string]: Category
+}
+
+interface Category {
+    name: string,
+    items: CheckListItem[]
+}
+
+interface CheckListItem {
+    _id: string,
+    blurb: string,
+    checked: boolean,
+    category: string
 }
 
 const baseURL = "http://localhost:5081/collections";
@@ -135,11 +152,39 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
                 console.log(err.message);
             });
         },
-        
+        getItemsInCategory: function (id: string) {
+            if (checkList[id]) {
+                return checkList[id].items;
+            } else {
+                return [];
+            }
+        }
+    }
+
+    const buildCheckList = (res: CLCollection) => {
+        const checklist: CheckList = {};
+
+        res.categories.forEach((category) => {
+            checklist[category._id] = {
+                name: category.name,
+                items: []
+            }
+        })
+
+        res.items.forEach((item) => {
+            if (checklist[item.category] != undefined) {
+                checklist[item.category].items.push(item);
+            } else {
+                console.error("item belongs to a category that does not exist");
+            }
+        });
+
+        setCheckList(checklist);
     }
 
     const [collection, setCollection] = useState<CLCollection>(emptyCollection);
-
+    const [checkList, setCheckList] = useState<CheckList>({});
+    //gets the collection data and formats it.
     useEffect(() => {
         fetch(`${baseURL}/${collectionId}`, {
             method: "GET",
@@ -151,7 +196,7 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
         }).then((res: CLCollection) => {
             processResult(res);
             setCollection(res);
-
+            buildCheckList(res);
             return res;
         }).catch(() => {
             console.error("Collection could not be found by the server");

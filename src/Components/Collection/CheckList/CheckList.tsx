@@ -39,7 +39,9 @@ const CheckList: React.FC = () => {
         updateCheckListName(evt.target.value);
     }
 
-    const updateCheckListName = (newName: string) => {  }
+    const updateCheckListName = (newName: string) => { 
+        console.log(newName);
+     }
 
     useEffect(() => {
         document.getElementById("check-list")?.scrollIntoView({behavior: "instant", block:"end"});

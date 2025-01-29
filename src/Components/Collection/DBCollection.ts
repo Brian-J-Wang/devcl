@@ -13,14 +13,14 @@ export interface CLCollection {
     owner: string,
     version: string,
     categories: CLCategories[]
-    patches: CLPatch[]
+    patches: CLPatch[],
+    items: CLItem[]
 }
 
 export interface CLCategories {
     _id: string,
     name: string,
-    format: string,
-    items: CLItem[]
+    format: string
 }
 
 export interface id {
@@ -30,7 +30,7 @@ export interface id {
 
 export interface CLItem {
     _id: string,        //the databaseId
-    section: string,    //the section it belongs to
+    category: string,    //the section it belongs to
     checked: boolean,   //is it checked or not
     blurb: string,      //the blurb in the checklist
 }
@@ -59,7 +59,8 @@ export const emptyCollection: CLCollection = {
     categories: [],
     patches: [],
     owner: "",
-    _id: ""
+    _id: "",
+    items: []
 }
 
 export default class DBCollection implements Icollection{
