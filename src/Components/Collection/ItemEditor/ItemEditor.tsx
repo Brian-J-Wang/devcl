@@ -6,8 +6,8 @@ export const ItemEditor: React.FC<any> = (props) => {
     const editorContext = useContext(ItemEditorContext);
 
     return (
-        <div className="item-editor" hidden={editorContext.activeItem == undefined}>
-
+        <div className={`item-editor ${editorContext.activeItem && 'item-editor_hidden'}`}>
+            
         </div>
     )
 }

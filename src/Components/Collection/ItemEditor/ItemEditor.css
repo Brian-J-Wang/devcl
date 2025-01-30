@@ -7,4 +7,9 @@
     width: 480px;
     background-color: white;
     box-shadow: 0px 0px 10px rgba(29, 29, 29, 0.2);
+    animation: right 0.2s ease-in-out;
+}
+
+.item-editor_hidden {
+    right: -480px;
 }
