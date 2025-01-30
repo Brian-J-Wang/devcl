@@ -139,8 +139,10 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
 
                 copy[deletionItem.category].items = copy[deletionItem.category].items.filter(item => item._id != deletionItem._id);
 
-                setCheckList(copy);
+                setCheckList(copy)
 
+                //@ts-ignore
+                setCollection(copy);
             }).catch((err: Error) => {
                 console.log(err.message);
             });
