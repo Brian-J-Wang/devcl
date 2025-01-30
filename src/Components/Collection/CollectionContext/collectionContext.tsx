@@ -8,7 +8,7 @@ export const DBContext = createContext<DBContextValues>();
 type DBFunctions = {
     postPatch: (patch: PatchType) => Promise<any>
     postItem: (item: CLItemPost) => Promise<any>
-    patchItem: (id: id, item: CLItemPatch) => Promise<any>,
+    patchItem: (id: string, item: CLItemPatch) => Promise<any>,
     deleteItem: (item: CLItem) => Promise<any>
     getItemsInCategory: (id: string) => CLItem[]
 }
@@ -83,7 +83,7 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
             })
         },
         postItem: function (item: CLItemPost): Promise<any> {
-            return fetch(`${baseURL}/${collectionId}/category/item?categoryId=${item.category}`, {
+            return fetch(`${baseURL}/${collectionId}/items`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -92,42 +92,42 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
             }).then((res) => {
                 return res.ok ? res.json() : Promise.reject();
             }).then((clItem: CLItem) => {
-                const copy = { ...collection };
+                const copy = { ...checkList };
 
-                copy.categories?.find((category) => category._id == item.category)?.items.push(clItem);
+                copy[clItem.category].items.push(clItem);
 
-                setCollection(copy);
+                setCheckList(copy);
 
-                return copy.categories?.find((category) => category._id == item.category);
+                return clItem;
             });
         },
-        patchItem: function (id: id, item: CLItemPatch): Promise<any> {
-            return fetch(`${baseURL}/${collectionId}/category/item?categoryId=${id.category}&itemId=${id.item}`, {
+        patchItem: function (id: string, patch: CLItemPatch): Promise<any> {
+            return fetch(`${baseURL}/${collectionId}/items/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(item)
+                body: JSON.stringify(patch)
             }).then((res) => {
                 return res.ok ? res.json() : Promise.reject();
-            }).then((item: CLItem) => {
-                const copy = { ...collection };
+            }).then((res: CLItem) => {
+                const copy = { ...checkList };
 
-                const categoryIndex = copy.categories?.findIndex(category => category._id == id.category);
+                copy[res.category].items = copy[res.category].items.map((item) => {
+                    if (item._id == id) {
+                        item.checked = patch.checked ?? item.checked;
+                    } 
 
-                const itemIndex = copy.categories[categoryIndex].items.findIndex(item => item._id == id.item);
+                    return item
+                })
 
-                if (categoryIndex != -1 && itemIndex != -1) {
-                    copy.categories[categoryIndex].items[itemIndex] = item;
-                }
+                setCheckList(copy);
 
-                setCollection(copy);
-
-                return item;
+                return res;
             });
         },
-        deleteItem: function (item: CLItem): Promise<any> {
-            return fetch(`${baseURL}/${collectionId}/category/item?categoryId=${item.section}&itemId=${item._id}`, {
+        deleteItem: function (deletionItem: CLItem): Promise<any> {
+            return fetch(`${baseURL}/${collectionId}/items/${deletionItem._id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -135,19 +135,12 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
             }).then((res) => {
                 return res.ok ? Promise.resolve() : Promise.reject();
             }).then(() => {
-                const copy = { ...collection };
+                const copy = { ...checkList };
 
-                const categoryIndex = copy.categories?.findIndex(category => category._id == item.section);
+                copy[deletionItem.category].items = copy[deletionItem.category].items.filter(item => item._id != deletionItem._id);
 
-                if (categoryIndex == -1) {
-                    throw new Error('Category not found');
-                } else {
-                    //@ts-ignore
-                    copy.categories[categoryIndex].items = copy.categories[categoryIndex].items.filter(i => i._id != item._id);
-                }
+                setCheckList(copy);
 
-                //@ts-ignore
-                setCollection(copy);
             }).catch((err: Error) => {
                 console.log(err.message);
             });

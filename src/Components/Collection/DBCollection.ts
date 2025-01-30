@@ -113,8 +113,8 @@ export default class DBCollection implements Icollection{
         })
     }
 
-    patchItem(itemId: id, update: CLItemPatch, stateFunction?: React.Dispatch<any>) {
-        return fetch(`${this.baseURL}/${this.collectionId}/category/item?categoryId=${itemId.category}&itemId=${itemId.item}`, {
+    patchItem(itemId: string, update: CLItemPatch, stateFunction?: React.Dispatch<any>) {
+        return fetch(`${this.baseURL}/${this.collectionId}/item/${itemId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"

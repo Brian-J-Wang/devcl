@@ -14,6 +14,8 @@ const Category : React.FC<categoryProps> = ({clCategory }) => {
 
     const handleKeyboardInput = (evt: any) => {
         if (evt.key == "Enter") {
+            console.log(clCategory._id);
+
             const item: CLItemPost = {
                 category: clCategory._id,
                 blurb: evt.target.value

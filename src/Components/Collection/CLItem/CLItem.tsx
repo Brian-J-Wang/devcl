@@ -23,18 +23,11 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
             return;
         }
 
-        const itemId: id = {
-            item: clItem._id,
-            category: category
-        };
-
-        console.log(clItem);
-
         const update: CLItemPatch = {
             checked: !clItem.checked
         };
 
-        database.shared.patchItem(itemId, update)
+        database.shared.patchItem(clItem._id, update)
         .then((newItem) => {
             console.log(newItem);
         })
