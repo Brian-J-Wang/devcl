@@ -1,8 +1,11 @@
 import './Collection.css';
 import DatabaseContext from "../CollectionContext/collectionContext";
 import CheckList from "../CheckList/CheckList";
-import PopupContext from '../../Contexts/Popup';
 import { useParams } from 'react-router-dom';
+import { ItemEditor } from '../ItemEditor/ItemEditor';
+import ItemEditorContext from '../ItemEditor/itemEditorContext';
+import { useState } from 'react';
+import { CLItem } from '../DBCollection';
 export enum PatchType {
     major,
     minor,
@@ -11,15 +14,17 @@ export enum PatchType {
 
 const Collection : React.FC = () => {
     const { id } = useParams();
-
     console.log(id);
 
+    const [ activeItem, setActiveItem ] = useState<CLItem>();
+
     return (
+        <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
         <DatabaseContext>
-            <PopupContext>
-                <CheckList/>
-            </PopupContext>
+            <CheckList/>
+            <ItemEditor/>
         </DatabaseContext>
+        </ItemEditorContext.Provider>
     );
 }
 
