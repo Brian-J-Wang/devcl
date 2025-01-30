@@ -29,11 +29,6 @@ export const CLItemPopup: React.FC<cLItemPopup> = ({ item }) => {
             <div>
 
             </div>
-            <div className="item-popup__footer">
-                <TextButton size="s" style="negative" radiusStyle="s" onClick={deleteItem}>
-                    Delete
-                </TextButton>
-            </div>
         </>
     )
 }
