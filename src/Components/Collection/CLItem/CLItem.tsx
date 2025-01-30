@@ -33,16 +33,25 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
         })
     }
 
-    const openPopup = (evt: any) => {
-        if (evt.target.id != clItem._id) {
+    const deleteItem = (evt: any) => {
+        database.shared.deleteItem(clItem);
+    }
+
+    const openPopup = (evt: React.MouseEvent) => {
+        if ((evt.target as HTMLElement).closest(".clitem__right-container") == null) { //ensures that the area clicked does not include action buttons on the right
             popup.openPopup(<CLItemPopup item={clItem}></CLItemPopup>);
         }
     }
 
     return (
         <div className="clitem" onClick={openPopup}>
-            <input className="clitem__checkbox" type="checkbox" id={clItem._id} checked={clItem.checked} onClick={updateCheckbox} readOnly/>
-            <p className="clitem__label">{(clItem.checked) ? (<s>{clItem.blurb}</s>) : (<>{clItem.blurb}</>)}</p>
+            <div className="clitem__left-container">
+                <input className="clitem__checkbox" type="checkbox" id={clItem._id} checked={clItem.checked} onClick={updateCheckbox} readOnly/>
+                <p className="clitem__label">{(clItem.checked) ? (<s>{clItem.blurb}</s>) : (<>{clItem.blurb}</>)}</p>
+            </div>
+            <div className="clitem__right-container" >
+                <button onClick={deleteItem}>Delete</button>
+            </div>
         </div>
     )
 }

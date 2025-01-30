@@ -3,11 +3,26 @@
     display: flex;
     align-items: center;
     padding: 0px 12px;
-    
+    justify-content: space-between;
 }
 
 .clitem:hover {
     background-color: whitesmoke;
+}
+
+.clitem__left-container {
+    display: flex;
+    align-items: center;
+}
+
+.clitem__right-container {
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+}
+
+.clitem:hover .clitem__right-container {
+    visibility: visible;
 }
 
 .clitem__checkbox {
