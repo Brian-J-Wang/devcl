@@ -19,12 +19,14 @@ const Collection : React.FC = () => {
     const [ activeItem, setActiveItem ] = useState<CLItem>();
 
     return (
-        <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
-        <DatabaseContext>
-            <CheckList/>
-            <ItemEditor/>
-        </DatabaseContext>
-        </ItemEditorContext.Provider>
+        <div className='collection'>
+            <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
+            <DatabaseContext>
+                <CheckList/>
+                <ItemEditor/>
+            </DatabaseContext>
+            </ItemEditorContext.Provider>
+        </div>
     );
 }
 

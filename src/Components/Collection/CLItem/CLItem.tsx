@@ -4,6 +4,7 @@ import { CLItem, CLItemPatch, id } from "../DBCollection"
 import { popupContext } from "../../Contexts/Popup"
 import { CLItemPopup  } from "./CLItem-Popup"
 import { DBContext } from "../CollectionContext/collectionContext"
+import ItemEditorContext from "../ItemEditor/itemEditorContext"
 
 
 type itemProps = {
@@ -14,7 +15,7 @@ type itemProps = {
 const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
     const database = useContext(DBContext);
     const popup = useContext(popupContext);
-
+    const itemEditorContext = useContext(ItemEditorContext);
 
     //in the end, I'll have to update the collection at the top to keep a consistent state
     
@@ -37,10 +38,8 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
         database.shared.deleteItem(clItem);
     }
 
-    const openPopup = (evt: React.MouseEvent) => {
-        if ((evt.target as HTMLElement).closest(".clitem__right-container") == null) { //ensures that the area clicked does not include action buttons on the right
-            popup.openPopup(<CLItemPopup item={clItem}></CLItemPopup>);
-        }
+    const openPopup = () => {
+        itemEditorContext.setActiveItem(clItem);
     }
 
     return (
