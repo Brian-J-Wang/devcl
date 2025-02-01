@@ -11,5 +11,43 @@
 }
 
 .item-editor_hidden {
-    right: -480px;
+    right: -500px;
+}
+
+.item-editor__title-bar {
+    height: 36px;
+    border-bottom: 1px solid rgba(29, 29, 29, 0.2);
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-editor__header {
+    font-size: 18px;
+    margin: auto 0px auto 8px;
+}
+
+.item-editor__cross-button {
+    width: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    outline: none;
+    border: none;
+    border-left: 1px solid rgba(29, 29, 29, 0.2);
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.item-editor__cross-button:hover {
+    background-color: #D73A3A;
+}
+
+.item-editor__cross-image {
+    width: 20px;
+    height: 20px;
+}
+
+.item-editor__cross-button:hover .item-editor__cross-image {
+    color: white;
 }

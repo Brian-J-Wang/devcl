@@ -1,20 +1,15 @@
 import "./CLItem.css"
 import { useContext} from "react"
-import { CLItem, CLItemPatch, id } from "../DBCollection"
-import { popupContext } from "../../Contexts/Popup"
-import { CLItemPopup  } from "./CLItem-Popup"
+import { CLItem, CLItemPatch } from "../DBCollection"
 import { DBContext } from "../CollectionContext/collectionContext"
 import ItemEditorContext from "../ItemEditor/itemEditorContext"
 
-
 type itemProps = {
     clItem: CLItem
-    category: string
 }
 
-const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
+const CLItemElement: React.FC<itemProps> = ({ clItem }) => {
     const database = useContext(DBContext);
-    const popup = useContext(popupContext);
     const itemEditorContext = useContext(ItemEditorContext);
 
     //in the end, I'll have to update the collection at the top to keep a consistent state
@@ -34,7 +29,7 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, category }) => {
         })
     }
 
-    const deleteItem = (evt: any) => {
+    const deleteItem = () => {
         database.shared.deleteItem(clItem);
     }
 
