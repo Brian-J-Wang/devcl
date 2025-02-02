@@ -1,16 +1,20 @@
 import "./ItemEditor.css"
-import { RefObject, useContext, useEffect, useRef } from "react"
+import { RefObject, useContext, useEffect, useRef, useState } from "react"
 import ItemEditorContext from "./itemEditorContext"
 import BoundingBox, { OutofBoundsHandle } from "../../../shared/boundingBox";
 import cross from "../../../assets/cross.svg";
+import Input from "./Inputs";
+import { CLItem } from "../DBCollection";
 
 export const ItemEditor: React.FC<any> = (props) => {
     const editorContext = useContext(ItemEditorContext);
     const boundingBoxController = useRef<OutofBoundsHandle>() as RefObject<OutofBoundsHandle>;
+    const [item, setItem] = useState<CLItem>();
 
     useEffect(() => {
         if (editorContext.activeItem) {
             boundingBoxController.current?.setListen(true);
+            setItem(editorContext.activeItem);
         } else {
             boundingBoxController.current?.setListen(false);
         }
@@ -31,8 +35,15 @@ export const ItemEditor: React.FC<any> = (props) => {
                         <img src={cross} alt="X" className="item-editor__cross-image"/>
                     </button>
                 </div>
+                <div className="item-editor__content">
+                    <Input.Text title={"Task: "} initialInput={item?.blurb ?? ""}/>
+                    <Input.ButtonBar title="Priority: " type="radio">
+                    
+                    </Input.ButtonBar>
+                </div>
             </div>
         </BoundingBox>
         
     )
 }
+

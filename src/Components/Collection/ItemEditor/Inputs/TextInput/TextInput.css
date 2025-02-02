@@ -1,0 +1,26 @@
+.text-input {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+}
+
+.text-input__title {
+    margin: 0px;
+    margin-top: 6px;
+    margin-right: 12px;
+    font-weight: 700;
+    color: rgba(29, 29, 29, 0.75);
+}
+
+.text-input__blurb {
+    padding: 6px;
+    margin: 0px;
+    font-weight: 500;
+    background-color: rgba(29, 29, 29, 0.10);
+    border-radius: 6px;
+    word-break: normal;
+    line-break: auto ;
+    text-wrap-mode:auto;
+    overflow: wrap;
+    outline: none;
+}

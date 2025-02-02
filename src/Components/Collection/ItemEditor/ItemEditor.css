@@ -51,3 +51,35 @@
 .item-editor__cross-button:hover .item-editor__cross-image {
     color: white;
 }
+
+.item-editor__content {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 6px;
+}
+
+.item-editor__input {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+}
+
+.item-editor__input p {
+    margin: 0;
+}
+
+.item-editor__input p.input-name {
+    margin-top: 6px;
+    margin-right: 8px;
+    font-weight: 700;
+    color: rgba(29, 29, 29, 0.5)
+}
+
+.item-editor__input p.blurb {
+    padding: 6px;
+    background-color: whitesmoke;
+    border-radius: 6px;
+}
+
+
