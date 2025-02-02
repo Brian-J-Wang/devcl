@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react"
-import { CLCollection, CLItem, CLItemPatch, CLItemPost, emptyCollection, id } from "../DBCollection";
+import { CLCollection, CLItem, CLItemPatch, CLItemPost, emptyCollection } from "../DBCollection";
 import { PatchType } from "../Collection/Collection";
 
 //@ts-ignore
@@ -140,7 +140,7 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
                 copy[deletionItem.category].items = copy[deletionItem.category].items.filter(item => item._id != deletionItem._id);
 
                 setCheckList(copy);
-                
+
             }).catch((err: Error) => {
                 console.log(err.message);
             });
