@@ -59,27 +59,29 @@
     gap: 6px;
 }
 
-.item-editor__input {
+.item-priority {
     display: flex;
-    flex-direction: row;
-    align-items: start;
+    gap: 8px;   
 }
 
-.item-editor__input p {
-    margin: 0;
-}
-
-.item-editor__input p.input-name {
-    margin-top: 6px;
-    margin-right: 8px;
-    font-weight: 700;
-    color: rgba(29, 29, 29, 0.5)
-}
-
-.item-editor__input p.blurb {
-    padding: 6px;
+.item-priority__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: whitesmoke;
+    height: 32px;
+    width: 48px;
+    border-radius: 6px;
+    border: 1px dashed rgba(29, 29, 29, 0.25);
+}
+
+input[type="radio"]:checked+label { 
+    border: 1px solid rgba(29, 29, 29, 0.75);
+}
+
+.item-assignee {
+    height: 34px;
+    background-color: rgba(29, 29, 29, 0.05);
+    width: 224px;
     border-radius: 6px;
 }
-
-

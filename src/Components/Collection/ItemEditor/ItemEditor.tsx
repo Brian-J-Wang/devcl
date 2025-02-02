@@ -37,9 +37,29 @@ export const ItemEditor: React.FC<any> = (props) => {
                 </div>
                 <div className="item-editor__content">
                     <Input.Text title={"Task: "} initialInput={item?.blurb ?? ""}/>
-                    <Input.ButtonBar title="Priority: " type="radio">
-                    
-                    </Input.ButtonBar>
+                    <Input.General title={"Priority: "} className="item-priority">
+                        <input type="radio" name="priority" hidden id="priority-high"></input>
+                        <label className="item-priority__label" htmlFor="priority-high">
+                            !!!    
+                        </label>
+                        <input type="radio" name="priority" hidden id="priority-med"></input>
+                        <label className="item-priority__label" htmlFor="priority-med">
+                            !!
+                        </label>
+                        <input type="radio" name="priority" hidden id="priority-low"></input>
+                        <label className="item-priority__label" htmlFor="priority-low">
+                            !
+                        </label>
+                        <input type="radio" name="priority" hidden id="priority-none" checked></input>
+                        <label className="item-priority__label" htmlFor="priority-none">
+                            
+                        </label>
+                    </Input.General>
+                    <Input.General title={"Assignee: "}>
+                        <div className="item-assignee">
+                            test
+                        </div>
+                    </Input.General>
                 </div>
             </div>
         </BoundingBox>
