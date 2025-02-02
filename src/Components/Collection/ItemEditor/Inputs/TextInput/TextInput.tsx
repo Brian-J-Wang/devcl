@@ -23,7 +23,7 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
 
     const recalculateBlurbSize = () => {
         const newSize = (containerSize.current?.getBoundingClientRect().width ?? 0) - (titleSize.current?.getBoundingClientRect().width ?? 0);
-        setMaxBlurbSize(newSize - 24);
+        setMaxBlurbSize(newSize - 12);
     }
 
     return (

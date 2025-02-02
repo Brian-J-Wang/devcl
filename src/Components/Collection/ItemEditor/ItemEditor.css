@@ -65,6 +65,7 @@
 }
 
 .item-priority__label {
+    font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,4 +85,46 @@ input[type="radio"]:checked+label {
     background-color: rgba(29, 29, 29, 0.05);
     width: 224px;
     border-radius: 6px;
+    border: 1px solid rgba(29, 29, 29, 0.25);
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    box-sizing: border-box;
+    gap: 6px;
+}
+
+.item-assignee__profile {
+    background-color: grey;
+    border: 1px solid #292929;
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+}
+
+.item-assignee__name {
+    font-size: 14px;
+    line-height: 14px;
+    margin: 0px;
+}
+
+.item-checklist {
+    height: 34px;
+}
+
+.item-checklist__title {
+    margin: 6px 0px 6px 0px;
+    font-weight: 700;
+    color: rgba(29, 29, 29, 0.75);
+}
+
+.item-checklist__label {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    vertical-align: text-top;
+    font-size: 13px;
+}
+
+.item-checklist__input {
+    margin-right: 6px;    
 }

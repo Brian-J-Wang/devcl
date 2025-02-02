@@ -57,9 +57,25 @@ export const ItemEditor: React.FC<any> = (props) => {
                     </Input.General>
                     <Input.General title={"Assignee: "}>
                         <div className="item-assignee">
-                            test
+                            <div className="item-assignee__profile">
+
+                            </div>
+                            <p className="item-assignee__name"> None </p>
                         </div>
                     </Input.General>
+                    <div className="item-checklist">
+                        <div>
+                            <p className="item-checklist__title">Checklist: </p>
+                        </div>
+                        <div>
+                            <div>
+                                <label htmlFor="" className="item-checklist__label">
+                                    <input type="checkbox" name="" id="" className="item-checklist__input"/>
+                                    Do this and that
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </BoundingBox>
