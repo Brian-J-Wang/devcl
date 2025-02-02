@@ -33,18 +33,23 @@ const CLItemElement: React.FC<itemProps> = ({ clItem }) => {
         database.shared.deleteItem(clItem);
     }
 
-    const openPopup = () => {
+    const openPopup = (evt: React.MouseEvent) => {
+        //does not open popup if element that was clicked on includes data-editorIgnore
+        if ((evt.target as HTMLElement).hasAttribute('data-editorIgnore')) {
+            return;
+        }
+
         itemEditorContext.setActiveItem(clItem);
     }
 
     return (
         <div className="clitem" onClick={openPopup}>
             <div className="clitem__left-container">
-                <input className="clitem__checkbox" type="checkbox" id={clItem._id} checked={clItem.checked} onClick={updateCheckbox} readOnly/>
+                <input className="clitem__checkbox" type="checkbox" id={clItem._id} checked={clItem.checked} onClick={updateCheckbox} readOnly data-editorIgnore />
                 <p className="clitem__label">{(clItem.checked) ? (<s>{clItem.blurb}</s>) : (<>{clItem.blurb}</>)}</p>
             </div>
-            <div className="clitem__right-container" >
-                <button onClick={deleteItem}>Delete</button>
+            <div className="clitem__right-container"  >
+                <button onClick={deleteItem} data-editorIgnore>Delete</button>
             </div>
         </div>
     )
