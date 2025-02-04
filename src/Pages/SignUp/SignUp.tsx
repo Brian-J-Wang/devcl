@@ -10,6 +10,7 @@ const SignUp: React.FC<{}> = () => {
         <div className="sign-up">
             <Container className="sign-up__modal">
                 <h2 className="sign-up__header">Sign Up</h2>
+                <Input.Text name="Email" type="email"></Input.Text>
                 <Input.Text name="Username" type="text"></Input.Text>
                 <Input.Text name="Password" type="password"></Input.Text>
                 <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit">Sign Up</TextButton>
