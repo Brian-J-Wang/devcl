@@ -6,7 +6,7 @@ interface Button {
     style?: "primary" | "positive" | "negative" | "neutral"
     shape?: "circle" | "rectangle" | "square",
     className?: string,
-    onClick?: () => void,
+    onClick?: (evt: React.MouseEvent) => void,
 }
 
 interface ITextButton extends Button {
@@ -14,8 +14,14 @@ interface ITextButton extends Button {
 }
 
 export const TextButton : React.FC<ITextButton> = (props) => {
+    const handleMouseClick = (evt: React.MouseEvent) => {
+        if (props.onClick) {
+            props.onClick(evt);
+        }
+    }
+
     return (
-        <button className={`${props.className ?? ''} button ${StyleFactory(props)} text-button `} onClick={props.onClick}>
+        <button className={`${props.className ?? ''} button ${StyleFactory(props)} text-button `} onClick={handleMouseClick}>
             {props.children}
         </button>
     )
@@ -26,8 +32,14 @@ interface IIconButton extends Button {
 }
 
 export const IconButton : React.FC<IIconButton> = (props) => {
+    const handleMouseClick = (evt: React.MouseEvent) => {
+        if (props.onClick) {
+            props.onClick(evt);
+        }
+    }
+
     return (
-        <button className={`${props.className ?? ''} button ${StyleFactory(props)} icon-button `} onClick={props.onClick}>
+        <button className={`${props.className ?? ''} button ${StyleFactory(props)} icon-button `} onClick={handleMouseClick}>
             <img src={props.icon} alt={props.icon}/>
         </button>
     )
