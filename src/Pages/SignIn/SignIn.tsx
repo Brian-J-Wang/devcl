@@ -23,7 +23,7 @@ const SignIn: React.FC<{}> = () => {
                 <Input.Text name="Email" type="email"></Input.Text>
                 <Input.Text name="Password" type="password"></Input.Text>
                 <TextButton size="s" radiusStyle="s" style="primary" className="sign-in__submit" onClick={handleSubmit}>Sign In</TextButton>
-                <p className="sign-in__switch"> Need have an account? <Link to="../signup" className="sign-in__switch-link">Sign Up</Link></p>
+                <p className="sign-in__switch"> Need an account? <Link to="../signup" className="sign-in__switch-link">Sign Up</Link></p>
             </Container> 
         </div>
     )
