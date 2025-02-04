@@ -6,11 +6,31 @@ import { UserCollection } from './Components/UserCollections/UserCollections'
 import Home from './Pages/Home/Home'
 import SignIn from './Pages/SignIn/SignIn'
 import SignUp from './Pages/SignUp/SignUp'
+import { UserContext } from './Contexts/UserContext'
+import { useEffect, useRef, useState } from 'react'
+import UserAPI from './utils/userAPI'
 
 function App() {
+  const userAPI = useRef<UserAPI>(new UserAPI(""));
+  const [user, setUser] = useState<any>();
 
+  useEffect(() => {
+    //check if local storage has a jwt token
+    const jwt = localStorage.getItem("jwt");
+
+    if (jwt) {
+      userAPI.current.getUser(jwt).then((res) => {
+        setUser(res);
+      })
+    }
+  }, [])
+  
   return (
     <div className='app'>
+      <UserContext.Provider value={{
+        user: user,
+        api: userAPI.current
+      }}>
       <Routes>
         <Route path='/'>
           <Route index element={<Home/>}/>
@@ -20,6 +40,7 @@ function App() {
         <Route path='collections' element={<UserCollection/>}/>
         <Route path='collections/:id' element={<Collection/>}/>
       </Routes>
+      </UserContext.Provider>
     </div>
   )
 }

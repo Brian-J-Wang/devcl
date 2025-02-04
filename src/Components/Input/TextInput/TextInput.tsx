@@ -2,13 +2,19 @@ import { useState } from "react"
 import "./TextInput.css"
 
 export interface TextInputProps {
-    name: string
-    type: "text" | "password" | "email"
+    name: string,
+    type: "text" | "password" | "email",
+    stateHandler?: React.Dispatch<React.SetStateAction<string>>
 }
 
 const TextInput: React.FC<TextInputProps> = (props) => {
     const [isFocus, setIsFocus] = useState<boolean>(false);
     const [input, setInput] = useState<string>("");
+
+    const handleTextChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        setInput(evt.target.value);
+        props.stateHandler && props.stateHandler(evt.target.value);
+    }
 
     return (
         <div className="text-input">
@@ -16,7 +22,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
             <input type={props.type} className="text-input__input" 
                 onFocus={() => {setIsFocus(true)}} 
                 onBlur={() => {setIsFocus(false)}}
-                onChange={(evt) => {setInput(evt.target.value)}}
+                onChange={(evt) => {handleTextChange(evt)}}
                 value={input}
             >
             </input>        

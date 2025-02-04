@@ -6,6 +6,11 @@ import Input from "../../Components/Input"
 import "./SignUp.css"
 
 const SignUp: React.FC<{}> = () => {
+
+    const handleSignUp = () => {
+
+    }
+
     return (
         <div className="sign-up">
             <Container className="sign-up__modal">
@@ -13,7 +18,7 @@ const SignUp: React.FC<{}> = () => {
                 <Input.Text name="Email" type="email"></Input.Text>
                 <Input.Text name="Username" type="text"></Input.Text>
                 <Input.Text name="Password" type="password"></Input.Text>
-                <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit">Sign Up</TextButton>
+                <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
                 <p className="sign-up__switch"> Already have an account? <Link to="../signin" className="sign-up__switch-link">Sign In</Link></p>
             </Container> 
         </div>
