@@ -3,6 +3,7 @@ import "./TextInput.css"
 
 export interface TextInputProps {
     name: string
+    type: "text" | "password" | "email"
 }
 
 const TextInput: React.FC<TextInputProps> = (props) => {
@@ -12,7 +13,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
     return (
         <div className="text-input">
             <div className={`text-input__name ${(isFocus || input.length != 0) && "text-input__name-focused"}`}>{props.name}</div>
-            <input type="text" className="text-input__input" 
+            <input type={props.type} className="text-input__input" 
                 onFocus={() => {setIsFocus(true)}} 
                 onBlur={() => {setIsFocus(false)}}
                 onChange={(evt) => {setInput(evt.target.value)}}
