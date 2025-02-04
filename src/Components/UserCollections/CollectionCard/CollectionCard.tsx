@@ -1,4 +1,4 @@
-import { Container } from "../../../assets/shared/container/Container"
+import { Container } from "../../Container/Container"
 import { UserCollection } from "../UserCollections"
 
 import "./CollectionCard.css"

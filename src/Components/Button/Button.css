@@ -3,7 +3,7 @@
     margin: 0px;
     border: 0px;
     
-    background-color: white;
+    background-color: #292929;
     box-shadow: 0px 0px 5px rgba(29, 29, 29, 0.3);
     cursor: pointer;
     transition: box-shadow 0.2s ease-in-out;
@@ -14,9 +14,8 @@
 }
 
 .button__size_s {
-    padding: 4px 8px;
+    padding: 6px 8px;
     font-size: 18px;
-    font-weight: 600;
 }
 
 .button__size_m {
@@ -42,7 +41,8 @@
 }
 
 .button__style_primary {
-    background-color: whitesmoke;
+    background-color: #292929;
+    color: white;
 }
 
 .button__style_positive {
@@ -55,7 +55,8 @@
 }
 
 .button__style_neutral {
-    background-color: grey;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: rgba(0, 0, 0 , 0);
 }
 
 .button__shape_circle {

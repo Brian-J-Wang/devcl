@@ -1,17 +1,19 @@
+import { Link } from "react-router-dom"
+
 import "./Home.css"
 
 const Home: React.FC<{}> = () => {
 
     return (
         <div className="home">
-            <div className="home__tab">
+            <Link className="home__tab" to={"./signin"}>
                 Log In
-            </div>
-            <div className="home__tab">
+            </Link>
+            <Link className="home__tab" to={"./signup"}>
                 Sign Up
-            </div>
+            </Link>
         </div>
     )
 }
 
-export default Home
+export default Home;

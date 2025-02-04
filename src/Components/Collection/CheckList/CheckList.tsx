@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import formatMessage from "../../../utils/formatMessage";
 import { PatchType } from "../Collection/Collection";
-import { TextButton } from "../../../assets/shared/button/Button";
-import { Container } from "../../../assets/shared/container/Container";
+import { TextButton } from "../../Button/Button";
+import { Container } from "../../Container/Container";
 import Category from "../CLCategory/Category";
 import CLPatchElement from "../CLPatch/CLPatch";
 import { DBContext } from "../CollectionContext/collectionContext";

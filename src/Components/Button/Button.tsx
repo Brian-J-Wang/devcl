@@ -15,7 +15,7 @@ interface ITextButton extends Button {
 
 export const TextButton : React.FC<ITextButton> = (props) => {
     return (
-        <button className={`button ${StyleFactory(props)} text-button ${props.className ?? ''}`} onClick={props.onClick}>
+        <button className={`${props.className ?? ''} button ${StyleFactory(props)} text-button `} onClick={props.onClick}>
             {props.children}
         </button>
     )
@@ -27,7 +27,7 @@ interface IIconButton extends Button {
 
 export const IconButton : React.FC<IIconButton> = (props) => {
     return (
-        <button className={`button ${StyleFactory(props)} icon-button ${props.className ?? ''}`} onClick={props.onClick}>
+        <button className={`${props.className ?? ''} button ${StyleFactory(props)} icon-button `} onClick={props.onClick}>
             <img src={props.icon} alt={props.icon}/>
         </button>
     )

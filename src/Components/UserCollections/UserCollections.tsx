@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Container } from "../../assets/shared/container/Container"
+import { Container } from "../Container/Container"
 import CollectionCard from "./CollectionCard/CollectionCard"
 import "./UserCollections.css"
 import { generateMongoID } from "../../utils/dummyGenerators"

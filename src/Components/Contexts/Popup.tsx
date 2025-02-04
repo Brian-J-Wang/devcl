@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useState } from "react"
 import "./Popup.css"
-import { Container } from "../../assets/shared/container/Container"
+import { Container } from "../Container/Container"
 
 interface PopupContextProps {
     children: ReactNode
