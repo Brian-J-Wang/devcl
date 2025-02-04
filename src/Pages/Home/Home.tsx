@@ -1,14 +1,15 @@
-import { Link } from "react-router-dom"
-
 import "./Home.css"
 
 const Home: React.FC<{}> = () => {
 
     return (
         <div className="home">
-            <Link to={"/collections"}>
-                Go To Collections
-            </Link>
+            <div className="home__tab">
+                Log In
+            </div>
+            <div className="home__tab">
+                Sign Up
+            </div>
         </div>
     )
 }
