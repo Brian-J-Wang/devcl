@@ -12,7 +12,7 @@ const SignIn: React.FC<{}> = () => {
                 <h2 className="sign-in__header">Sign In</h2>
                 <Input.Text name="Username"></Input.Text>
                 <Input.Text name="Password"></Input.Text>
-                <TextButton size="s" radiusStyle="s" style="primary" className="sign-in__submit">Sign Up</TextButton>
+                <TextButton size="s" radiusStyle="s" style="primary" className="sign-in__submit">Sign In</TextButton>
                 <p className="sign-in__switch"> Need have an account? <Link to="../signin" className="sign-in__switch-link">Sign Up</Link></p>
             </Container> 
         </div>
