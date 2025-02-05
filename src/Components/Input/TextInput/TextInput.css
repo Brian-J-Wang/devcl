@@ -13,6 +13,8 @@
     bottom: 14px;
     padding: 0px 2px 0px 2px;
     background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    cursor: none;
 }
 
 .text-input__name-focused {
