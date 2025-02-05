@@ -2,10 +2,10 @@ import './App.css'
 import './assets/DevCL.css'
 import { Routes, Route } from 'react-router-dom'
 import Collection from './Components/Collection/Collection/Collection'
-import { UserCollection } from './Components/UserCollections/UserCollections'
 import Home from './Pages/Home/Home'
 import SignIn from './Pages/SignIn/SignIn'
 import SignUp from './Pages/SignUp/SignUp'
+import UserCollection from './Pages/UserCollections/UserCollections'
 import UserContextProvider from './Contexts/UserContext'
 
 function App() {

@@ -4,7 +4,10 @@
 }
 
 body {
-  background-color: whitesmoke;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(224,223,241);
+  background: linear-gradient(128deg, rgba(224,223,241,1) 0%, rgba(225,250,255,1) 100%);
 }
 
 h1 {
