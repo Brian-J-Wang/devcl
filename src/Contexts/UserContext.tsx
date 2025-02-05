@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useRef, useState } from "react";
+import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import UserAPI from "../utils/userAPI";
 
 interface User {
@@ -14,7 +14,9 @@ interface apiFunctions {
 
 export const UserContext = createContext<{
     user?: any
-    api: apiFunctions
+    api: apiFunctions,
+    token: string,
+    isLoggedIn: boolean
 }>({
     user: undefined,
     api: {
@@ -27,7 +29,9 @@ export const UserContext = createContext<{
         getUser: function (jwt: string) {
             throw new Error("Function not implemented.");
         }
-    }
+    },
+    token: "",
+    isLoggedIn: false
 })
 
 
@@ -35,6 +39,19 @@ export const UserContext = createContext<{
 const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     const userAPI = useRef<UserAPI>(new UserAPI("http://localhost:5081"));
     const [user, setUser] = useState<User | undefined>(undefined);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [token, setToken] = useState<string>("");
+
+    useEffect(() => {
+        const jwt = localStorage.getItem("jwt");
+
+        if (!jwt) {
+            return;
+        }
+
+        userAPI.current.getUser(jwt);
+        
+    }, [])
 
     const api: apiFunctions = {
         addNewUser: function (email: string, username: string, password: string): Promise<any> {
@@ -47,8 +64,16 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
                 return Promise.resolve();
             })
         },
-        logInUser: function (username: string, password: string): Promise<any> {
-            throw new Error("Function not implemented.");
+        logInUser: function (email: string, password: string): Promise<any> {
+            return userAPI.current.logInUser(email, password).then((res: { jwt: string, _id: string, username: string }) => {
+                console.log(res);
+                setIsLoggedIn(true);
+                localStorage.setItem("jwt", res.jwt);
+                setUser({
+                    _id: res._id,
+                    username: res.username
+                });
+            });
         },
         getUser: function (jwt: string): Promise<any> {
             throw new Error("Function not implemented.");
@@ -58,9 +83,13 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     return (
         <UserContext.Provider value={{
             user: user,
-            api: api
+            api: api,
+            token: token,
+            isLoggedIn: isLoggedIn
         }}>
             {props.children}
         </UserContext.Provider>
     )
 }
+
+export default UserContextProvider
