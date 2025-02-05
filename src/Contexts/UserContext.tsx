@@ -20,13 +20,13 @@ export const UserContext = createContext<{
 }>({
     user: undefined,
     api: {
-        addNewUser: function (email: string, username: string, password: string) {
+        addNewUser: function () {
             throw new Error("Function not implemented.");
         },
-        logInUser: function (username: string, password: string) {
+        logInUser: function () {
             throw new Error("Function not implemented.");
         },
-        getUser: function (jwt: string) {
+        getUser: function () {
             throw new Error("Function not implemented.");
         }
     },
@@ -49,6 +49,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
             return;
         }
 
+        setToken(jwt);
         userAPI.current.getUser(jwt);
         
     }, [])
@@ -75,7 +76,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
                 });
             });
         },
-        getUser: function (jwt: string): Promise<any> {
+        getUser: function (): Promise<any> {
             throw new Error("Function not implemented.");
         }
     }
