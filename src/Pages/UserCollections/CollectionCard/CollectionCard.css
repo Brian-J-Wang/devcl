@@ -1,0 +1,50 @@
+.collection-card {
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
+    height: 48px;
+    border-radius: 8px;
+    background: rgb(238,238,238);
+    background: linear-gradient(133deg, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%);
+    display: flex;
+    align-items: center;
+}
+
+.collection-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    width: 100%;
+    padding: 16px;
+}
+
+.collection-card__title {
+    font-size: large;
+    font-weight: 700;
+    opacity: 70%;
+}
+
+.collection-card__progress-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.collection-card__progress-counter {
+    position: relative;
+    top: 1px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-right: 4px;
+    opacity: 70%;
+}
+
+.collection-card__progress-bar {
+    width: 240px;
+    height: 12px;
+    background: rgb(17,50,0);
+    background: linear-gradient(164deg, rgba(17,50,0,1) 0%, rgba(0,205,6,1) 100%);
+    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.35);
+    border-radius: 6px;
+}
