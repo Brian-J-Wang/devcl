@@ -36,5 +36,13 @@
 }
 
 .sign-up__switch-link {
-    color: #292929
+    color: #292929;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    padding: 0px;
+    cursor: pointer
+}
+
+.sign-up__switch-link:hover {
+    text-decoration: underline solid #292929;
 }

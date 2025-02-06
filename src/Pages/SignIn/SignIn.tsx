@@ -1,11 +1,14 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useContext, useState } from "react"
+
 import { TextButton } from "../../Components/Button/Button"
 import { Container } from "../../Components/Container/Container"
+import { UserContext } from "../../Contexts/UserContext"
+import { ModalContext } from "../../Contexts/Modal/ModalContext"
 import Input from "../../Components/Input"
+import SignUp from "../SignUp/SignUp"
 
 import "./SignIn.css"
-import { UserContext } from "../../Contexts/UserContext"
 
 
 const SignIn: React.FC<{}> = () => {
@@ -13,6 +16,7 @@ const SignIn: React.FC<{}> = () => {
     const [password, setPassword] = useState<string>("");
 
     const userContextConsumer = useContext(UserContext);
+    const modalContextConsumer = useContext(ModalContext);
     const navigate = useNavigate();
 
     const handleSubmit = (evt: React.MouseEvent) => {
@@ -24,6 +28,7 @@ const SignIn: React.FC<{}> = () => {
             element.classList.add("sign-up__submit__state_success");
             setTimeout(() => {
                 navigate('../collections');
+                modalContextConsumer.setModal(undefined);
             }, 1000)
         })
 
@@ -32,16 +37,20 @@ const SignIn: React.FC<{}> = () => {
         }, 2000)
     }
 
+    const handleModalChange = () => {
+        modalContextConsumer.setModal(<SignUp/>);
+    }
+
     return (
-        <div className="sign-in">
-            <Container className="sign-in__modal">
-                <h2 className="sign-in__header">Sign In</h2>
-                <Input.Text name="Email" type="email" stateHandler={setEmail}></Input.Text>
-                <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
-                <TextButton size="s" radiusStyle="s" style="primary" className="sign-in__submit" onClick={handleSubmit}>Sign In</TextButton>
-                <p className="sign-in__switch"> Need an account? <Link to="../signup" className="sign-in__switch-link">Sign Up</Link></p>
-            </Container> 
-        </div>
+        <Container className="sign-in__modal">
+            <h2 className="sign-in__header">Sign In</h2>
+            <Input.Text name="Email" type="email" stateHandler={setEmail}></Input.Text>
+            <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
+            <TextButton size="s" radiusStyle="s" style="primary" className="sign-in__submit" onClick={handleSubmit}>Sign In</TextButton>
+            <p className="sign-in__switch"> Need an account? 
+                <button className="sign-in__switch-link" onClick={handleModalChange}>Register</button>
+            </p>
+        </Container> 
     )
 }
 

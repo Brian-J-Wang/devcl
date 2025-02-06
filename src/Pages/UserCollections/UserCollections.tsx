@@ -4,19 +4,29 @@ import add from "../../assets/add.svg";
 import exit from "../../assets/exit.svg";
 
 import "./UserCollections.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
 import { UserContext } from "../../Contexts/UserContext";
 import { CollectionContext } from "../../Contexts/CollectionAPI/CollectionApiContext";
 import { useNavigate } from "react-router-dom";
+import { NavBarContext } from "../../Components/NavBar/Navbar";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<{}[]>([ {}, {}, {}]);
     const modalContextConsumer = useContext(ModalContext);
     const collectionContextConsumer = useContext(CollectionContext);
     const userContextConsumer = useContext(UserContext);
+    const navBarContextConsumer = useContext(NavBarContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        navBarContextConsumer.setVisible(false);
+
+        return () => {
+            navBarContextConsumer.setVisible(true);
+        }
+    }, [])
 
     const handleCardAdd = () => {
         modalContextConsumer.setModal(

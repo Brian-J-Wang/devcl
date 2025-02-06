@@ -16,11 +16,17 @@ const Home: React.FC<{}> = () => {
                     </div>
                 </div>
             </div>
-
             <main className="home__main">
-
+                <section id="what-is-devcl">
+                    <div>
+                        <h3>What is devcl?</h3>
+                        <p>devcl is here to </p>
+                    </div>
+                </section>
+                <section id="features">
+                    <h3>Features</h3>
+                </section>
             </main>
-            
             <footer className="home__footer">
 
             </footer>

@@ -36,6 +36,5 @@ p {
 .app {
   padding: 0px;
   color: #292929;
-  filter: blur(0px);
   transition: 0.2s -webkit-filter linear;
 }

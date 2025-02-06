@@ -1,11 +1,14 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useContext, useState } from "react"
+import { useNavigate } from "react-router-dom"
+
 import { TextButton } from "../../Components/Button/Button"
 import { Container } from "../../Components/Container/Container"
+import { UserContext } from "../../Contexts/UserContext"
+import { ModalContext } from "../../Contexts/Modal/ModalContext"
 import Input from "../../Components/Input"
+import SignIn from "../SignIn/SignIn"
 
 import "./SignUp.css"
-import { useContext, useState } from "react"
-import { UserContext } from "../../Contexts/UserContext"
 
 const SignUp: React.FC<{}> = () => {
     const [email, setEmail] = useState<string>("");
@@ -13,7 +16,7 @@ const SignUp: React.FC<{}> = () => {
     const [password, setPassword] = useState<string>("");
 
     const userContextConsumer = useContext(UserContext);
-    const navigate = useNavigate();
+    const modalContextConsumer = useContext(ModalContext);
 
     const handleSignUp = (evt: React.MouseEvent) => {
         const element = (evt.target as HTMLButtonElement)
@@ -22,7 +25,7 @@ const SignUp: React.FC<{}> = () => {
             element.classList.remove("sign-up__submit__state_processing");
             element.classList.add("sign-up__submit__state_success");
             setTimeout(() => {
-                navigate('../signin');
+                modalContextConsumer.setModal(<SignIn/>);
             }, 1000)
         }).catch((err) => {
             console.error(err);
@@ -30,17 +33,21 @@ const SignUp: React.FC<{}> = () => {
         })
     }
 
+    const handleModalChange = () => {
+        modalContextConsumer.setModal(<SignIn/>);
+    }
+
     return (
-        <div className="sign-up">
-            <Container className="sign-up__modal">
-                <h2 className="sign-up__header">Sign Up</h2>
-                <Input.Text name="Email" type="email" stateHandler={setEmail}></Input.Text>
-                <Input.Text name="Username" type="text" stateHandler={setUsername}></Input.Text>
-                <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
-                <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
-                <p className="sign-up__switch"> Already have an account? <Link to="../signin" className="sign-up__switch-link">Sign In</Link></p>
-            </Container> 
-        </div>
+        <Container className="sign-up__modal">
+            <h2 className="sign-up__header">Sign Up</h2>
+            <Input.Text name="Email" type="email" stateHandler={setEmail}></Input.Text>
+            <Input.Text name="Username" type="text" stateHandler={setUsername}></Input.Text>
+            <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
+            <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
+            <p className="sign-up__switch"> Already have an account? 
+                <button className="sign-up__switch-link" onClick={handleModalChange}>Sign In</button>
+            </p>
+        </Container> 
     )
 }
 

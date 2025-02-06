@@ -1,20 +1,23 @@
 .modal__overlay {
     font-family: liter, Helvetica, sans-serif;
-    position: absolute;
+    position: fixed;
     z-index: 5;
     top: 0px;
     left: 0px;
     background-color: rgba(0, 0, 0, 0.4);
     height: 100vh;
+    width: 100%;
     transition: 0.2s ease-in-out;
     display: flex;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(15px);
 }
 
 .modal__overlay_hidden {
     pointer-events: none;
     background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
 }
 
 .modal__app-blur {
