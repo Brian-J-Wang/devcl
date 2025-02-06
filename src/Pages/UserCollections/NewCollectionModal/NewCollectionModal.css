@@ -1,0 +1,21 @@
+.new-collection {
+    background-color: white;
+    padding: 8px;
+    border-radius: 6px;
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+}
+
+.new-collection__header {
+    font-size: x-large;
+    margin-bottom: 16px;
+}
+
+.new-collection__inputs {
+    margin-bottom: 12px;
+}
+
+.new-collection__submit {
+    margin-left: auto;
+}

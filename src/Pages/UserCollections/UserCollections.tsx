@@ -4,6 +4,7 @@ import add from "../../assets/add.svg"
 import "./UserCollections.css"
 import { useContext, useState } from "react";
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
+import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<{}[]>([ {}, {}, {}]);
@@ -11,9 +12,16 @@ const UserCollection: React.FC<{}> = () => {
 
     const handleCardAdd = () => {
         modalContextConsumer.setModal(
-            <div>
-                test
-            </div>
+            <NewCollectionModal onSubmit={function (): {} {
+                //make an api call to the backend requesting a new collection,
+                //expect to get collection id and other data.
+                //if fail, return a failed promise, that way I can send a message afterwards.
+
+                setCollections([ ...collections, {}]);
+
+                modalContextConsumer.setModal(undefined);
+                return 0;
+            } }/>
         )
     }
 
