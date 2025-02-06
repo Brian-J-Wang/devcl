@@ -1,7 +1,4 @@
-import { Link } from "react-router-dom"
-
 import "./Home.css"
-import icon from "../../assets/icon.svg";
 import iconWhite from "../../assets/icon-white.svg";
 import { Container } from "../../Components/Container/Container";
 

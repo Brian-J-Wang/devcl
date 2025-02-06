@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { Link } from "react-router-dom";
 
 import icon from "../../assets/icon.svg";
 import "./NavBar.css"

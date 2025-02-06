@@ -82,7 +82,7 @@ const UserCollection: React.FC<{}> = () => {
             
             <div className="user-collection__collection-list">
                 {
-                    collections.map((collection) => <CollectionCard/>)
+                    collections.map(() => <CollectionCard/>)
                 }
             </div>
         </div>
