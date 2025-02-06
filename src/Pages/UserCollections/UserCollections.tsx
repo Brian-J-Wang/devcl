@@ -1,17 +1,19 @@
 import CollectionCard from "./CollectionCard/CollectionCard";
 
-import add from "../../assets/add.svg"
-import "./UserCollections.css"
+import add from "../../assets/add.svg";
+import exit from "../../assets/exit.svg";
+
+import "./UserCollections.css";
 import { useContext, useState } from "react";
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
-import { DBContext } from "../../Components/Collection/CollectionContext/collectionContext";
 import { UserContext } from "../../Contexts/UserContext";
+import { CollectionContext } from "../../Contexts/CollectionAPI/CollectionApiContext";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<{}[]>([ {}, {}, {}]);
     const modalContextConsumer = useContext(ModalContext);
-    const collectionContextConsumer = useContext(DBContext);
+    const collectionContextConsumer = useContext(CollectionContext);
     const userContextConsumer = useContext(UserContext);
 
     const handleCardAdd = () => {
@@ -24,10 +26,7 @@ const UserCollection: React.FC<{}> = () => {
                 console.log(userContextConsumer.token);
 
                 //should see this fail since there was no token associated with it
-                collectionContextConsumer.shared.createNewCollection({
-                    user: "test",
-                    name: "test"
-                });
+                collectionContextConsumer.api.AddNewCollection("Test");
 
                 setCollections([ ...collections, {}]);
 
@@ -37,14 +36,27 @@ const UserCollection: React.FC<{}> = () => {
         )
     }
 
+    const handleUserLogOut = () => {
+        //call userContext to clear out all user information,
+        //jump to home screen
+    }
+
     return (
         <div className="user-collection">
-            <div className="user-collection__profile">
-                <div className="user-collection__profile-image">
+            <div className="user-collection__dashboard">
+                <div className="user-collection__profile">
+                    <div className="user-collection__profile-image">
+                    </div>
+                    <div className="user-collection__info">
+                        <p className="user-collection__profile-name">Brian Wang</p>
+                        <p className="user-collection__profile-info">2 collections</p>
+                    </div>
+                    <button className="user-collection__logout" onClick={handleUserLogOut}>
+                        <img src={exit} alt="X" className="user-collection__logout-image"/>
+                    </button>
                 </div>
-                <div className="user-collection__info">
-                    <p className="user-collection__profile-name">Brian Wang</p>
-                    <p className="user-collection__profile-info">2 collections</p>
+                <div className="user-collection__side-info">
+
                 </div>
             </div>
 

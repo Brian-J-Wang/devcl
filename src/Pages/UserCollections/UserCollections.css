@@ -5,14 +5,67 @@
     margin: auto;
 }
 
-.user-collection__profile {
+.user-collection__dashboard {
+    display: flex;
+    flex-direction: row;
     margin-top: 80px;
     margin-bottom: 40px;
+    gap: 28px;
+}
+
+.user-collection__profile {
     display: flex;
-    margin-right: auto;
     border-radius: 8px;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
     padding: 24px;
+    width: 400px;
+    box-sizing: border-box;
+    background: rgb(244,244,244);
+    background: linear-gradient(292deg, rgba(244,244,244,1) 0%, rgba(255,255,255,1) 50%, rgba(244,244,244,1) 100%);
+}
+
+.user-collection__logout {
+    margin-left: auto;
+    height: 24px;
+    width: 24px;
+    align-self: flex-end;
+    padding: 0px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.user-collection__logout-image {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+    10% {
+        transform: rotate(-15deg);
+    }
+    90% {
+        transform: rotate(15deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.user-collection__logout-image:hover {
+    opacity: 100%;
+    animation: shake 0.15s linear none 1;
+}
+
+.user-collection__side-info {
+    background-color: white;
+    flex-grow: 1;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
     background: rgb(244,244,244);
     background: linear-gradient(292deg, rgba(244,244,244,1) 0%, rgba(255,255,255,1) 50%, rgba(244,244,244,1) 100%);

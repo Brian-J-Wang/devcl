@@ -5,6 +5,8 @@ class CollectionAPI {
     ) {}
 
     AddNewCollection(title: string) {
+        console.log(this.token);
+        
         return fetch(`${this.url}/collections`, {
             method: "POST",
             headers: {
@@ -12,7 +14,8 @@ class CollectionAPI {
                 "Authorization": `Bearer ${this.token}`
             },
             body: JSON.stringify({
-                title: title
+                name: title,
+                user: "test"
             })
         }).then((res) => {
             return res.ok

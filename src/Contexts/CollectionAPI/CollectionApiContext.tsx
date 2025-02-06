@@ -6,7 +6,7 @@ interface CollectionContextProps {
     api: CollectionAPI
 }
 
-const CollectionContext = createContext<CollectionContextProps>({
+export const CollectionContext = createContext<CollectionContextProps>({
     api: new CollectionAPI()
 });
 
