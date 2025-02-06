@@ -8,6 +8,7 @@ import SignUp from './Pages/SignUp/SignUp'
 import UserCollection from './Pages/UserCollections/UserCollections'
 import UserContextProvider from './Contexts/UserContext'
 import ModalContextProvider from './Contexts/Modal/ModalContext'
+import CollectionContextProvider from './Contexts/CollectionAPI/CollectionApiContext'
 
 function App() {
   return (
@@ -20,8 +21,10 @@ function App() {
             <Route path='signin' element={<SignIn/>}/>
             <Route path='signup' element={<SignUp/>}/>
           </Route>
-          <Route path='collections' element={<UserCollection/>}/>
-          <Route path='collections/:id' element={<Collection/>}/>
+          <Route element={<CollectionContextProvider/>}>
+            <Route path='collections' element={<UserCollection/>}/>
+            <Route path='collections/:id' element={<Collection/>}/>
+          </Route>
         </Routes>
         </UserContextProvider>
       </div>
