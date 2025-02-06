@@ -1,0 +1,22 @@
+.modal__overlay {
+    position: absolute;
+    z-index: 5;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+    transition: 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__overlay_hidden {
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.modal__app-blur {
+    filter: blur(5px);
+}
