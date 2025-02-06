@@ -12,9 +12,13 @@
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(15px);
+    background-image: url("../../assets/noise.svg");
+    background-size: 100px;
+    background-repeat: repeat;
 }
 
 .modal__overlay_hidden {
+    visibility: hidden;
     pointer-events: none;
     background-color: rgba(0, 0, 0, 0);
     backdrop-filter: blur(0px);

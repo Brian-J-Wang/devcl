@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import "./Home.css"
 import icon from "../../assets/icon.svg";
 import iconWhite from "../../assets/icon-white.svg";
+import { Container } from "../../Components/Container/Container";
 
 const Home: React.FC<{}> = () => {
     return (
@@ -17,14 +18,46 @@ const Home: React.FC<{}> = () => {
                 </div>
             </div>
             <main className="home__main">
-                <section id="what-is-devcl">
+                <section className="home__section" id="what-is-devcl">
                     <div>
                         <h3>What is devcl?</h3>
-                        <p>devcl is here to </p>
+                        <p>
+                            devcl is a project management tool for developers. It also comes with  
+                            support for community engagement.
+                        </p>
                     </div>
                 </section>
-                <section id="features">
+                <section className="home__section" id="features">
                     <h3>Features</h3>
+                    <p>Devcl has a variety of features that developers can toggle. It's a mix and match sandbox for your needs.</p>
+
+                    <div className="home__feature-list">
+                        <Container className="home__feature-card">
+
+                        </Container>
+                        <Container className="home__feature-card">
+
+                        </Container>
+                        <Container className="home__feature-card">
+
+                        </Container>
+                        <Container className="home__feature-card">
+
+                        </Container>
+                        <Container className="home__feature-card">
+
+                        </Container>
+                        <Container className="home__feature-card">
+
+                        </Container>
+                        <Container className="home__feature-card">
+
+                        </Container>
+                        <Container className="home__feature-card">
+
+                        </Container>
+                    </div>
+                    
                 </section>
             </main>
             <footer className="home__footer">

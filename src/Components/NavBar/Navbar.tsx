@@ -31,7 +31,9 @@ const NavBar: React.FC<{ children: ReactNode}> = (props) => {
             setVisible: setVisible
         }}>
             <div className="nav" hidden={!visible}>
-                <img src={icon} alt="[]" className="nav__icon"/>
+                <div className="nav__left">
+                    <img src={icon} alt="[]" className="nav__icon"/>    
+                </div>
 
                 <div className="nav__right">
                     <button onClick={openSignInModal} className="nav__tab">
