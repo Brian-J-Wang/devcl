@@ -1,4 +1,5 @@
 .modal__overlay {
+    font-family: liter, Helvetica, sans-serif;
     position: absolute;
     z-index: 5;
     top: 0px;

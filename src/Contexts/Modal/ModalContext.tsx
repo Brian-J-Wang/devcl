@@ -28,12 +28,18 @@ const ModalContextProvider: React.FC<{ children: ReactNode }> = (props) => {
         }
     }, [ modal ])
 
+    const handleOverlayClick = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if ((evt.target as HTMLElement).classList.contains("modal__overlay")) {
+            setModal(undefined);
+        }
+    }
+
     return (
         <ModalContext.Provider value={{
             setModal: setModal
         }}>
             {props.children}
-            <div className={`modal__overlay ${!modal && "modal__overlay_hidden"}`} onClick={() => { setModal(undefined)}}>
+            <div className={`modal__overlay ${!modal && "modal__overlay_hidden"}`} onClick={handleOverlayClick}>
                 {modal}
             </div>
         </ModalContext.Provider>
