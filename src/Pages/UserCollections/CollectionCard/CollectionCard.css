@@ -23,6 +23,7 @@
     font-size: large;
     font-weight: 700;
     opacity: 70%;
+    margin: auto 0px auto 0px;
 }
 
 .collection-card__progress-container {

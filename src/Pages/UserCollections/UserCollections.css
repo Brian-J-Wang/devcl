@@ -15,7 +15,7 @@
     padding: 24px;
     width: 100%;
     box-sizing: border-box;
-    background-color: white;
+    background-color: #FFF
 }
 
 .user-collection__profile-image {
@@ -48,9 +48,46 @@
 }
 
 .user-collection__header {
-    text-align: start;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
+}
+
+.user-collection__header-title {
+    padding-top: 12px;
+    line-height: 12px;
+}
+
+.user-collection__add-collection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    height: 32px;
+    width: 32px;
+    border-radius: 16px;
+    border: none;
+    background-color: white;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.user-collection__add-collection:hover {
+    box-sizing: border-box;
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.user-collection__add-image {
+    height: 16px;
+    width: 16px;
+    opacity: 80%;
 }
 
 .user-collection__collection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     padding: 12px 0px 12px 0px;
 }

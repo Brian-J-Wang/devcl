@@ -38,4 +38,6 @@ p {
   font-family: liter, Helvetica, sans-serif;
   color: #292929;
   overflow: hidden;
+  filter: blur(0px);
+  transition: 0.2s -webkit-filter linear;
 }
