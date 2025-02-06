@@ -5,10 +5,14 @@ import "./UserCollections.css"
 import { useContext, useState } from "react";
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
+import { DBContext } from "../../Components/Collection/CollectionContext/collectionContext";
+import { UserContext } from "../../Contexts/UserContext";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<{}[]>([ {}, {}, {}]);
     const modalContextConsumer = useContext(ModalContext);
+    const collectionContextConsumer = useContext(DBContext);
+    const userContextConsumer = useContext(UserContext);
 
     const handleCardAdd = () => {
         modalContextConsumer.setModal(
@@ -16,6 +20,14 @@ const UserCollection: React.FC<{}> = () => {
                 //make an api call to the backend requesting a new collection,
                 //expect to get collection id and other data.
                 //if fail, return a failed promise, that way I can send a message afterwards.
+                console.log(userContextConsumer.user);
+                console.log(userContextConsumer.token);
+
+                //should see this fail since there was no token associated with it
+                collectionContextConsumer.shared.createNewCollection({
+                    user: "test",
+                    name: "test"
+                });
 
                 setCollections([ ...collections, {}]);
 

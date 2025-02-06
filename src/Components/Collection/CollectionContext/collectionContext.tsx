@@ -6,6 +6,10 @@ import { PatchType } from "../Collection/Collection";
 export const DBContext = createContext<DBContextValues>();
 
 type DBFunctions = {
+    createNewCollection: (body: {
+        user: string,
+        name: string
+    }) => Promise<any>,
     postPatch: (patch: PatchType) => Promise<any>
     postItem: (item: CLItemPost) => Promise<any>
     patchItem: (id: string, item: CLItemPatch) => Promise<any>,
@@ -80,7 +84,7 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
                 setCollection(copy);
 
                 return Promise.resolve();
-            })
+            });
         },
         postItem: function (item: CLItemPost): Promise<any> {
             return fetch(`${baseURL}/${collectionId}/items`, {
@@ -116,10 +120,10 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
                 copy[res.category].items = copy[res.category].items.map((item) => {
                     if (item._id == id) {
                         item.checked = patch.checked ?? item.checked;
-                    } 
+                    }
 
-                    return item
-                })
+                    return item;
+                });
 
                 setCheckList(copy);
 
@@ -151,6 +155,20 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
             } else {
                 return [];
             }
+        },
+        createNewCollection: function (body: {
+            user: string;
+            name: string;
+        }): Promise<any> {
+            return fetch(`${baseURL}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+                }
+            }).then((res) => {
+                console.log(res);
+            })
         }
     }
 
