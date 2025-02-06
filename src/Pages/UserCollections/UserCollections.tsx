@@ -9,12 +9,14 @@ import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
 import { UserContext } from "../../Contexts/UserContext";
 import { CollectionContext } from "../../Contexts/CollectionAPI/CollectionApiContext";
+import { useNavigate } from "react-router-dom";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<{}[]>([ {}, {}, {}]);
     const modalContextConsumer = useContext(ModalContext);
     const collectionContextConsumer = useContext(CollectionContext);
     const userContextConsumer = useContext(UserContext);
+    const navigate = useNavigate();
 
     const handleCardAdd = () => {
         modalContextConsumer.setModal(
@@ -37,8 +39,9 @@ const UserCollection: React.FC<{}> = () => {
     }
 
     const handleUserLogOut = () => {
-        //call userContext to clear out all user information,
-        //jump to home screen
+        userContextConsumer.logUserOut().then(() => {
+            navigate("../");
+        })
     }
 
     return (

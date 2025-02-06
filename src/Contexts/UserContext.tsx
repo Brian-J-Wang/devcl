@@ -17,6 +17,7 @@ export const UserContext = createContext<{
     api: apiFunctions,
     token: string,
     isLoggedIn: boolean
+    logUserOut: () => Promise<any>
 }>({
     user: undefined,
     api: {
@@ -31,7 +32,10 @@ export const UserContext = createContext<{
         }
     },
     token: "",
-    isLoggedIn: false
+    isLoggedIn: false,
+    logUserOut: function (): Promise<any> {
+        throw new Error("Function not implemented.");
+    }
 })
 
 
@@ -67,13 +71,15 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
         },
         logInUser: function (email: string, password: string): Promise<any> {
             return userAPI.current.logInUser(email, password).then((res: { jwt: string, _id: string, username: string }) => {
-                console.log(res);
                 setIsLoggedIn(true);
-                localStorage.setItem("jwt", res.jwt);
+                
                 setUser({
                     _id: res._id,
                     username: res.username
                 });
+                setToken(res.jwt);
+
+                localStorage.setItem("jwt", res.jwt);
             });
         },
         getUser: function (): Promise<any> {
@@ -81,12 +87,23 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
         }
     }
 
+    const logUserOut = () => {
+        setUser(undefined);
+        setIsLoggedIn(false);
+        setToken("");
+
+        localStorage.removeItem("jwt");
+
+        return Promise.resolve();
+    }
+
     return (
         <UserContext.Provider value={{
             user: user,
             api: api,
             token: token,
-            isLoggedIn: isLoggedIn
+            isLoggedIn: isLoggedIn,
+            logUserOut: logUserOut
         }}>
             {props.children}
         </UserContext.Provider>

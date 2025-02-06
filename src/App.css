@@ -4,8 +4,7 @@
 }
 
 body {
-  width: 100vw;
-  height: 100vh;
+  font-family: liter, Helvetica, sans-serif;
   background: rgb(224,223,241);
   background: linear-gradient(128deg, rgba(224,223,241,1) 0%, rgba(225,250,255,1) 100%);
 }
@@ -35,9 +34,8 @@ p {
 }
 
 .app {
-  font-family: liter, Helvetica, sans-serif;
+  padding: 0px;
   color: #292929;
-  overflow: hidden;
   filter: blur(0px);
   transition: 0.2s -webkit-filter linear;
 }
