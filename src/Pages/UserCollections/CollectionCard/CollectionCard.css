@@ -4,10 +4,15 @@
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
     height: 48px;
     border-radius: 8px;
-    background: rgb(238,238,238);
+    background: rgb(230,230,230);
     background: linear-gradient(133deg, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%);
-    display: flex;
-    align-items: center;
+    flex-direction: column;
+    transition: height 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+.collection-card_extended {
+    height: 320px;
 }
 
 .collection-card__header {
@@ -16,7 +21,53 @@
     justify-content: space-between;
     height: 48px;
     width: 100%;
-    padding: 16px;
+    padding: 0px 12px 0px 12px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 0px 0px 8px 8px;
+    box-shadow: 0px 0px 4px rgba(29, 29, 29, 0.2);
+}
+
+.collection-card__left {
+    display: flex;
+    gap: 8px;
+}
+
+.collection-card__left-drop {
+    padding: 0px;
+    height: 24px;
+    width: 24px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 80%;
+    transform: rotate(0deg);
+    transition: transform 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.collection-card__left-drop_active {
+    transform: rotate(90deg);
+}
+
+.collection-card__left img {
+    height: 24px;
+}
+
+.collection-card__left-popout {
+    display: flex;
+    height: 24px;
+    width: 24px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 80%;
+    transform: rotate(0deg);
+    cursor: pointer;
+}
+
+.collection-card__left-popout img {
+    height: 16px;
+    width: 16px;
+    margin: auto;
 }
 
 .collection-card__title {
@@ -24,7 +75,10 @@
     font-weight: 700;
     opacity: 70%;
     margin: auto 0px auto 0px;
+    align-self: center;
 }
+
+
 
 .collection-card__progress-container {
     position: relative;
@@ -48,4 +102,8 @@
     background: linear-gradient(164deg, rgba(17,50,0,1) 0%, rgba(0,205,6,1) 100%);
     box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.35);
     border-radius: 6px;
+}
+
+.collection-card__content-panel {
+    
 }
