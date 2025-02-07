@@ -5,6 +5,7 @@ import "./NavBar.css"
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import SignIn from "../../Pages/SignIn/SignIn";
 import SignUp from "../../Pages/SignUp/SignUp";
+import { useNavigate } from "react-router-dom";
 
 export const NavBarContext = createContext<{
     setVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,6 +17,7 @@ const NavBar: React.FC<{ children: ReactNode}> = (props) => {
     const [ visible, setVisible ] = useState<boolean>(true);
 
     const modalContextConsumer = useContext(ModalContext);
+    const navigate = useNavigate();
 
     const openSignInModal = () => {
         modalContextConsumer.setModal(<SignIn/>)
@@ -31,7 +33,7 @@ const NavBar: React.FC<{ children: ReactNode}> = (props) => {
         }}>
             <div className="nav" hidden={!visible}>
                 <div className="nav__left">
-                    <img src={icon} alt="[]" className="nav__icon"/>    
+                    <img src={icon} alt="[]" className="nav__icon" onClick={() => {navigate("/")}}/>    
                 </div>
 
                 <div className="nav__right">

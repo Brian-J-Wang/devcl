@@ -8,9 +8,19 @@ import CLPatchElement from "../CLPatch/CLPatch";
 import { DBContext } from "../CollectionContext/collectionContext";
 
 import "./CheckList.css"
+import { NavBarContext } from "../../NavBar/Navbar";
 
 const CheckList: React.FC = () => {
     const database = useContext(DBContext);
+
+    const navBarContextConsumer = useContext(NavBarContext);
+    useEffect(() => {
+        navBarContextConsumer.setVisible(false);
+
+        return () => {
+            navBarContextConsumer.setVisible(true);
+        }
+    }, [])
 
     const jumpToCheckList = () => {
         const element = document.getElementById("check-list");
