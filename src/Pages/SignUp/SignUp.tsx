@@ -51,8 +51,7 @@ const SignUp: React.FC<{}> = () => {
                 </div>
                 <div className="sign-up__controls">
                     <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
-                    <p className="sign-up__switch"> Already have an account? 
-                        <button className="sign-up__switch-link" onClick={handleModalChange}>Sign In</button>
+                    <p className="sign-up__switch"> Already have an account? <button className="sign-up__switch-link" onClick={handleModalChange}>Sign In</button>
                     </p>
                 </div>
             </div>

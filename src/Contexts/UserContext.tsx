@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import UserAPI from "../utils/userAPI";
 
-interface User {
+export interface User {
     _id: string,
     username: string,
 }
@@ -9,17 +9,20 @@ interface User {
 interface apiFunctions {
     addNewUser(email: string, username: string, password: string): Promise<any>,
     logInUser(username: string, password: string): Promise<any>,
-    getUser(jwt: string): Promise<any>
+    getUser(): Promise<any>
 }
 
 export const UserContext = createContext<{
-    user?: any
+    user: User,
     api: apiFunctions,
     token: string,
     isLoggedIn: boolean
     logUserOut: () => Promise<any>
 }>({
-    user: undefined,
+    user: {
+        _id: "",
+        username: ""
+    },
     api: {
         addNewUser: function () {
             throw new Error("Function not implemented.");
@@ -54,7 +57,12 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
         }
 
         setToken(jwt);
-        userAPI.current.getUser(jwt);
+        userAPI.current.getUser(jwt).then((res: User) => {
+            setIsLoggedIn(true);
+            setUser(res);
+
+            console.log(res);
+        });
         
     }, [])
 
@@ -83,7 +91,9 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
             });
         },
         getUser: function (): Promise<any> {
-            throw new Error("Function not implemented.");
+            return userAPI.current.getUser(token).then((res) => {
+                console.log(res);
+            })
         }
     }
 
@@ -99,7 +109,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
 
     return (
         <UserContext.Provider value={{
-            user: user,
+            user: user ?? { _id: "", username: " "},
             api: api,
             token: token,
             isLoggedIn: isLoggedIn,

@@ -19,6 +19,8 @@ const CollectionContextProvider: React.FC<any> = () => {
         if (token) {
             collectionAPI.current.token = token;
         }
+
+        console.log(collectionAPI.current);
     }, [])
 
     return (

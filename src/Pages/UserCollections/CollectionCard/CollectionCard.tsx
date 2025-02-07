@@ -1,11 +1,22 @@
+import { useEffect } from "react";
+import { CLCollection } from "../../../Components/Collection/DBCollection";
 import "./CollectionCard.css"
 
-const CollectionCard: React.FC = () => {
+interface CollectionCardTypes {
+    collection: CLCollection
+}
+
+const CollectionCard: React.FC<CollectionCardTypes> = ({ collection }) => {
+
+    useEffect(() => {
+        
+    }, [])
+
     return (
         <div className="collection-card">
             <div className="collection-card__header">
                 <p className="collection-card__title">
-                    Collection Name
+                    {collection.name}
                 </p>
 
                 <div className="collection-card__progress-container">

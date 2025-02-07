@@ -52,12 +52,14 @@ export default class UserAPI {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                authorization: `Bearer ${jwt}`
+                "Authorization": `Bearer ${jwt}`
             }
         }).then((res) => {
-            return res.ok
-                ? res.json()
-                : Promise.reject()
+            if (res.ok) {
+                return res.json();
+            } else {
+                return Promise.reject();
+            }
         })
     }
 }

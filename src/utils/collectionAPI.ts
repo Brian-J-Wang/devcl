@@ -5,8 +5,6 @@ class CollectionAPI {
     ) {}
 
     AddNewCollection(title: string) {
-        console.log(this.token);
-        
         return fetch(`${this.url}/collections`, {
             method: "POST",
             headers: {
@@ -14,10 +12,26 @@ class CollectionAPI {
                 "Authorization": `Bearer ${this.token}`
             },
             body: JSON.stringify({
-                name: title,
-                user: "test"
+                title: title
             })
         }).then((res) => {
+            console.log(res);
+
+            return res.ok
+                ? res.json()
+                : Promise.reject();
+        })
+    }
+
+    GetUserCollections(user: string) {
+        return fetch (`${this.url}/collections`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.token}`
+            }
+        }).then((res) => {
+            console.log(res);
             return res.ok
                 ? res.json()
                 : Promise.reject();
