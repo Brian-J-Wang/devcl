@@ -8,6 +8,7 @@ import Input from "../../Components/Input"
 import SignIn from "../SignIn/SignIn"
 
 import "./SignUp.css"
+import icon from "../../assets/icon-white.svg"
 
 const SignUp: React.FC<{}> = () => {
     const [email, setEmail] = useState<string>("");
@@ -38,14 +39,24 @@ const SignUp: React.FC<{}> = () => {
 
     return (
         <Container className="sign-up__modal">
-            <h2 className="sign-up__header">Sign Up</h2>
-            <Input.Text name="Email" type="email" stateHandler={setEmail}></Input.Text>
-            <Input.Text name="Username" type="text" stateHandler={setUsername}></Input.Text>
-            <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
-            <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
-            <p className="sign-up__switch"> Already have an account? 
-                <button className="sign-up__switch-link" onClick={handleModalChange}>Sign In</button>
-            </p>
+            <div className="sign-up__splash">
+                <img src={icon} alt="[]" className="sign-up__image"/>
+            </div>
+            <div className="sign-up__form">
+                <h2 className="sign-up__header">Sign Up</h2>
+                <div className="sign-up__inputs">
+                    <Input.Text name="Email" type="email" stateHandler={setEmail}></Input.Text>
+                    <Input.Text name="Username" type="text" stateHandler={setUsername}></Input.Text>
+                    <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
+                </div>
+                <div className="sign-up__controls">
+                    <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
+                    <p className="sign-up__switch"> Already have an account? 
+                        <button className="sign-up__switch-link" onClick={handleModalChange}>Sign In</button>
+                    </p>
+                </div>
+                
+            </div>
         </Container> 
     )
 }
