@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import UserAPI from "../utils/userAPI";
+import { useNavigate } from "react-router-dom";
 
 export interface User {
     _id: string,
@@ -49,6 +50,8 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [token, setToken] = useState<string>("");
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const jwt = localStorage.getItem("jwt");
 
@@ -60,8 +63,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
         userAPI.current.getUser(jwt).then((res: User) => {
             setIsLoggedIn(true);
             setUser(res);
-
-            console.log(res);
+            navigate("/collections");
         });
         
     }, [])
