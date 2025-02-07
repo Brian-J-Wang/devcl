@@ -40,7 +40,7 @@ const SignUp: React.FC<{}> = () => {
     return (
         <Container className="sign-up__modal">
             <div className="sign-up__splash">
-                <img src={icon} alt="[]" className="sign-up__image"/>
+                <img src={icon} alt="[]" className="sign-up"/>
             </div>
             <div className="sign-up__form">
                 <h2 className="sign-up__header">Sign Up</h2>
@@ -55,7 +55,6 @@ const SignUp: React.FC<{}> = () => {
                         <button className="sign-up__switch-link" onClick={handleModalChange}>Sign In</button>
                     </p>
                 </div>
-                
             </div>
         </Container> 
     )
