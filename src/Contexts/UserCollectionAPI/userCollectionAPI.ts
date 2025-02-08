@@ -1,4 +1,4 @@
-class CollectionAPI {
+class UserCollectionAPI {
     constructor(
         private readonly url: string = "",
         public token: string = ""
@@ -39,4 +39,4 @@ class CollectionAPI {
     }
 }
 
-export default CollectionAPI;
+export default UserCollectionAPI;

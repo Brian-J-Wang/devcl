@@ -9,8 +9,13 @@ import { DBContext } from "../CollectionContext/collectionContext";
 
 import "./CheckList.css"
 import { NavBarContext } from "../../NavBar/Navbar";
+import CollectionAPI from "../../../Contexts/CollectionAPI/CollectionAPI";
 
-const CheckList: React.FC = () => {
+interface CheckListProps {
+    api: CollectionAPI;
+}
+
+const CheckList: React.FC<CheckListProps> = ({ api }) => {
     const database = useContext(DBContext);
 
     const navBarContextConsumer = useContext(NavBarContext);
@@ -23,11 +28,7 @@ const CheckList: React.FC = () => {
     }, [])
 
     const jumpToCheckList = () => {
-        const element = document.getElementById("check-list");
-        //@ts-ignore
-        if (element) {
-            element.scrollIntoView({behavior: "smooth", block:"start"});
-        }
+        document.getElementById("check-list")!.scrollIntoView({behavior: "smooth", block:"start"});
     }
 
     const copyToClipboard = () => {
@@ -53,6 +54,7 @@ const CheckList: React.FC = () => {
         console.log(newName);
      }
 
+    //moves the scroll wheel to the checklist
     useEffect(() => {
         document.getElementById("check-list")?.scrollIntoView({behavior: "instant", block:"end"});
     }, []);

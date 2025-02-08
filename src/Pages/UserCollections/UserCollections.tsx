@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
 import { User, UserContext } from "../../Contexts/UserContext";
-import { CollectionContext } from "../../Contexts/CollectionAPI/CollectionApiContext";
+import { UserCollectionContext } from "../../Contexts/UserCollectionAPI/UserCollectionApiContext";
 import { useNavigate } from "react-router-dom";
 import { NavBarContext } from "../../Components/NavBar/Navbar";
 import { CLCollection } from "../../Components/Collection/DBCollection";
@@ -16,7 +16,7 @@ import { CLCollection } from "../../Components/Collection/DBCollection";
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<{}[]>([]);
     const modalContextConsumer = useContext(ModalContext);
-    const collectionContextConsumer = useContext(CollectionContext);
+    const collectionContextConsumer = useContext(UserCollectionContext);
     const userContextConsumer = useContext(UserContext);
     const navBarContextConsumer = useContext(NavBarContext);
     const navigate = useNavigate();

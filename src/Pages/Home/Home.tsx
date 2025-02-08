@@ -19,8 +19,7 @@ const Home: React.FC<{}> = () => {
                     <div>
                         <h3>What is devcl?</h3>
                         <p>
-                            devcl is a project management tool for developers. It also comes with  
-                            support for community engagement.
+                            devcl is a project management tool for developers flying solo or with a team. It comes with community features to allow others to view the project an put forward their inputs.
                         </p>
                     </div>
                 </section>

@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react"
 import { CLCollection, CLItem, CLItemPatch, CLItemPost, emptyCollection } from "../DBCollection";
 import { PatchType } from "../Collection/Collection";
+import { useParams } from "react-router-dom";
 
 //@ts-ignore
 export const DBContext = createContext<DBContextValues>();
@@ -171,6 +172,9 @@ const DatabaseContext: React.FC<React.PropsWithChildren> = (props) => {
             })
         }
     }
+
+    const { id } = useParams();
+    console.log(id);
 
     const buildCheckList = (res: CLCollection) => {
         const checklist: CheckList = {};
