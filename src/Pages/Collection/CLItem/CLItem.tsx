@@ -1,5 +1,5 @@
 import "./CLItem.css"
-import { useContext} from "react"
+import { useContext, useState} from "react"
 import { CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces"
 import ItemEditorContext from "../../../Pages/Collection/ItemEditor/itemEditorContext"
 
@@ -41,6 +41,18 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) =
             </div>
             <div className="clitem__right-container"  >
                 <button onClick={() => { deleteItem( clItem._id )}} data-editorIgnore>Delete</button>
+            </div>
+        </div>
+    )
+}
+
+export const FakeCLItemElement: React.FC<{blurb: string, checked: boolean}> = (props) => {
+    const [checked, setChecked] = useState<boolean>(props.checked)
+    return(
+        <div className="clitem">
+            <div className="clitem__left-container">
+                <input className="clitem__checkbox" type="checkbox" checked={checked} onClick={() => { setChecked(!checked)}} readOnly data-editorIgnore />
+                <p className="clitem__label">{props.blurb}</p>
             </div>
         </div>
     )
