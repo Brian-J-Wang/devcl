@@ -1,36 +1,35 @@
 import './Collection.css';
-import DatabaseContext from "../CollectionContext/collectionContext";
 import CheckList from "../CheckList/CheckList";
 import { useParams } from 'react-router-dom';
 import { ItemEditor } from '../ItemEditor/ItemEditor';
 import ItemEditorContext from '../ItemEditor/itemEditorContext';
-import { createContext, useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { CLItem } from '../DBCollection';
-import CollectionAPI from '../../../Contexts/CollectionAPI/CollectionAPI';
+import CollectionAPI from '../../../Contexts/CollectionAPI/collectionAPI';
 import { UserContext } from '../../../Contexts/UserContext';
-export enum PatchType {
-    major,
-    minor,
-    patch
-}
-
-
+import { NavBarContext } from '../../NavBar/Navbar';
 
 const Collection : React.FC = () => {
+    const [ activeItem, setActiveItem ] = useState<CLItem>();
+
     const { id } = useParams();
     const userContext = useContext(UserContext);
     const collectionAPI = useRef<CollectionAPI>(new CollectionAPI('http://localhost:5081/collections', id!, userContext.token));
 
+    const navBarContextConsumer = useContext(NavBarContext);
+    useEffect(() => {
+        navBarContextConsumer.setVisible(false);
 
-    const [ activeItem, setActiveItem ] = useState<CLItem>();
-
+        return () => {
+            navBarContextConsumer.setVisible(true);
+        }
+    }, []);
+    
     return (
         <div className='collection'>
             <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
-            <DatabaseContext>
                 <CheckList api={collectionAPI.current}/>
                 <ItemEditor/>
-            </DatabaseContext>
             </ItemEditorContext.Provider>
         </div>
     );

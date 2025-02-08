@@ -1,15 +1,15 @@
 import "./CLItem.css"
 import { useContext} from "react"
 import { CLItem, CLItemPatch } from "../DBCollection"
-import { DBContext } from "../CollectionContext/collectionContext"
 import ItemEditorContext from "../ItemEditor/itemEditorContext"
 
 type itemProps = {
-    clItem: CLItem
+    clItem: CLItem,
+    updateItem: (itemId: string, update: CLItemPatch) => Promise<any>
+    deleteItem: (itemId: string) => Promise<any>
 }
 
-const CLItemElement: React.FC<itemProps> = ({ clItem }) => {
-    const database = useContext(DBContext);
+const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) => {
     const itemEditorContext = useContext(ItemEditorContext);
 
     //in the end, I'll have to update the collection at the top to keep a consistent state
@@ -19,18 +19,9 @@ const CLItemElement: React.FC<itemProps> = ({ clItem }) => {
             return;
         }
 
-        const update: CLItemPatch = {
+        updateItem(clItem._id, {
             checked: !clItem.checked
-        };
-
-        database.shared.patchItem(clItem._id, update)
-        .then((newItem) => {
-            console.log(newItem);
-        })
-    }
-
-    const deleteItem = () => {
-        database.shared.deleteItem(clItem);
+        });
     }
 
     const openPopup = (evt: React.MouseEvent) => {
@@ -49,7 +40,7 @@ const CLItemElement: React.FC<itemProps> = ({ clItem }) => {
                 <p className="clitem__label">{(clItem.checked) ? (<s>{clItem.blurb}</s>) : (<>{clItem.blurb}</>)}</p>
             </div>
             <div className="clitem__right-container"  >
-                <button onClick={deleteItem} data-editorIgnore>Delete</button>
+                <button onClick={() => { deleteItem( clItem._id )}} data-editorIgnore>Delete</button>
             </div>
         </div>
     )

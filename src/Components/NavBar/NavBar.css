@@ -16,6 +16,12 @@
     background-image: url("../../assets/noise.svg");
 }
 
+.nav__left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 .nav__icon {
     height: 40px;
     width: 40px;

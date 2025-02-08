@@ -1,11 +1,10 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-
 import icon from "../../assets/icon.svg";
 import "./NavBar.css"
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import SignIn from "../../Pages/SignIn/SignIn";
 import SignUp from "../../Pages/SignUp/SignUp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export const NavBarContext = createContext<{
     setVisible: React.Dispatch<React.SetStateAction<boolean>>
@@ -33,7 +32,13 @@ const NavBar: React.FC<{ children: ReactNode}> = (props) => {
         }}>
             <div className="nav" hidden={!visible}>
                 <div className="nav__left">
-                    <img src={icon} alt="[]" className="nav__icon" onClick={() => {navigate("/")}}/>    
+                    <img src={icon} alt="[]" className="nav__icon" onClick={() => {navigate("/")}}/>
+                    <Link to={"/"}>
+                        Home
+                    </Link>
+                    <Link to={"/Collections"}>
+                        Collections
+                    </Link>
                 </div>
 
                 <div className="nav__right">

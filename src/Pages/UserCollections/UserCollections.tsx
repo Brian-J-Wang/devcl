@@ -26,7 +26,6 @@ const UserCollection: React.FC<{}> = () => {
     useEffect(() => {
 
         collectionContextConsumer.api.GetUserCollections(userContextConsumer.user._id).then((res) => {
-            console.log(res);
             setCollections(res);
         })
 
@@ -51,8 +50,6 @@ const UserCollection: React.FC<{}> = () => {
                 collectionContextConsumer.api.AddNewCollection(name).then((res) => {
                     setCollections([ ...collections, res]);
                 });
-
-                
 
                 modalContextConsumer.setModal(undefined);
                 return 0;

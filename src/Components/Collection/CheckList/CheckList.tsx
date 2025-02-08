@@ -1,30 +1,36 @@
-import { useContext, useEffect } from "react";
+import { useEffect, useState } from "react";
 import formatMessage from "../../../utils/formatMessage";
-import { PatchType } from "../Collection/Collection";
 import { TextButton } from "../../Button/Button";
 import { Container } from "../../Container/Container";
 import Category from "../CLCategory/Category";
 import CLPatchElement from "../CLPatch/CLPatch";
-import { DBContext } from "../CollectionContext/collectionContext";
 
 import "./CheckList.css"
-import { NavBarContext } from "../../NavBar/Navbar";
-import CollectionAPI from "../../../Contexts/CollectionAPI/CollectionAPI";
+import CollectionAPI, { PatchType } from "../../../Contexts/CollectionAPI/collectionAPI";
+import { CLCollection, CLItem, CLItemPatch } from "../DBCollection";
+import CLItemElement from "../CLItem/CLItem";
 
 interface CheckListProps {
     api: CollectionAPI;
 }
 
+
+
 const CheckList: React.FC<CheckListProps> = ({ api }) => {
-    const database = useContext(DBContext);
+    const [collection, setCollection] = useState<CLCollection>({
+        _id: "",
+        name: "",
+        owner: "",
+        version: "",
+        categories: [],
+        patches: [],
+        items: []
+    });
 
-    const navBarContextConsumer = useContext(NavBarContext);
     useEffect(() => {
-        navBarContextConsumer.setVisible(false);
-
-        return () => {
-            navBarContextConsumer.setVisible(true);
-        }
+        api.getCollection().then((res) => {
+            setCollection(res);
+        });
     }, [])
 
     const jumpToCheckList = () => {
@@ -32,14 +38,18 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
     }
 
     const copyToClipboard = () => {
-        if (database.collection) {
-            const message = formatMessage(database.collection);
+        if (collection) {
+            const message = formatMessage(collection);
             navigator.clipboard.writeText(message);
         }
     }
 
     const pushNewVersion = ( patchType: PatchType) => {
-        database.shared.postPatch(patchType);
+        api.pushPatch(patchType).then((res) => {
+            const copy = { ...collection };
+            copy.patches.push(res);
+            setCollection(copy);
+        })
     }
 
     const handleKeyboardInput = (evt: any) => {
@@ -59,12 +69,36 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
         document.getElementById("check-list")?.scrollIntoView({behavior: "instant", block:"end"});
     }, []);
 
+    const addNewItem = (categoryId: string, blurb: string) => {
+        return api.addNewItem(categoryId, blurb).then((res) => {
+            const copy = { ...collection };
+            copy.items.push(res);
+            setCollection(copy);
+        })
+    }
+
+    const updateItem = (itemId: string, update: CLItemPatch) => {
+        return api.updateItem(itemId, update).then((res) => {
+            const copy = { ...collection };
+            copy.items.find((item) => item._id == itemId)!.checked = res.checked;
+            setCollection(copy);
+        })
+    }
+
+    const deleteItem = (itemId: string) => {
+        return api.deleteItem(itemId).then(() => {
+            const copy = { ...collection };
+            copy.items = copy.items.filter(item => item._id != itemId);
+            setCollection(copy);
+        })
+    }
+
     return (
         <div className="container-cl">
             <div className="check-list" id="checkList">
                 {
-                    database.collection.patches.map((patch, index) => {
-                        const isLatest = database.collection.patches.length - 1 == index;
+                    collection.patches.map((patch, index) => {
+                        const isLatest = collection.patches.length - 1 == index;
 
                         return (<CLPatchElement key={patch._id} patch={patch} isLatest={isLatest}></CLPatchElement>)
                     })
@@ -80,17 +114,25 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
                         </Container>
                         <Container className="check-list__items">
                             <div className='check-list__header'>
-                                <input id="check-list__name" className='check-list__name' type="text" defaultValue={database.collection.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
+                                <input id="check-list__name" className='check-list__name' type="text" defaultValue={collection.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
                             </div>
                             {
-                                database.collection.categories.map((category) => {
+                                collection.categories.map((category) => {
                                     return (
-                                        <Category key={category._id} clCategory={category}/>
+                                        <Category key={category._id} name={category.name} id={category._id} addNewItem={addNewItem}> 
+                                            {
+                                                collection.items.filter((item) => {
+                                                    return item.category == category._id
+                                                }).map((item) => {
+                                                    return <CLItemElement clItem={item as CLItem} key={item._id} updateItem={updateItem} deleteItem={deleteItem}></CLItemElement>
+                                                })
+                                            }
+                                        </Category>
                                     )
                                 })
                             }
 
-                            <div className='check-list__footer'>Version {database.collection.version}</div>
+                            <div className='check-list__footer'>Version {collection.version}</div>
                         </Container>
                     </div>
                 </div>
