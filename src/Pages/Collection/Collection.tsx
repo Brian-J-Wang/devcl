@@ -1,13 +1,13 @@
 import './Collection.css';
-import CheckList from "../CheckList/CheckList";
+import CheckList from "./CheckList/CheckList";
 import { useParams } from 'react-router-dom';
-import { ItemEditor } from '../ItemEditor/ItemEditor';
-import ItemEditorContext from '../ItemEditor/itemEditorContext';
+import { ItemEditor } from './ItemEditor/ItemEditor';
+import ItemEditorContext from './ItemEditor/itemEditorContext';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { CLItem } from '../DBCollection';
-import CollectionAPI from '../../../Contexts/CollectionAPI/collectionAPI';
-import { UserContext } from '../../../Contexts/UserContext';
-import { NavBarContext } from '../../NavBar/Navbar';
+import { CLItem } from './interfaces';
+import CollectionAPI from '../../Contexts/CollectionAPI/collectionAPI';
+import { UserContext } from '../../Contexts/UserContext';
+import { NavBarContext } from '../../Components/NavBar/Navbar';
 
 const Collection : React.FC = () => {
     const [ activeItem, setActiveItem ] = useState<CLItem>();
@@ -24,7 +24,7 @@ const Collection : React.FC = () => {
             navBarContextConsumer.setVisible(true);
         }
     }, []);
-    
+
     return (
         <div className='collection'>
             <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>

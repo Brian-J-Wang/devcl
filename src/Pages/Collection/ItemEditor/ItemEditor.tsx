@@ -4,7 +4,7 @@ import ItemEditorContext from "./itemEditorContext"
 import BoundingBox, { OutofBoundsHandle } from "../../../shared/boundingBox";
 import cross from "../../../assets/cross.svg";
 import Input from "./Inputs";
-import { CLItem } from "../DBCollection";
+import { CLItem } from "../interfaces";
 
 export const ItemEditor: React.FC<any> = (props) => {
     const editorContext = useContext(ItemEditorContext);

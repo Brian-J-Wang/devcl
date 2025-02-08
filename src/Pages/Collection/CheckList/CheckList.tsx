@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import formatMessage from "../../../utils/formatMessage";
-import { TextButton } from "../../Button/Button";
-import { Container } from "../../Container/Container";
+import { TextButton } from "../../../Components/Button/Button";
+import { Container } from "../../../Components/Container/Container";
 import Category from "../CLCategory/Category";
 import CLPatchElement from "../CLPatch/CLPatch";
 
 import "./CheckList.css"
 import CollectionAPI, { PatchType } from "../../../Contexts/CollectionAPI/collectionAPI";
-import { CLCollection, CLItem, CLItemPatch } from "../DBCollection";
+import { CLCollection, CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces";
 import CLItemElement from "../CLItem/CLItem";
 
 interface CheckListProps {
     api: CollectionAPI;
 }
-
-
 
 const CheckList: React.FC<CheckListProps> = ({ api }) => {
     const [collection, setCollection] = useState<CLCollection>({

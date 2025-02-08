@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import { CLItem } from "../DBCollection"
+import { CLItem } from "../interfaces"
 
 type itemEditorContextProps = {
     activeItem?: CLItem

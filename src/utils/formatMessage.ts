@@ -1,4 +1,4 @@
-import { CLCollection } from "../Components/Collection/DBCollection";
+import { CLCollection } from "../Pages/Collection/interfaces";
 
 function formatMessage(data : CLCollection) {
     let message = '';

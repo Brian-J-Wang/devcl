@@ -1,7 +1,7 @@
 import "./CLItem.css"
 import { useContext} from "react"
-import { CLItem, CLItemPatch } from "../DBCollection"
-import ItemEditorContext from "../ItemEditor/itemEditorContext"
+import { CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces"
+import ItemEditorContext from "../../../Pages/Collection/ItemEditor/itemEditorContext"
 
 type itemProps = {
     clItem: CLItem,

@@ -1,4 +1,4 @@
-import { CLCollection, CLItem, CLItemPatch } from "../../Components/Collection/DBCollection";
+import { CLCollection, CLItem, CLItemPatch } from "../../Pages/Collection/interfaces";
 
 export enum PatchType {
     major,

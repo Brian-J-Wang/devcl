@@ -1,11 +1,11 @@
 import copyIcon from "../../../assets/copy.svg"
 import undoIcon from "../../../assets/undo.svg"
 //@ts-ignore
-import { IconButton } from "../../Button/Button"
+import { IconButton } from "../../../Components/Button/Button"
 import './CLPatch.css'
 import '../../../assets/DevCL.css'
-import { Container } from "../../Container/Container"
-import { CLPatch } from "../DBCollection"
+import { Container } from "../../../Components/Container/Container"
+import { CLPatch } from "../interfaces"
 
 interface PatchNote {
     patch: CLPatch,

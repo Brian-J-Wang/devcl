@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CLCollection } from "../../../Components/Collection/DBCollection";
+import { CLCollection } from "../../Collection/interfaces";
 import "./CollectionCard.css"
 import "./ContentPanel.css"
 import { TextButton } from "../../../Components/Button/Button";

@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import UserAPI from "../utils/userAPI";
-import { useNavigate } from "react-router-dom";
 
 export interface User {
     _id: string,

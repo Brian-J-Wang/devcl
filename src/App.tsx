@@ -1,7 +1,7 @@
 import './App.css'
 import './assets/DevCL.css'
 import { Routes, Route } from 'react-router-dom'
-import Collection from './Components/Collection/Collection/Collection'
+import Collection from './Pages/Collection/Collection'
 import Home from './Pages/Home/Home'
 import UserCollection from './Pages/UserCollections/UserCollections'
 import UserContextProvider from './Contexts/UserContext'

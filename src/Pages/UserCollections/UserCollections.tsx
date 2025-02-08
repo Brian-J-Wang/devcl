@@ -11,7 +11,7 @@ import { User, UserContext } from "../../Contexts/UserContext";
 import { UserCollectionContext } from "../../Contexts/UserCollectionAPI/UserCollectionApiContext";
 import { useNavigate } from "react-router-dom";
 import { NavBarContext } from "../../Components/NavBar/Navbar";
-import { CLCollection } from "../../Components/Collection/DBCollection";
+import { CLCollection } from "../Collection/interfaces";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<{}[]>([]);
