@@ -24,15 +24,12 @@ const UserCollection: React.FC<{}> = () => {
     const [ user, setUser] = useState<User>();
 
     useEffect(() => {
-
         userCollectionApi.current.GetUserCollections()
         .then((res) => {
             setCollections(res);
         })
 
-        return () => {
-            navBarContextConsumer.setVisible(true);
-        }
+        navBarContextConsumer.setProfileVisible(false);
     }, []);
 
     useEffect(() => {

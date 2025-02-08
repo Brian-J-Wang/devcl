@@ -1,22 +1,32 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import icon from "../../assets/icon.svg";
 import "./NavBar.css"
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import SignIn from "../../Pages/SignIn/SignIn";
 import SignUp from "../../Pages/SignUp/SignUp";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 
 export const NavBarContext = createContext<{
     setVisible: React.Dispatch<React.SetStateAction<boolean>>
+    setProfileVisible: React.Dispatch<React.SetStateAction<boolean>>
 }>({
-    setVisible: () => {}
+    setVisible: () => {},
+    setProfileVisible: () => {}
 });
 
 const NavBar: React.FC<{ children: ReactNode}> = (props) => {
+    const location = useLocation();
     const [ visible, setVisible ] = useState<boolean>(true);
+    const [ profileVisibile, setProfileVisible] = useState<boolean>(true);
 
     const modalContextConsumer = useContext(ModalContext);
     const navigate = useNavigate();
+
+    //resets navbar on change, in case any page makes changes to it.
+    useEffect(() => {
+        setProfileVisible(true);
+
+    }, [location.pathname])
 
     const openSignInModal = () => {
         modalContextConsumer.setModal(<SignIn/>)
@@ -28,7 +38,8 @@ const NavBar: React.FC<{ children: ReactNode}> = (props) => {
 
     return (
         <NavBarContext.Provider value={{
-            setVisible: setVisible
+            setVisible: setVisible,
+            setProfileVisible: setProfileVisible
         }}>
             <div className="nav" hidden={!visible}>
                 <div className="nav__left">
@@ -41,7 +52,7 @@ const NavBar: React.FC<{ children: ReactNode}> = (props) => {
                     </Link>
                 </div>
 
-                <div className="nav__right">
+                <div className="nav__right" hidden={!profileVisibile}>
                     <button onClick={openSignInModal} className="nav__tab">
                         Sign In
                     </button>
