@@ -1,4 +1,5 @@
-import { CLCollection, CLItem, CLItemPatch } from "../../Pages/Collection/interfaces";
+import { CLCollection, CLItem, CLItemPatch } from "../Pages/Collection/interfaces"
+import { sanitize } from "./helpers";
 
 export enum PatchType {
     major,
@@ -24,7 +25,7 @@ class CollectionAPI {
         }).then((res) => {
             return res.ok ? res.json() : Promise.reject();
         }).then((res) => {
-            return this.sanitize(res) as CLCollection;
+            return sanitize(res) as CLCollection;
         })
     }
 
@@ -41,7 +42,7 @@ class CollectionAPI {
         }).then((res) => {
             return res.ok ? res.json() : Promise.reject();
         }).then((res) => {
-            return this.sanitize(res) as CLItem;
+            return sanitize(res) as CLItem;
         })
     }
 
@@ -55,7 +56,7 @@ class CollectionAPI {
         }).then((res) => {
             return res.ok ? res.json() : Promise.reject();
         }).then((res) => {
-            return this.sanitize(res) as CLItem;
+            return sanitize(res) as CLItem;
         })
     }
 
@@ -81,29 +82,9 @@ class CollectionAPI {
             })
         }).then((res) => {
             return res.ok ? res.json() : Promise.reject();
+        }).then((res) => {
+            return sanitize(res);
         })
-    }
-
-    sanitize(data: { [key: string]: any}) {
-        const stack = [];
-        stack.push(data);
-        
-        while (stack.length != 0) {
-            const current = stack.shift();
-
-            for (let key in current) {
-                if (key === "_id") { 
-                    if (current[key].$oid) {
-                        current[key] = current[key].$oid;
-                    }
-                }
-                if (current[key] instanceof Object) {
-                    stack.push(current[key]);
-                }
-            }
-        }
-
-        return data;
     }
 }
 

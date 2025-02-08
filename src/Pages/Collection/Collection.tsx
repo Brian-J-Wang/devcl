@@ -5,7 +5,7 @@ import { ItemEditor } from './ItemEditor/ItemEditor';
 import ItemEditorContext from './ItemEditor/itemEditorContext';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { CLItem } from './interfaces';
-import CollectionAPI from '../../Contexts/CollectionAPI/collectionAPI';
+import CollectionAPI from '../../utils/collectionAPI';
 import { UserContext } from '../../Contexts/UserContext';
 import { NavBarContext } from '../../Components/NavBar/Navbar';
 

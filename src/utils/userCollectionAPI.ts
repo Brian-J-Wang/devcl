@@ -1,3 +1,5 @@
+import { sanitize } from "./helpers";
+
 class UserCollectionAPI {
     constructor(
         private readonly url: string = "",
@@ -15,15 +17,13 @@ class UserCollectionAPI {
                 title: title
             })
         }).then((res) => {
-            console.log(res);
-
-            return res.ok
-                ? res.json()
-                : Promise.reject();
+            return res.ok ? res.json() : Promise.reject();
+        }).then((res) => {
+            return sanitize(res);
         })
     }
 
-    GetUserCollections(user: string) {
+    GetUserCollections() {
         return fetch (`${this.url}/collections`, {
             method: "GET",
             headers: {
@@ -31,10 +31,11 @@ class UserCollectionAPI {
                 "Authorization": `Bearer ${this.token}`
             }
         }).then((res) => {
-            console.log(res);
             return res.ok
                 ? res.json()
                 : Promise.reject();
+        }).then((res) => {
+            return sanitize(res); 
         })
     }
 }

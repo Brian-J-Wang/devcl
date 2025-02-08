@@ -6,7 +6,7 @@ import Category from "../CLCategory/Category";
 import CLPatchElement from "../CLPatch/CLPatch";
 
 import "./CheckList.css"
-import CollectionAPI, { PatchType } from "../../../Contexts/CollectionAPI/collectionAPI";
+import CollectionAPI, { PatchType } from "../../../utils/collectionAPI";
 import { CLCollection, CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces";
 import CLItemElement from "../CLItem/CLItem";
 

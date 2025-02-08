@@ -4,28 +4,29 @@ import add from "../../assets/add.svg";
 import exit from "../../assets/exit.svg";
 
 import "./UserCollections.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
 import { User, UserContext } from "../../Contexts/UserContext";
-import { UserCollectionContext } from "../../Contexts/UserCollectionAPI/UserCollectionApiContext";
 import { useNavigate } from "react-router-dom";
 import { NavBarContext } from "../../Components/NavBar/Navbar";
 import { CLCollection } from "../Collection/interfaces";
+import UserCollectionAPI from "../../utils/userCollectionAPI";
 
 const UserCollection: React.FC<{}> = () => {
-    const [collections, setCollections] = useState<{}[]>([]);
+    const [collections, setCollections] = useState<CLCollection[]>([]);
     const modalContextConsumer = useContext(ModalContext);
-    const collectionContextConsumer = useContext(UserCollectionContext);
     const userContextConsumer = useContext(UserContext);
     const navBarContextConsumer = useContext(NavBarContext);
     const navigate = useNavigate();
+    const userCollectionApi = useRef<UserCollectionAPI>(new UserCollectionAPI("http://localhost:5081", localStorage.getItem("jwt") ?? ""));
     
     const [ user, setUser] = useState<User>();
 
     useEffect(() => {
 
-        collectionContextConsumer.api.GetUserCollections(userContextConsumer.user._id).then((res) => {
+        userCollectionApi.current.GetUserCollections()
+        .then((res) => {
             setCollections(res);
         })
 
@@ -41,13 +42,8 @@ const UserCollection: React.FC<{}> = () => {
     const handleCardAdd = () => {
         modalContextConsumer.setModal(
             <NewCollectionModal onSubmit={function (name: string): {} {
-                //make an api call to the backend requesting a new collection,
-                //expect to get collection id and other data.
-                //if fail, return a failed promise, that way I can send a message afterwards.
-                console.log(collectionContextConsumer.api.token);
-
-                //should see this fail since there was no token associated with it
-                collectionContextConsumer.api.AddNewCollection(name).then((res) => {
+                userCollectionApi.current.AddNewCollection(name).then((res) => {
+                    console.log(res);
                     setCollections([ ...collections, res]);
                 });
 
