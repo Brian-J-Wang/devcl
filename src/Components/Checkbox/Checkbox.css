@@ -1,0 +1,41 @@
+.checkbox {
+    cursor: pointer;
+}
+
+.checkbox__fill {
+    fill: #FFFFFF;
+    stroke: rgba(29, 29, 29, 0.4);
+    transition: fill 0.10s ease-in-out;
+    transition: stroke 0.10s ease-in-out;
+}
+
+.checkbox__fill:hover {
+    stroke: rgba(29, 29, 29, 0.75);
+}
+
+.checkbox__fill_checked {
+    fill: #74A12E;
+    stroke: rgba(29, 29, 29, 0.8);
+}
+
+.checkbox__fill_checked:hover {
+    fill: #6A8B35;
+}
+
+.checkbox__fill_loading {
+    fill: #FAAC0F;
+}
+
+.checkbox__path {
+    pointer-events: none;
+    transition: stroke-dashoffset 0.3s ease-in-out;
+}
+
+.checkbox__path_checked {
+    stroke-dashoffset: 0;
+}
+
+.checkbox__path_loading {
+    display: none;
+}
+

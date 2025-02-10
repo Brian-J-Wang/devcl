@@ -2,6 +2,7 @@ import "./CLItem.css"
 import { useContext, useState} from "react"
 import { CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces"
 import ItemEditorContext from "../../../Pages/Collection/ItemEditor/itemEditorContext"
+import CheckBox, { CheckBoxState } from "../../../Components/Checkbox/Checkbox"
 
 type itemProps = {
     clItem: CLItem,
@@ -12,16 +13,10 @@ type itemProps = {
 const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) => {
     const itemEditorContext = useContext(ItemEditorContext);
 
-    //in the end, I'll have to update the collection at the top to keep a consistent state
-    
-    const updateCheckbox = (evt: any) => {
-        if (evt.target.id != clItem._id) {
-            return;
-        }
-
+    const handleCheckboxClick = () => {
         updateItem(clItem._id, {
             checked: !clItem.checked
-        });
+        })
     }
 
     const openPopup = (evt: React.MouseEvent) => {
@@ -36,7 +31,9 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) =
     return (
         <div className="clitem" onClick={openPopup}>
             <div className="clitem__left-container">
-                <input className="clitem__checkbox" type="checkbox" id={clItem._id} checked={clItem.checked} onClick={updateCheckbox} readOnly data-editorIgnore />
+                <div className="clitem__checkbox" onClick={handleCheckboxClick} data-editorIgnore>
+                    <CheckBox state={clItem.checked ? CheckBoxState.checked : CheckBoxState.unchecked} data-editorIgnore/>
+                </div>
                 <p className="clitem__label">{(clItem.checked) ? (<s>{clItem.blurb}</s>) : (<>{clItem.blurb}</>)}</p>
             </div>
             <div className="clitem__right-container"  >
