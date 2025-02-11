@@ -1,8 +1,8 @@
 .clitem {
-    height: 32px;
+    height: 28px;
     display: flex;
     align-items: center;
-    padding: 0px 12px;
+    padding: 0px 12px 0px 32px;
     justify-content: space-between;
 }
 

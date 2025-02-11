@@ -43,11 +43,14 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
     }
 
     const pushNewVersion = ( patchType: PatchType) => {
-        api.pushPatch(patchType).then((res) => {
-            const copy = { ...collection };
-            copy.patches.push(res);
-            setCollection(copy);
-        })
+        return () => {
+            api.pushPatch(patchType).then((res) => {
+                const copy = { ...collection };
+                copy.patches.push(res);
+                setCollection(copy);
+            })
+        }
+        
     }
 
     const handleKeyboardInput = (evt: any) => {
@@ -106,9 +109,9 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
                     <div>
                         <Container className='check-list__tool-bar_h'>
                             <button onClick={copyToClipboard}> Copy </button>
-                            <button onClick={() => pushNewVersion(PatchType.major)}> Major Version </button>
-                            <button onClick={() => pushNewVersion(PatchType.minor)}> Minor Version </button>
-                            <button onClick={() => pushNewVersion(PatchType.patch)}> Patch </button>
+                            <button onClick={pushNewVersion(PatchType.major)}> Major Version </button>
+                            <button onClick={pushNewVersion(PatchType.minor)}> Minor Version </button>
+                            <button onClick={pushNewVersion(PatchType.patch)}> Patch </button>
                         </Container>
                         <Container className="check-list__items">
                             <div className='check-list__header'>

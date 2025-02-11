@@ -14,8 +14,10 @@ s {
 }
 
 .section__collapse-button {
-    height: 26px;
-    width: 26px;
+    margin-left: 5px;
+    margin-right: 3px;
+    height: 18px;
+    width: 18px;;
     padding: 0px;
     border: 0px;
     border-radius: 14px;
@@ -44,6 +46,7 @@ s {
 .section__name {
     margin: 0px;
     opacity: 80%;
+    font-size: 18px;
 }
 
 .section__items {
@@ -51,26 +54,13 @@ s {
     flex-direction: column;
 }
 
-.section__new-item {
-    height: 32px;
-    opacity: 0%;
-    display: flex;
-}
-
-.section__new-item:hover {
-    background-color: whitesmoke;
-}
-
-.section__new-item:has( .section__new-item-input:focus ) {
-    opacity: 100%;
-}
-
-.section:hover .section__new-item {
+.section:hover .section__new-item-input {
     opacity: 100%;
 }
 
 .section__new-item-input {
-    margin-left: 34px;
+    height: 28px;
+    padding-left: 56px;
     color: #292929;
     background-color: rgba(0,0,0,0);
     width: calc(100% - 13px);
@@ -78,5 +68,13 @@ s {
     box-sizing: border-box;
     border: 0px;
     outline-width: 0;
+    opacity: 0%;
 }
 
+.section__new-item-input:hover {
+    background-color: whitesmoke;
+}
+
+.section__new-item-input:focus {
+    opacity: 100%;
+}

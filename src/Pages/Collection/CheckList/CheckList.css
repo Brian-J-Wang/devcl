@@ -1,5 +1,4 @@
 .container-cl {
-    width: 800px;
     padding-top: 42px;
     display: flex;
     justify-self: center;
@@ -40,7 +39,6 @@
 .check-list__container {
     position: relative;
     height: calc(100vh - 42px);
-    width: 800px;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;

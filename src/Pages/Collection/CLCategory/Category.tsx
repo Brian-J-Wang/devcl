@@ -33,11 +33,8 @@ const Category : React.FC<categoryProps> = ({ id, name, children, addNewItem}) =
                 <div className='section__items'>
                     { children }
                 </div>
-                
-                <div className="section__new-item">
-                    <input type="text" className="section__new-item-input" id={id} placeholder="add something new" 
+                <input type="text" className="section__new-item-input" id={id} placeholder="add something new" 
                         onKeyDown={handleKeyboardInput} onBlur={(evt) => { evt.target.value = "" }} autoComplete='off'/>
-                </div>
             </div>
         </div>
     )
