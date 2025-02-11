@@ -1,4 +1,4 @@
-import { ReactNode, useState} from 'react'
+import { ReactNode, useEffect, useState} from 'react'
 import "./Category.css"
 
 import arrow from "../../../assets/Arrow.svg";

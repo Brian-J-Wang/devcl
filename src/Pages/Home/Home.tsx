@@ -3,10 +3,12 @@ import "../Collection/CheckList/CheckList.css"
 import iconWhite from "../../assets/icon-white.svg";
 import { Container } from "../../Components/Container/Container";
 import { FakeCLItemElement } from "../Collection/CLItem/CLItem";
+import NavBar from "../../Components/NavBar/Navbar";
 
 const Home: React.FC<{}> = () => {
     return (
         <div className="home">
+            <NavBar/>
             <div className="home__splash">
                 <div className="home__splash-container">
                     <img src={iconWhite} alt="" className="home__splash-image"/>

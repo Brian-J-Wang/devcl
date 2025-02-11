@@ -14,8 +14,8 @@ s {
 }
 
 .section__collapse-button {
-    height: 28px;
-    width: 28px;
+    height: 26px;
+    width: 26px;
     padding: 0px;
     border: 0px;
     border-radius: 14px;
@@ -30,9 +30,9 @@ s {
 }
 
 .section__drop-down-arrow {
-    height: 20px;
-    width: 20px;
-    margin-bottom: 2px;
+    opacity: 70%;
+    height: 16px;
+    width: 16px;
     transform: rotate(90deg);
     transition: transform 0.15s ease-in-out;
 }
@@ -43,6 +43,7 @@ s {
 
 .section__name {
     margin: 0px;
+    opacity: 80%;
 }
 
 .section__items {

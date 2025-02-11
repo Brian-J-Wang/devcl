@@ -9,15 +9,14 @@ import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import NewCollectionModal from "./NewCollectionModal/NewCollectionModal";
 import { User, UserContext } from "../../Contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { NavBarContext } from "../../Components/NavBar/Navbar";
 import { CLCollection } from "../Collection/interfaces";
 import UserCollectionAPI from "../../utils/userCollectionAPI";
+import BreadCrumb from "../../Components/BreadCrumb/BreadCrumb";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<CLCollection[]>([]);
     const modalContextConsumer = useContext(ModalContext);
     const userContextConsumer = useContext(UserContext);
-    const navBarContextConsumer = useContext(NavBarContext);
     const navigate = useNavigate();
     const userCollectionApi = useRef<UserCollectionAPI>(new UserCollectionAPI("http://localhost:5081", localStorage.getItem("jwt") ?? ""));
     
@@ -28,8 +27,6 @@ const UserCollection: React.FC<{}> = () => {
         .then((res) => {
             setCollections(res);
         })
-
-        navBarContextConsumer.setProfileVisible(false);
     }, []);
 
     useEffect(() => {
@@ -58,6 +55,7 @@ const UserCollection: React.FC<{}> = () => {
 
     return (
         <div className="user-collection">
+            <BreadCrumb/>
             <div className="user-collection__dashboard">
                 <div className="user-collection__profile">
                     <div className="user-collection__profile-image">

@@ -3,11 +3,11 @@ import CheckList from "./CheckList/CheckList";
 import { useParams } from 'react-router-dom';
 import { ItemEditor } from './ItemEditor/ItemEditor';
 import ItemEditorContext from './ItemEditor/itemEditorContext';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { CLItem } from './interfaces';
 import CollectionAPI from '../../utils/collectionAPI';
 import { UserContext } from '../../Contexts/UserContext';
-import { NavBarContext } from '../../Components/NavBar/Navbar';
+import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
 
 const Collection : React.FC = () => {
     const [ activeItem, setActiveItem ] = useState<CLItem>();
@@ -16,17 +16,9 @@ const Collection : React.FC = () => {
     const userContext = useContext(UserContext);
     const collectionAPI = useRef<CollectionAPI>(new CollectionAPI('http://localhost:5081/collections', id!, userContext.token));
 
-    const navBarContextConsumer = useContext(NavBarContext);
-    useEffect(() => {
-        navBarContextConsumer.setVisible(false);
-
-        return () => {
-            navBarContextConsumer.setVisible(true);
-        }
-    }, []);
-
     return (
         <div className='collection'>
+            <BreadCrumb/>
             <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
                 <CheckList api={collectionAPI.current}/>
                 <ItemEditor/>
