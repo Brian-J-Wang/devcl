@@ -88,7 +88,7 @@ const UserCollection: React.FC<{}> = () => {
             
             <div className="user-collection__collection-list">
                 {collections.map((collection) => {
-                    return <CollectionCard collection={collection as CLCollection} handleDelete={handleDelete}/>
+                    return <CollectionCard key={collection._id} collection={collection as CLCollection} handleDelete={handleDelete}/>
                 })}
             </div>
         </div>

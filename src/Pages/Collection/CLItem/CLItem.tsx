@@ -22,12 +22,9 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) =
 
     const openPopup = (evt: React.MouseEvent) => {
         //does not open popup if element that was clicked on includes data-editorIgnore
-        console.log((evt.target as HTMLElement), (evt.target as HTMLElement).hasAttribute('data-editorIgnore'))
         if ((evt.target as HTMLElement).hasAttribute('data-editorIgnore')) {
-            console.log("here");
             return;
         }
-
         itemEditorContext.setActiveItem(clItem);
     }
 
