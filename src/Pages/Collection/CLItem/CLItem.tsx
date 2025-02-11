@@ -2,7 +2,7 @@ import "./CLItem.css"
 import { useContext, useState} from "react"
 import { CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces"
 import ItemEditorContext from "../../../Pages/Collection/ItemEditor/itemEditorContext"
-import CheckBox, { CheckBoxState } from "../../../Components/Checkbox/Checkbox"
+import { CheckBoxState } from "../../../Components/Icon/Checkbox/Checkbox"
 import Icon from "../../../Components/Icon"
 
 type itemProps = {
@@ -34,7 +34,7 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) =
     return (
         <div className="clitem" onClick={openPopup}>
             <div className="clitem__left-container">
-                <CheckBox state={clItem.checked ? CheckBoxState.checked : CheckBoxState.unchecked} onClick={handleCheckboxClick} data-editorIgnore className="clitem__checkbox"/>
+                <Icon.CheckBox state={clItem.checked ? CheckBoxState.checked : CheckBoxState.unchecked} onClick={handleCheckboxClick} data-editorIgnore className="clitem__checkbox"/>
                 <p className={`clitem__label ${clItem.checked && "clitem__strike"}`}>
                     {clItem.blurb}
                 </p>

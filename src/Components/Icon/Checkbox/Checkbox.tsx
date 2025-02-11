@@ -41,4 +41,4 @@ const CheckBox: React.FC<CheckBoxProps> = ({ state, onClick, className = "", ...
     )
 }
 
-export default CheckBox;
+export { CheckBox };
