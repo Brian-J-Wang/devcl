@@ -53,6 +53,12 @@ const UserCollection: React.FC<{}> = () => {
         })
     }
 
+    const handleDelete = (id: string) => {
+        userCollectionApi.current.deleteUserCollections(id).then(() => {
+            setCollections(collections.filter((collection) => collection._id != id));
+        })
+    }
+
     return (
         <div className="user-collection">
             <BreadCrumb/>
@@ -82,7 +88,7 @@ const UserCollection: React.FC<{}> = () => {
             
             <div className="user-collection__collection-list">
                 {collections.map((collection) => {
-                    return <CollectionCard collection={collection as CLCollection}/>
+                    return <CollectionCard collection={collection as CLCollection} handleDelete={handleDelete}/>
                 })}
             </div>
         </div>

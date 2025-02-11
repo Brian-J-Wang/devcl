@@ -38,6 +38,22 @@ class UserCollectionAPI {
             return sanitize(res); 
         })
     }
+
+    deleteUserCollections(id: string) {
+        return fetch(`${this.url}/collections/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.token}`
+            }
+        }).then((res) => {
+            return res.ok
+                ? res.json()
+                : Promise.reject();
+        }).then((res) => {
+            return sanitize(res);
+        })
+    }
 }
 
 export default UserCollectionAPI;

@@ -9,15 +9,22 @@ import { useNavigate } from "react-router-dom";
 
 interface CollectionCardTypes {
     collection: CLCollection
+    handleDelete: (id: string) => void
 }
 
-const CollectionCard: React.FC<CollectionCardTypes> = ({ collection }) => {
+const CollectionCard: React.FC<CollectionCardTypes> = ({ collection, handleDelete }) => {
     const [ hidden, setHidden ] = useState<boolean>(true);
     const [ activeTab, setActiveTab ] = useState<"Info" | "People" | "Settings">("Info");
     const navigate = useNavigate();
 
     const goToCollectionsPage = () => {
         navigate(`./${collection._id}`);
+    }
+
+    const deleteCollection = (id: string) => {
+        return () => {
+            handleDelete(id);
+        }
     }
 
     return (
@@ -80,7 +87,7 @@ const CollectionCard: React.FC<CollectionCardTypes> = ({ collection }) => {
                             <h3> Delete Collection</h3>
                             <small>Removes this collection and all relevant data. This action CANNOT be undone.</small>
                         </div>
-                        <TextButton size="s" style="negative" radiusStyle="s">
+                        <TextButton size="s" style="negative" radiusStyle="s" onClick={deleteCollection(collection._id)}>
                             Delete Collection
                         </TextButton>
                     </div>
