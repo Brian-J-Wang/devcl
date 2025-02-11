@@ -39,4 +39,25 @@
 .clitem__label {
     font-size: 16px;
     font-weight: 400;
+    position: relative;
+    transition: color 0.15s
+}
+
+.clitem__strike {
+    color: rgba(29, 29, 29, 0.5);
+}
+
+.clitem__label::after {
+    content: " ";
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    width: 0%;
+    height: 1px;
+    background: rgba(29, 29, 29, 0.7);
+    transition: width 0.15s;
+}
+
+.clitem__strike::after {
+    width: calc(100% + 4px);
 }

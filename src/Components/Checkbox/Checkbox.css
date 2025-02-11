@@ -1,25 +1,30 @@
 .checkbox {
     cursor: pointer;
+    
+}
+
+.checkbox__icon {
+    pointer-events: none;
+}
+
+.checkbox:hover .checkbox__fill {
+    stroke: rgba(29, 29, 29, 0.75);
+}
+
+.checkbox:hover .checkbox__fill_checked {
+    fill: #6A8B35;
 }
 
 .checkbox__fill {
     fill: #FFFFFF;
     stroke: rgba(29, 29, 29, 0.4);
-    transition: fill 0.10s ease-in-out;
-    transition: stroke 0.10s ease-in-out;
-}
-
-.checkbox__fill:hover {
-    stroke: rgba(29, 29, 29, 0.75);
+    transition: fill 0.2s, stroke 0.2s;
+    
 }
 
 .checkbox__fill_checked {
     fill: #74A12E;
     stroke: rgba(29, 29, 29, 0.8);
-}
-
-.checkbox__fill_checked:hover {
-    fill: #6A8B35;
 }
 
 .checkbox__fill_loading {
