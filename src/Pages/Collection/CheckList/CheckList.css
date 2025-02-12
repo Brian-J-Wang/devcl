@@ -1,53 +1,18 @@
-.container-cl {
-    padding-top: 42px;
+.collection {
+    height: calc(100vh - 20px);
+    width: 100%;
     display: flex;
-    justify-self: center;
-    flex-direction: column;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    flex-direction: row;
+    padding-top: 16px;
 }
 
-.container-cl::-webkit-scrollbar {
+.collection::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
 }
 
-.check-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin: 0px 0px auto 0px;
-}
-
-.check-list__divider {
-    margin: 10px 8px;
-    border: none;
-    border-top: 3px double rgba(29,29,29);
-    text-align: center;
-    font-size: 24px;
-}
-
-.check-list__divider::after {
-    content: 'Patch Notes';
-    background-color: whitesmoke;
-    padding: 0 4px;
-    position: relative;
-    top: -15px
-}
-
-.check-list__container {
-    position: relative;
-    height: calc(100vh - 42px);
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-top: 12px;
-}
-
-.check-list__container::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
+.collection__content {
+    flex: 2;
+    margin: 6px;
 }
 
 .check-list__tool-bar_h {

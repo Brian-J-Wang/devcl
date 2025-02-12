@@ -47,7 +47,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     const userAPI = useRef<UserAPI>(new UserAPI("http://localhost:5081"));
     const [user, setUser] = useState<User | undefined>(undefined);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const [token, setToken] = useState<string>("");
+    const token = useRef<string>("");
 
     useEffect(() => {
         const jwt = localStorage.getItem("jwt");
@@ -56,7 +56,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
             return;
         }
 
-        setToken(jwt);
+        token.current = jwt
         userAPI.current.getUser(jwt).then((res: User) => {
             setIsLoggedIn(true);
             setUser(res);
@@ -83,13 +83,14 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
                     _id: res._id,
                     username: res.username
                 });
-                setToken(res.jwt);
+
+                token.current = res.jwt;
 
                 localStorage.setItem("jwt", res.jwt);
             });
         },
         getUser: function (): Promise<any> {
-            return userAPI.current.getUser(token).then((res) => {
+            return userAPI.current.getUser(token.current).then((res) => {
                 console.log(res);
             })
         }
@@ -98,7 +99,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     const logUserOut = () => {
         setUser(undefined);
         setIsLoggedIn(false);
-        setToken("");
+        token.current = "";
 
         localStorage.removeItem("jwt");
 
@@ -109,7 +110,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
         <UserContext.Provider value={{
             user: user ?? { _id: "", username: " "},
             api: api,
-            token: token,
+            token: token.current,
             isLoggedIn: isLoggedIn,
             logUserOut: logUserOut
         }}>

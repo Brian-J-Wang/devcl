@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import formatMessage from "../../../utils/formatMessage";
-import { TextButton } from "../../../Components/Button/Button";
 import { Container } from "../../../Components/Container/Container";
 import Category from "../CLCategory/Category";
-import CLPatchElement from "../CLPatch/CLPatch";
 
 import "./CheckList.css"
 import CollectionAPI, { PatchType } from "../../../utils/collectionAPI";
 import { CLCollection, CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces";
 import CLItemElement from "../CLItem/CLItem";
+import Outline from "./Outline/Outline";
+import SubSection from "./Outline/SubSection/SubSection";
 
 interface CheckListProps {
     api: CollectionAPI;
@@ -25,15 +25,37 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
         items: []
     });
 
+    const buildCategoryOutline = (): {
+        _id: string,
+        name: string,
+        details: string
+    }[]  => {
+        return collection.categories.map((category) => {
+            let numItemsCompleted = 0;
+            let totalItems = 0;
+
+            collection.items.forEach((item) => {
+                if (item.category == category._id) {
+                    numItemsCompleted += item.checked ? 1 : 0;
+                    totalItems++;
+                }
+            })
+            return {
+                _id: category._id,
+                name: category.name,
+                details: `${numItemsCompleted}/${totalItems}`
+            }
+        })
+    }
+    const outlineCategory = useMemo( buildCategoryOutline , [collection]);
+
+    
+
     useEffect(() => {
         api.getCollection().then((res) => {
             setCollection(res);
         });
     }, [])
-
-    const jumpToCheckList = () => {
-        document.getElementById("check-list")!.scrollIntoView({behavior: "smooth", block:"start"});
-    }
 
     const copyToClipboard = () => {
         if (collection) {
@@ -94,52 +116,71 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
         })
     }
 
+    const handleNewCategory = (evt: React.KeyboardEvent) => {
+        if (evt.key == 'Enter') {
+            const target = (evt.target as HTMLInputElement);
+            api.addNewCategory(target.value).then((res) => {
+                const copy = { ...collection };
+                copy.categories.push({
+                    _id: res._id,
+                    name: res.name,
+                    format: res.format
+                })
+                setCollection(copy);
+                target.value = "";
+            });
+        }
+    }
+
     return (
-        <div className="container-cl">
-            <div className="check-list" id="checkList">
-                {
-                    collection.patches.map((patch, index) => {
-                        const isLatest = collection.patches.length - 1 == index;
-
-                        return (<CLPatchElement key={patch._id} patch={patch} isLatest={isLatest}></CLPatchElement>)
-                    })
-                }
-                <hr className="check-list__divider"/>
-                <div className='check-list__container' id='check-list' tabIndex={0}>
-                    <div>
-                        <Container className='check-list__tool-bar_h'>
-                            <button onClick={copyToClipboard}> Copy </button>
-                            <button onClick={pushNewVersion(PatchType.major)}> Major Version </button>
-                            <button onClick={pushNewVersion(PatchType.minor)}> Minor Version </button>
-                            <button onClick={pushNewVersion(PatchType.patch)}> Patch </button>
-                        </Container>
-                        <Container className="check-list__items">
-                            <div className='check-list__header'>
-                                <input id="check-list__name" className='check-list__name' type="text" defaultValue={collection.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
+        <div className='collection'>
+            <Outline>
+                <SubSection name="Collaborators" expanded={false}>
+                    <></>
+                </SubSection>
+                <SubSection name="Patches" expanded={false}>
+                    <></>
+                </SubSection>
+                <SubSection name={"Categories"} expanded={true}>
+                    {
+                        outlineCategory.map((item) => (
+                            <div key={item._id} className="">
+                                <h4 className="subsection__list-item-title">{item.name}</h4>
+                                <small className="subsection__list-item-detail">{item.details}</small>
                             </div>
-                            {
-                                collection.categories.map((category) => {
-                                    return (
-                                        <Category key={category._id} name={category.name} id={category._id} addNewItem={addNewItem}> 
-                                            {
-                                                collection.items.filter((item) => {
-                                                    return item.category == category._id
-                                                }).map((item) => {
-                                                    return <CLItemElement clItem={item as CLItem} key={item._id} updateItem={updateItem} deleteItem={deleteItem}></CLItemElement>
-                                                })
-                                            }
-                                        </Category>
-                                    )
-                                })
-                            }
-
-                            <div className='check-list__footer'>Version {collection.version}</div>
-                        </Container>
+                        ))
+                    }
+                </SubSection>
+            </Outline>
+            <div className="collection__content">
+                {/* <Container className='check-list__tool-bar_h'>
+                    <button onClick={copyToClipboard}> Copy </button>
+                    <button onClick={pushNewVersion(PatchType.major)}> Major Version </button>
+                    <button onClick={pushNewVersion(PatchType.minor)}> Minor Version </button>
+                    <button onClick={pushNewVersion(PatchType.patch)}> Patch </button>
+                </Container> */}
+                <Container className="check-list__items">
+                    <div className='check-list__header'>
+                        <input id="check-list__name" className='check-list__name' type="text" defaultValue={collection.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
                     </div>
-                </div>
-            </div>
-            <div className="check-list__tool-bar_v">
-                <TextButton size="m" onClick={jumpToCheckList}>↓</TextButton>
+                    {
+                        collection.categories.map((category) => {
+                            return (
+                                <Category key={category._id} name={category.name} id={category._id} addNewItem={addNewItem}> 
+                                    {
+                                        collection.items.filter((item) => {
+                                            return item.category == category._id
+                                        }).map((item) => {
+                                            return <CLItemElement clItem={item as CLItem} key={item._id} updateItem={updateItem} deleteItem={deleteItem}></CLItemElement>
+                                        })
+                                    }
+                                </Category>
+                            )
+                        })
+                    }
+
+                    <div className='check-list__footer'>Version {collection.version}</div>
+                </Container>
             </div>
         </div>
     );
