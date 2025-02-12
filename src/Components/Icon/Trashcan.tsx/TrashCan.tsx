@@ -13,7 +13,6 @@ const TrashCan: React.FC<TrashCanProps> = ({ onClick, ...rest}) => {
                 <path d="M1 1.5H12M7 1H6" stroke="#292929" stroke-width="1.5" stroke-linecap="round" id="lid"/>
             </svg>
         </div>
-        
     )
 }
 

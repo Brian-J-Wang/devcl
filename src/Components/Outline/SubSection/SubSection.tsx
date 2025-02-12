@@ -1,5 +1,5 @@
 import { Children, cloneElement, ReactNode, useState } from "react";
-import arrow from "../../../../../assets/Arrow.svg"
+import arrow from "../../../assets/Arrow.svg"
 import "./SubSection.css"
 
 interface SubSectionProps {
@@ -25,7 +25,7 @@ const SubSection: React.FC<SubSectionProps> = (props) => {
                         Children.map(props.children, ( child: ReactNode ) => 
                             //@ts-ignore
                             cloneElement(child, {
-                                className: `${(child! as any).props.classNames} subsection__list-item`
+                                className: `${(child! as any).props.className} subsection__list-item`
                             })
                         )
                     }

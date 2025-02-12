@@ -1,7 +1,7 @@
 import SubSection from "./SubSection/SubSection";
 
 import "./Outline.css"
-import { cloneElement, ReactElement } from "react";
+import { ReactElement } from "react";
 
 interface OutlineProps {
     children: ReactElement<typeof SubSection> | Array<ReactElement<typeof SubSection>>,
