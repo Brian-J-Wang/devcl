@@ -10,23 +10,6 @@ export const ModalContext = createContext<{
 
 const ModalContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     const [modal, setModal] = useState<ReactNode>(undefined);
-    const app = useRef<HTMLDivElement>();
-
-    useEffect(() => {
-        app.current = document.querySelector('#app') as HTMLDivElement;
-    }, [])
-
-    useEffect(() => {
-        if (!app.current) {
-            return;
-        }
-
-        if (modal) {
-            app.current.classList.add("modal__app-blur");
-        } else {
-            app.current.classList.remove("modal__app-blur");
-        }
-    }, [ modal ])
 
     const handleOverlayClick = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if ((evt.target as HTMLElement).classList.contains("modal__overlay")) {
