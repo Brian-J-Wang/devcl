@@ -6,6 +6,7 @@ import { CLCategories, CLItem, CLPatch } from "../../interfaces"
 import "./CheckListOutline.css"
 import Icon from "../../../../Components/Icon"
 import { ModalContext } from "../../../../Contexts/Modal/ModalContext"
+import EditCategoryModal from "../../Modals/EditCategoryModal/EditCategoryModal"
 
 interface CheckListOutlineProps {
     items: CLItem[];
@@ -41,7 +42,7 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
 
     const openEditCategoryModal = () => {
         modalContext.setModal(
-            <div></div>
+            <EditCategoryModal/>
         )
     }
     

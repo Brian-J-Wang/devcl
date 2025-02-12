@@ -5,12 +5,12 @@ export interface TextInputProps {
     name: string,
     type: "text" | "password" | "email",
     stateHandler?: React.Dispatch<React.SetStateAction<string>>,
-    initialValue: string,
+    initialValue?: string,
 }
 
 const TextInput: React.FC<TextInputProps> = (props) => {
     const [isFocus, setIsFocus] = useState<boolean>(false);
-    const [input, setInput] = useState<string>(props.initialValue);
+    const [input, setInput] = useState<string>(props.initialValue ?? "");
 
     const handleTextChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         setInput(evt.target.value);
