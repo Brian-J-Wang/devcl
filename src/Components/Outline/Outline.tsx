@@ -2,6 +2,7 @@ import SubSection from "./SubSection/SubSection";
 
 import "./Outline.css"
 import { ReactElement } from "react";
+import { Container } from "../Container/Container";
 
 interface OutlineProps {
     children: ReactElement<typeof SubSection> | Array<ReactElement<typeof SubSection>>,
@@ -9,9 +10,9 @@ interface OutlineProps {
 
 const Outline: React.FC<OutlineProps> = (props) => {   
     return (
-        <div className="outline">
+        <Container className="outline">
             {props.children}
-        </div>
+        </Container>
     )
 }
 

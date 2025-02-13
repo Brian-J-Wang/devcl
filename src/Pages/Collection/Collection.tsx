@@ -1,4 +1,3 @@
-import './Collection.css';
 import CheckList from "./CheckList/CheckList";
 import { useParams } from 'react-router-dom';
 import { ItemEditor } from './ItemEditor/ItemEditor';
@@ -8,6 +7,8 @@ import { CLItem } from './interfaces';
 import CollectionAPI from '../../utils/collectionAPI';
 import { UserContext } from '../../Contexts/UserContext';
 import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
+
+import './Collection.css';
 
 const Collection : React.FC = () => {
     const [ activeItem, setActiveItem ] = useState<CLItem>();

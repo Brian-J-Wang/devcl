@@ -1,4 +1,8 @@
 .collection {
     position: relative;
     overflow: hidden;
+    padding-top: 32px;
+    display: flex;
+    height: 100vh;
+    box-sizing: border-box;
 }

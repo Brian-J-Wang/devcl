@@ -1,4 +1,4 @@
-.collection {
+.check-list {
     height: calc(100vh - 20px);
     width: 100%;
     display: flex;
@@ -6,11 +6,11 @@
     padding-top: 16px;
 }
 
-.collection::-webkit-scrollbar {
+.check-list::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
 }
 
-.collection__content {
+.check-list__content {
     flex: 2;
     margin: 6px;
 }

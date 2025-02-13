@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import formatMessage from "../../../utils/formatMessage";
+import { useEffect, useState } from "react";
 import { Container } from "../../../Components/Container/Container";
 import Category from "../CLCategory/Category";
 
 import "./CheckList.css"
-import CollectionAPI, { PatchType } from "../../../utils/collectionAPI";
-import { CLCategories, CLCollection, CLItem, CLItemPatch, CLPatch } from "../../../Pages/Collection/interfaces";
+import CollectionAPI from "../../../utils/collectionAPI";
+import { CLCategories, CLItem, CLItemPatch, CLPatch } from "../../../Pages/Collection/interfaces";
 import CLItemElement from "../CLItem/CLItem";
 import CheckListOutline from "./CheckListOutline/CheckListOutline";
 
@@ -14,7 +13,6 @@ interface CheckListProps {
 }
 
 const CheckList: React.FC<CheckListProps> = ({ api }) => {
-    const id = useRef<Number>();
     const [name, setName] = useState<string>("");
     const [version, setVersion] = useState<string>("");
     const [categories, setCategories] = useState<CLCategories[]>([]);
@@ -78,8 +76,6 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
         });
     }
 
-    const updateCategory = () => {}
-
     const deleteCategory = (id: string) => {
         return api.deleteCategory(id).then((res) => {
             console.log(res);
@@ -89,18 +85,12 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
     }
 
     return (
-        <div className='collection'>
+        <>
             <CheckListOutline items={items} categories={categories} patch={patches}
                 deleteCategory={deleteCategory}
                 createCategory={addNewCategory}
             />
-            <div className="collection__content">
-                {/* <Container className='check-list__tool-bar_h'>
-                    <button onClick={copyToClipboard}> Copy </button>
-                    <button onClick={pushNewVersion(PatchType.major)}> Major Version </button>
-                    <button onClick={pushNewVersion(PatchType.minor)}> Minor Version </button>
-                    <button onClick={pushNewVersion(PatchType.patch)}> Patch </button>
-                </Container> */}
+            <div className="check-list__content">
                 <Container className="check-list__items">
                     <div className='check-list__header'>
                         <input id="check-list__name" className='check-list__name' type="text" defaultValue={name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
@@ -124,7 +114,7 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
                     <div className='check-list__footer'>Version {version}</div>
                 </Container>
             </div>
-        </div>
+        </>
     );
 }
 
