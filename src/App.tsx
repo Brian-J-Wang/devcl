@@ -7,6 +7,7 @@ import UserCollection from './Pages/UserCollections/UserCollections'
 import UserContextProvider from './Contexts/UserContext'
 import ModalContextProvider from './Contexts/Modal/ModalContext'
 import { NavBarContextProvider } from './Components/NavBar/Navbar'
+import ProtectedRoute from './Components/Protected/ProtectedRoute'
 
 function App() {
   return (
@@ -16,8 +17,11 @@ function App() {
       <div className='app' id='app'>
         <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path='collections' element={<UserCollection/>}/>
-          <Route path='collections/:id' element={<Collection/>}/>
+          <Route element={<ProtectedRoute/>}>
+            <Route path='collections' element={<UserCollection/>}/>
+            <Route path='collections/:id' element={<Collection/>}/>
+          </Route>
+          
         </Routes>
       </div>
     </NavBarContextProvider>

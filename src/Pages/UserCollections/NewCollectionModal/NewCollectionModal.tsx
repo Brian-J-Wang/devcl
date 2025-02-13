@@ -4,9 +4,7 @@ import Input from "../../../Components/Input";
 import "./NewCollectionModal.css"
 
 interface NewCollectionModalProps {
-    onSubmit: (name: string) => {
-        
-    }
+    onSubmit: (name: string) => void
 }
 
 const NewCollectionModal: React.FC<NewCollectionModalProps> = (props) => {

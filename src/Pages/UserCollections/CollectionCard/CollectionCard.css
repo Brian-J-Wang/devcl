@@ -3,7 +3,7 @@
     box-sizing: border-box;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
     height: 48px;
-    border-radius: 8px;
+    border-radius: 4px;
     background: rgb(230,230,230);
     background: linear-gradient(133deg, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%);
     flex-direction: column;
@@ -23,9 +23,6 @@
     width: 100%;
     padding: 0px 12px 0px 12px;
     box-sizing: border-box;
-    background-color: white;
-    border-radius: 0px 0px 8px 8px;
-    box-shadow: 0px 0px 4px rgba(29, 29, 29, 0.2);
 }
 
 .collection-card__left {
@@ -77,8 +74,6 @@
     margin: auto 0px auto 0px;
     align-self: center;
 }
-
-
 
 .collection-card__progress-container {
     position: relative;

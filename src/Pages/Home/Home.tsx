@@ -16,7 +16,7 @@ const Home: React.FC<{}> = () => {
                         <h2 className="home__splash-h2"><span className="home__splash-span">DevCL</span> is here to help <br></br>get my sh*t in order</h2>
                         <p className="home__splash-p">and I guess it can help you as well.</p>
                     </div>
-                    <div className="home__clutter">
+                    <Container className="home__clutter">
                         <div className='check-list__header'>
                             <h2 id="check-list__name" className='check-list__name'> 
                                 Project DevCL
@@ -26,7 +26,7 @@ const Home: React.FC<{}> = () => {
                         <FakeCLItemElement checked blurb="Collaborate with others"/>
                         <FakeCLItemElement checked blurb="Share your progress with your community"/>
                         <FakeCLItemElement checked={false} blurb="Actually finish a project"/>
-                    </div>
+                    </Container>
                 </div>
             </div>
             <main className="home__main">

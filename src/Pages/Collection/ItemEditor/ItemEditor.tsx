@@ -5,6 +5,7 @@ import BoundingBox, { OutofBoundsHandle } from "../../../shared/boundingBox";
 import cross from "../../../assets/cross.svg";
 import Input from "./Inputs";
 import { CLItem } from "../interfaces";
+import { Container } from "../../../Components/Container/Container";
 
 export const ItemEditor: React.FC<any> = (props) => {
     const editorContext = useContext(ItemEditorContext);
@@ -28,7 +29,7 @@ export const ItemEditor: React.FC<any> = (props) => {
 
     return (
         <BoundingBox ref={boundingBoxController} onOutOfBound={handleOutOfBounds}>
-            <div className={`item-editor ${!editorContext.activeItem && 'item-editor_hidden'}`} id="item-editor">
+            <Container className={`item-editor ${!editorContext.activeItem && 'item-editor_hidden'}`} id="item-editor">
                 <div className="item-editor__title-bar">
                     <h2 className="item-editor__header">Item Editor</h2>
                     <button className="item-editor__cross-button" type="button">
@@ -77,7 +78,7 @@ export const ItemEditor: React.FC<any> = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Container>
         </BoundingBox>
         
     )

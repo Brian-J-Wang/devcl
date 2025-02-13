@@ -6,6 +6,7 @@ import { TextButton } from "../../../Components/Button/Button";
 import arrow from "../../../assets/Arrow.svg";
 import popout from "../../../assets/pop-out.svg";
 import { useNavigate } from "react-router-dom";
+import { Container } from "../../../Components/Container/Container";
 
 interface CollectionCardTypes {
     collection: CLCollection
@@ -29,7 +30,7 @@ const CollectionCard: React.FC<CollectionCardTypes> = ({ collection, handleDelet
 
     return (
         <div className={`collection-card ${hidden ? "" : "collection-card_extended"}`}>
-            <div className="collection-card__header">
+            <Container className="collection-card__header">
                 <div className="collection-card__left">
                     <button className={`collection-card__left-drop ${!hidden && 'collection-card__left-drop_active'}`} onClick={() => { setHidden(!hidden) }}>
                         <img src={arrow} alt="" />
@@ -46,7 +47,7 @@ const CollectionCard: React.FC<CollectionCardTypes> = ({ collection, handleDelet
                     <p className="collection-card__progress-counter"> 8/10 </p>
                     <div className="collection-card__progress-bar"></div>
                 </div>
-            </div>
+            </Container>
             <div className="content-panel">
                 <div className="content-panel__tab-bar">
                     <div className={`content-panel__tab ${activeTab == 'Info' && "content-panel__tab_active"}`}

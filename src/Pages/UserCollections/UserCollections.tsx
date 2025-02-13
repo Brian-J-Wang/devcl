@@ -12,11 +12,12 @@ import { useNavigate } from "react-router-dom";
 import { CLCollection } from "../Collection/interfaces";
 import UserCollectionAPI from "../../utils/userCollectionAPI";
 import BreadCrumb from "../../Components/BreadCrumb/BreadCrumb";
+import { Container } from "../../Components/Container/Container";
 
 const UserCollection: React.FC<{}> = () => {
     const [collections, setCollections] = useState<CLCollection[]>([]);
     const modalContextConsumer = useContext(ModalContext);
-    const userContextConsumer = useContext(UserContext);
+    const userContext = useContext(UserContext);
     const navigate = useNavigate();
     const userCollectionApi = useRef<UserCollectionAPI>(new UserCollectionAPI("http://localhost:5081", localStorage.getItem("jwt") ?? ""));
     
@@ -30,25 +31,27 @@ const UserCollection: React.FC<{}> = () => {
     }, []);
 
     useEffect(() => {
-        setUser(userContextConsumer.user);
-    }, [userContextConsumer.user])
+        setUser(userContext.user);
+    }, [userContext.user])
+
+    useEffect(() => {
+
+    }, [userContext.token])
 
     const handleCardAdd = () => {
         modalContextConsumer.setModal(
-            <NewCollectionModal onSubmit={function (name: string): {} {
+            <NewCollectionModal onSubmit={(name: string) => {
                 userCollectionApi.current.AddNewCollection(name).then((res) => {
                     console.log(res);
                     setCollections([ ...collections, res]);
                 });
-
                 modalContextConsumer.setModal(undefined);
-                return 0;
             } }/>
         )
     }
 
     const handleUserLogOut = () => {
-        userContextConsumer.logUserOut().then(() => {
+        userContext.logUserOut().then(() => {
             navigate("../");
         })
     }
@@ -63,20 +66,20 @@ const UserCollection: React.FC<{}> = () => {
         <div className="user-collection">
             <BreadCrumb/>
             <div className="user-collection__dashboard">
-                <div className="user-collection__profile">
+                <Container className="user-collection__profile">
                     <div className="user-collection__profile-image">
                     </div>
                     <div className="user-collection__info">
                         <p className="user-collection__profile-name">{ user?.username }</p>
-                        <p className="user-collection__profile-info">2 collections</p>
+                        <p className="user-collection__profile-info">{ collections.length } collections</p>
                     </div>
                     <button className="user-collection__logout" onClick={handleUserLogOut}>
                         <img src={exit} alt="X" className="user-collection__logout-image"/>
                     </button>
-                </div>
-                <div className="user-collection__side-info">
+                </Container>
+                <Container className="user-collection__side-info">
 
-                </div>
+                </Container>
             </div>
 
             <div className="user-collection__header">

@@ -39,14 +39,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: rgba(250, 250, 250, 0.9);
-    box-shadow: 0 0px 30px rgba(0, 0, 0, 0.1);
     height: 480px;
     width: 620px;
     transform: rotate(-4deg) translate(64px, -64px);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 16px;
 }
 
 .home__splash-span {
