@@ -66,25 +66,34 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
         })
     }
 
-    const handleNewCategory = (evt: React.KeyboardEvent) => {
-        if (evt.key == 'Enter') {
-            const target = (evt.target as HTMLInputElement);
-            api.addNewCategory(target.value).then((res) => {
-                const copy = [ ...categories ];
-                copy.push({
-                    _id: res._id,
-                    name: res.name,
-                    format: res.format
-                })
-                setCategories(copy);
-                target.value = "";
-            });
-        }
+    const addNewCategory = (name: string, format: string) => {
+        return api.addNewCategory(name, format).then((res) => {
+            const copy = [ ...categories ];
+            copy.push({
+                _id: res._id,
+                name: res.name,
+                format: res.format
+            })
+            setCategories(copy);
+        });
+    }
+
+    const updateCategory = () => {}
+
+    const deleteCategory = (id: string) => {
+        return api.deleteCategory(id).then((res) => {
+            console.log(res);
+            const copy = [ ...categories ];
+            setCategories(copy.filter(item => item._id != res._id))
+        })
     }
 
     return (
         <div className='collection'>
-            <CheckListOutline items={items} categories={categories} patch={patches}/>
+            <CheckListOutline items={items} categories={categories} patch={patches}
+                deleteCategory={deleteCategory}
+                createCategory={addNewCategory}
+            />
             <div className="collection__content">
                 {/* <Container className='check-list__tool-bar_h'>
                     <button onClick={copyToClipboard}> Copy </button>

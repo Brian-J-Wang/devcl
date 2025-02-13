@@ -7,8 +7,13 @@ import "./CheckListOutline.css"
 import Icon from "../../../../Components/Icon"
 import { ModalContext } from "../../../../Contexts/Modal/ModalContext"
 import EditCategoryModal from "../../Modals/EditCategoryModal/EditCategoryModal"
+import Cross from "../../../../assets/cross.svg";
+import ConfirmDeleteModal from "../../Modals/ConfirmDeleteModal/ConfirmDeleteModal"
+import CreateCategoryModal from "../../Modals/CreateCategoryModal/CreateCategoryModal"
 
 interface CheckListOutlineProps {
+    createCategory: (name: string, format: string) => Promise<any>
+    deleteCategory: (id: string) => Promise<any>;
     items: CLItem[];
     categories: CLCategories[],
     patch: CLPatch[]
@@ -40,10 +45,42 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
     }
     const categoryOutline = useMemo(buildCategoryOutline, [props.categories, props.items])
 
-    const openEditCategoryModal = () => {
+    const openCreateCategoryModal = () => {
         modalContext.setModal(
-            <EditCategoryModal/>
+            <CreateCategoryModal onSubmit={(name, format) => {
+                return props.createCategory(name, format);
+            }}></CreateCategoryModal>
         )
+    }
+
+    const openEditCategoryModal = (id: string) => {
+        return () => {
+            const category = props.categories.find((category) => category._id == id);
+    
+            if (!category) {
+                return;
+            }
+    
+            modalContext.setModal(
+                <EditCategoryModal category={category}/>
+            )
+        }
+    }
+
+    const openConfirmDeleteModal = (id: string) => {
+        return () => {
+            const category = props.categories.find((category) => category._id ==id);
+
+            if (!category) {
+                return
+            }
+
+            modalContext.setModal(
+                <ConfirmDeleteModal onConfirm={() => {
+                    return props.deleteCategory(id);
+                }}/>
+            )
+        }
     }
     
     return (
@@ -54,14 +91,17 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
             <SubSection name="Patches" expanded={false}>
                 <></>
             </SubSection>
-            <SubSection name={"Categories"} expanded={true}>
+            <SubSection name={"Categories"} expanded={true} onPlusClick={openCreateCategoryModal}>
                 {
                     categoryOutline.map((item) => (
                         <div key={item._id} className="cl-outline">
-                            <h4>{item.name}</h4>
-                            <div className="cl-outline-right">
-                                <Icon.Edit onClick={openEditCategoryModal}/>
-                                <small>{item.details}</small>
+                            <div className="cl-outline__left">
+                                <h4 className="cl-outline__name">{item.name}</h4>
+                                <small className="cl-outline__detail">{item.details}</small>
+                            </div>
+                            <div className="cl-outline__controls">
+                                <img src={Cross} alt="" className="cl-outline__delete" onClick={openConfirmDeleteModal(item._id)}/>
+                                <Icon.Edit onClick={openEditCategoryModal(item._id)} className="cl-outline__edit"/>
                             </div>
                         </div>
                     ))

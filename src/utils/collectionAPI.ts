@@ -46,24 +46,6 @@ class CollectionAPI {
         })
     }
 
-    addNewCategory(name: string) {
-        console.log(`Bearer ${this.token}`);
-        return fetch(`${this.endpoint}/${this.collection}/category`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.token}`
-            },
-            body: JSON.stringify({
-                name: name
-            })
-        }).then((res) => {
-            return res.ok ? res.json() : Promise.reject();
-        }).then((res) => {
-            return sanitize(res);
-        })
-    }
-
     updateItem(itemId: string, update: CLItemPatch) {
         return fetch(`${this.endpoint}/${this.collection}/items/${itemId}`, {
             method: "PATCH",
@@ -86,6 +68,41 @@ class CollectionAPI {
             },
         }).then((res) => {
             return res.ok ? Promise.resolve() : Promise.reject();
+        })
+    }
+
+    addNewCategory(name: string, format: string) {
+        return fetch(`${this.endpoint}/${this.collection}/category`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.token}`
+            },
+            body: JSON.stringify({
+                name: name,
+                format: format
+            })
+        }).then((res) => {
+            return res.ok ? res.json() : Promise.reject();
+        }).then((res) => {
+            return sanitize(res);
+        })
+    }
+
+    deleteCategory(id: string) {
+        return fetch(`${this.endpoint}/${this.collection}/category`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.token}`
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        }).then((res) => {
+            return res.ok ? res.json() : Promise.reject();
+        }).then((res) => {
+            return sanitize(res);
         })
     }
 

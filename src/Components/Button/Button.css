@@ -15,17 +15,17 @@
 
 .button__size_s {
     padding: 6px 8px;
-    font-size: 18px;
+    font-size: 12px;
 }
 
 .button__size_m {
     padding: 6px 12px;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .button__size_l {
     padding: 8px 16px;
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .button__r-style_s {
