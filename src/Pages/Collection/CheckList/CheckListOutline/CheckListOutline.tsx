@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react"
 import Outline from "../../../../Components/Outline/Outline"
 import SubSection from "../../../../Components/Outline/SubSection/SubSection"
-import { CLCategories, CLItem, CLPatch } from "../../interfaces"
+import { CLCategories, CLItem, CLPatch, Collaborators } from "../../interfaces"
 
 import "./CheckListOutline.css"
 import Icon from "../../../../Components/Icon"
@@ -10,13 +10,16 @@ import EditCategoryModal from "../../Modals/EditCategoryModal/EditCategoryModal"
 import Cross from "../../../../assets/cross.svg";
 import ConfirmDeleteModal from "../../Modals/ConfirmDeleteModal/ConfirmDeleteModal"
 import CreateCategoryModal from "../../Modals/CreateCategoryModal/CreateCategoryModal"
+import AddCollaboratorModal from "../../Modals/AddCollaboratorModal/AddCollaboratorModal"
 
 interface CheckListOutlineProps {
     createCategory: (name: string, format: string) => Promise<any>
     deleteCategory: (id: string) => Promise<any>;
+    addCollaborator: (alias: string, email: string) => Promise<any>;
     items: CLItem[];
     categories: CLCategories[],
-    patch: CLPatch[]
+    patch: CLPatch[],
+    collaborators: Collaborators[]
 }
 
 const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
@@ -82,15 +85,30 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
             )
         }
     }
+
+    const openAddCollaboratorModal = () => {
+        modalContext.setModal(
+            <AddCollaboratorModal onSubmit={(alias, email) => {
+                return props.addCollaborator(alias, email);
+            }} />
+        )
+    }
     
     return (
         <Outline>
-            <SubSection name="Collaborators" expanded={false}>
-                <></>
+            <SubSection name="Collaborators" expanded={false} onPlusClick={openAddCollaboratorModal}>
+                {
+                    props.collaborators.length == 0
+                    ? (
+                        <p className="cl-outline__empty">Empty</p>
+                    ) : (
+                        <></>
+                    )
+                }
             </SubSection>
-            <SubSection name="Patches" expanded={false}>
+            {/* <SubSection name="Patches" expanded={false}>
                 <></>
-            </SubSection>
+            </SubSection> */}
             <SubSection name={"Categories"} expanded={true} onPlusClick={openCreateCategoryModal}>
                 {
                     categoryOutline.map((item) => (

@@ -10,6 +10,15 @@
     padding-left: 6px;
 }
 
+.cl-outline__empty {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    transition: padding-left 0.2s;
+    color: rgba(29, 29, 29, 0.5)
+}
+
 .cl-outline__name {
     font-weight: 500;
 }

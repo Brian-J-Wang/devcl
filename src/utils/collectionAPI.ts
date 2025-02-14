@@ -121,6 +121,24 @@ class CollectionAPI {
             return sanitize(res);
         })
     }
+
+    addCollaborator(alias: string, email: string) {
+        return fetch(`${this.endpoint}/${this.collection}/collaborators`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.token}`
+            },
+            body: JSON.stringify({
+                alias: alias,
+                email: email
+            })
+        }).then((res) => {
+            return res.ok ? res.json() : Promise.reject();
+        }).then((res) => {
+            return sanitize(res);
+        })
+    }
 }
 
 export default CollectionAPI;

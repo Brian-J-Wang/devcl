@@ -6,6 +6,7 @@ export interface CLCollection {
     categories: CLCategories[]
     patches: CLPatch[],
     items: CLItem[]
+    collaborators: Collaborators[]
 }
 
 export interface CLCategories {
@@ -44,12 +45,7 @@ export interface CLPatch {
     content: string[]
 }
 
-export const emptyCollection: CLCollection = {
-    name: "",
-    version: "",
-    categories: [],
-    patches: [],
-    owner: "",
-    _id: "",
-    items: []
+export interface Collaborators {
+    alias: string,
+    email: string
 }

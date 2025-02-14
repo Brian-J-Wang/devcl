@@ -1,34 +1,16 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import icon from "../../assets/icon.svg";
 import "./NavBar.css"
 import { ModalContext } from "../../Contexts/Modal/ModalContext";
 import SignIn from "../../Pages/SignIn/SignIn";
 import SignUp from "../../Pages/SignUp/SignUp";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
+import { UserContext } from "../../Contexts/UserContext";
 
-const NavBarContext = createContext<{
-}>({});
-
-export const NavBarContextProvider: React.FC<{ children: ReactNode}> = (props) => {
-    return (
-        <NavBarContext.Provider value={{}}>
-            { props.children }
-        </NavBarContext.Provider>
-    )
-}
-
-const NavBar: React.FC<{}> = (props) => {
-    const location = useLocation();
-    const [ profileVisibile, setProfileVisible] = useState<boolean>(true);
-
+const NavBar: React.FC<{}> = () => {
+    const userContext = useContext(UserContext);
     const modalContextConsumer = useContext(ModalContext);
     const navigate = useNavigate();
-
-    //resets navbar on change, in case any page makes changes to it.
-    useEffect(() => {
-        setProfileVisible(true);
-
-    }, [location.pathname])
 
     const openSignInModal = () => {
         modalContextConsumer.setModal(<SignIn/>)
@@ -42,22 +24,41 @@ const NavBar: React.FC<{}> = (props) => {
         <div className="nav">
             <div className="nav__left">
                 <img src={icon} alt="[]" className="nav__icon" onClick={() => {navigate("/")}}/>
-                <Link to={"/"}>
+                <Link to={"/"} className="nav__tab">
                     Home
                 </Link>
-                <Link to={"/Collections"}>
-                    Collections
+                <Link to={"/roadmap"} className="nav__tab">
+                    Road Map
                 </Link>
             </div>
 
-            <div className="nav__right" hidden={!profileVisibile}>
-                <button onClick={openSignInModal} className="nav__tab">
-                    Sign In
-                </button>
-                <button onClick={openSignUpModal} className="nav__tab">
-                    Register
-                </button>
-                <div className="nav__profile"></div>
+            <div className="nav__right">
+                {
+                    userContext.isLoggedIn
+                    ? (
+                        <>
+                            <Link to={"/collections"} className="nav__tab">
+                                Dashboard
+                            </Link>
+                            <h2 className="nav__name">
+                                {userContext.user.username}
+                            </h2>
+                            <div className="nav__profile">
+                            </div>
+                        </>
+                    )
+                    : (
+                        <>
+                            <button onClick={openSignInModal} className="nav__tab">
+                                Sign In
+                            </button>
+                            <button onClick={openSignUpModal} className="nav__tab">
+                                Register
+                            </button>
+                        </>
+                    )
+                }
+                
             </div>
         </div>
     )

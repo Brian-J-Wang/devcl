@@ -4,8 +4,12 @@ import iconWhite from "../../assets/icon-white.svg";
 import { Container } from "../../Components/Container/Container";
 import { FakeCLItemElement } from "../Collection/CLItem/CLItem";
 import NavBar from "../../Components/NavBar/Navbar";
+import SignUp from "../SignUp/SignUp";
+import { useState } from "react";
+import SignIn from "../SignIn/SignIn";
 
 const Home: React.FC<{}> = () => {
+    const [currentModal, setCurrentModal] = useState<"signin" | "signup">("signup");
     return (
         <div className="home">
             <NavBar/>
@@ -28,51 +32,15 @@ const Home: React.FC<{}> = () => {
                         <FakeCLItemElement checked={false} blurb="Actually finish a project"/>
                     </Container>
                 </div>
+                {
+                    (currentModal == "signin")
+                    ? <SignIn className="home__sign-up" onSignUnClick={() => { setCurrentModal("signup")}}></SignIn>
+                    : <SignUp className="home__sign-up" onSignInClick={() => { setCurrentModal("signin") }}/>
+                }
+                
             </div>
-            <main className="home__main">
-                <section className="home__section" id="what-is-devcl">
-                    <div>
-                        <h3>What is devcl?</h3>
-                        <p>
-                            devcl is a project management tool for developers flying solo or with a team. It comes with community features to allow others to view the project an put forward their inputs.
-                        </p>
-                    </div>
-                </section>
-                <section className="home__section" id="features">
-                    <h3>Features</h3>
-                    <p>Devcl has a variety of features that developers can toggle. It's a mix and match sandbox for your needs.</p>
-
-                    <div className="home__feature-list">
-                        <Container className="home__feature-card">
-
-                        </Container>
-                        <Container className="home__feature-card">
-
-                        </Container>
-                        <Container className="home__feature-card">
-
-                        </Container>
-                        <Container className="home__feature-card">
-
-                        </Container>
-                        <Container className="home__feature-card">
-
-                        </Container>
-                        <Container className="home__feature-card">
-
-                        </Container>
-                        <Container className="home__feature-card">
-
-                        </Container>
-                        <Container className="home__feature-card">
-
-                        </Container>
-                    </div>
-                    
-                </section>
-            </main>
             <footer className="home__footer">
-
+                2024 Brian Wang
             </footer>
         </div>
     )

@@ -10,7 +10,13 @@ import SignIn from "../SignIn/SignIn"
 import "./SignUp.css"
 import icon from "../../assets/icon-white.svg"
 
-const SignUp: React.FC<{}> = () => {
+interface SignUpProps {
+    noBanner?: boolean,
+    className?: string,
+    onSignInClick?: () => void,
+}
+
+const SignUp: React.FC<SignUpProps> = (props) => {
     const [email, setEmail] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -33,14 +39,10 @@ const SignUp: React.FC<{}> = () => {
         })
     }
 
-    const handleModalChange = () => {
-        modalContextConsumer.setModal(<SignIn/>);
-    }
-
     return (
-        <Container className="sign-up__modal">
+        <Container className={`${props.className} sign-up__modal`}>
             <div className="sign-up__splash">
-                <img src={icon} alt="[]" className="sign-up"/>
+                <img src={icon} alt="[]" className="sign-up__image"/>
             </div>
             <div className="sign-up__form">
                 <h2 className="sign-up__header">Sign Up</h2>
@@ -51,7 +53,7 @@ const SignUp: React.FC<{}> = () => {
                 </div>
                 <div className="sign-up__controls">
                     <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
-                    <p className="sign-up__switch"> Already have an account? <button className="sign-up__switch-link" onClick={handleModalChange}>Sign In</button>
+                    <p className="sign-up__switch"> Already have an account? <button className="sign-up__switch-link" onClick={props.onSignInClick}>Sign In</button>
                     </p>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import Category from "../CLCategory/Category";
 
 import "./CheckList.css"
 import CollectionAPI from "../../../utils/collectionAPI";
-import { CLCategories, CLItem, CLItemPatch, CLPatch } from "../../../Pages/Collection/interfaces";
+import { CLCategories, CLItem, CLItemPatch, CLPatch, Collaborators } from "../../../Pages/Collection/interfaces";
 import CLItemElement from "../CLItem/CLItem";
 import CheckListOutline from "./CheckListOutline/CheckListOutline";
 
@@ -18,6 +18,7 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
     const [categories, setCategories] = useState<CLCategories[]>([]);
     const [patches, setPatches] = useState<CLPatch[]>([]);
     const [items, setItems] = useState<CLItem[]>([]);
+    const [collaborators, setCollaborators] = useState<Collaborators[]>([]);
 
     useEffect(() => {
         api.getCollection().then((res) => {
@@ -26,6 +27,7 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
             setCategories(res.categories);
             setPatches(res.patches);
             setItems(res.items);
+            setCollaborators(res.collaborators);
         });
     }, [])
 
@@ -78,17 +80,24 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
 
     const deleteCategory = (id: string) => {
         return api.deleteCategory(id).then((res) => {
-            console.log(res);
             const copy = [ ...categories ];
             setCategories(copy.filter(item => item._id != res._id))
+        })
+    }
+
+    const addCollaborator = (alias: string, email: string) => {
+        return api.addCollaborator(alias, email).then((res) => {
+
         })
     }
 
     return (
         <>
             <CheckListOutline items={items} categories={categories} patch={patches}
+                collaborators={collaborators}
                 deleteCategory={deleteCategory}
                 createCategory={addNewCategory}
+                addCollaborator={addCollaborator}
             />
             <div className="check-list__content">
                 <Container className="check-list__items">

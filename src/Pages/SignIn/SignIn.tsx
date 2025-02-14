@@ -6,12 +6,17 @@ import { Container } from "../../Components/Container/Container"
 import { UserContext } from "../../Contexts/UserContext"
 import { ModalContext } from "../../Contexts/Modal/ModalContext"
 import Input from "../../Components/Input"
-import SignUp from "../SignUp/SignUp"
 
 import "./SignIn.css"
 import icon from "../../assets/icon-white.svg"
 
-const SignIn: React.FC<{}> = () => {
+interface SignInProps {
+    noBanner?: boolean,
+    className?: string,
+    onSignUnClick?: () => void,
+}
+
+const SignIn: React.FC<SignInProps> = (props) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
@@ -37,12 +42,8 @@ const SignIn: React.FC<{}> = () => {
         }, 2000)
     }
 
-    const handleModalChange = () => {
-        modalContextConsumer.setModal(<SignUp/>);
-    }
-
     return (
-        <Container className="sign-in__modal">
+        <Container className= {`${props.className} sign-in__modal`}>
             <div className="sign-in__splash">
                 <img src={icon} alt="[]" className="sign-in__image"/>
             </div>
@@ -54,7 +55,7 @@ const SignIn: React.FC<{}> = () => {
                 </div>
                 <div className="sign-in__controls"> 
                     <TextButton size="s" radiusStyle="s" style="primary" className="sign-in__submit" onClick={handleSubmit}>Sign In</TextButton>
-                    <p className="sign-in__switch"> Need an account? <button className="sign-in__switch-link" onClick={handleModalChange}>Register</button>
+                    <p className="sign-in__switch"> Need an account? <button className="sign-in__switch-link" onClick={props.onSignUnClick}>Register</button>
                     </p>
                 </div>
             </div>

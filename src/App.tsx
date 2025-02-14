@@ -6,14 +6,13 @@ import Home from './Pages/Home/Home'
 import UserCollection from './Pages/UserCollections/UserCollections'
 import UserContextProvider from './Contexts/UserContext'
 import ModalContextProvider from './Contexts/Modal/ModalContext'
-import { NavBarContextProvider } from './Components/NavBar/Navbar'
 import ProtectedRoute from './Components/Protected/ProtectedRoute'
+import NotFound from './Pages/NotFound/NotFound'
 
 function App() {
   return (
     <UserContextProvider>
     <ModalContextProvider>
-    <NavBarContextProvider>
       <div className='app' id='app'>
         <Routes>
           <Route path='/' element={<Home/>}/>
@@ -21,10 +20,9 @@ function App() {
             <Route path='collections' element={<UserCollection/>}/>
             <Route path='collections/:id' element={<Collection/>}/>
           </Route>
-          
+          <Route path="*" element={<NotFound/>}/>
         </Routes>
       </div>
-    </NavBarContextProvider>
     </ModalContextProvider>
     </UserContextProvider>
   )
