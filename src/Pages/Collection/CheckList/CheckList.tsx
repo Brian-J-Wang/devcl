@@ -87,7 +87,9 @@ const CheckList: React.FC<CheckListProps> = ({ api }) => {
 
     const addCollaborator = (alias: string, email: string) => {
         return api.addCollaborator(alias, email).then((res) => {
-
+            const copy = [ ...collaborators ];
+            copy.push(res);
+            setCollaborators(copy);
         })
     }
 
