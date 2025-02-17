@@ -2,32 +2,190 @@ import CheckList from "./CheckList/CheckList";
 import { useParams } from 'react-router-dom';
 import { ItemEditor } from './ItemEditor/ItemEditor';
 import ItemEditorContext from './ItemEditor/itemEditorContext';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { CLItem } from './interfaces';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { CLCategories, CLItem, CLItemPatch, CLPatch, Collaborators } from './interfaces';
 import CollectionAPI from '../../utils/collectionAPI';
 import { UserContext } from '../../Contexts/UserContext';
 import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
 
 import './Collection.css';
 
+interface CollectionContextProps {
+    name: string,
+    version: string,
+    categories: CLCategories[],
+    patches: CLPatch[],
+    items: CLItem[],
+    collaborators: Collaborators[]
+}
+
+export const CollectionContext = createContext<CollectionContextProps>({
+    name: "",
+    version: "",
+    categories: [],
+    patches: [],
+    items: [],
+    collaborators: []
+});
+
+interface CollaboratorApiProps {
+    addCollaborator: (alias: string, email: string) =>  Promise<any>;
+    removeCollaborator: () =>  Promise<any>;
+}
+
+export const CollaboratorApiContext = createContext<CollaboratorApiProps>({
+    addCollaborator: () => Promise.reject(),
+    removeCollaborator: () => Promise.reject()
+})
+
+interface CategoryApiProps {
+    addCategory: (name: string, format: string) => Promise<any>,
+    deleteCategory: (id: string) => Promise<any>,
+    editCategory: () => Promise<any>
+}
+
+export const CategoryApiContext = createContext<CategoryApiProps>({
+    addCategory: () => Promise.reject(),
+    deleteCategory: () => Promise.reject(),
+    editCategory: () => Promise.reject()
+})
+
+interface ItemApiProps {
+    addItem: (category: string, blurb: string) => Promise<any>,
+    updateItem: (id: string, update: CLItemPatch) => Promise<any>,
+    deleteItem: (id: string) => Promise<any>
+}
+
+export const ItemApiContext = createContext<ItemApiProps>({
+    addItem: () => Promise.reject(),
+    updateItem: () => Promise.reject(),
+    deleteItem: () => Promise.reject()
+})
+
 const Collection : React.FC = () => {
     const [ activeItem, setActiveItem ] = useState<CLItem>();
 
     const { id } = useParams();
     const userContext = useContext(UserContext);
-    const collectionAPI = useRef<CollectionAPI>(new CollectionAPI('http://localhost:5081/collections', id!, userContext.token));
+    const backend = useRef<CollectionAPI>(new CollectionAPI('http://localhost:5081/collections', id!, userContext.token));
 
     useEffect(() => {
-        collectionAPI.current = new CollectionAPI('http://localhost:5081/collections', id!, userContext.token)
+        backend.current = new CollectionAPI('http://localhost:5081/collections', id!, userContext.token)
     }, [userContext.token])
+
+    const [name, setName] = useState<string>("");
+    const [version, setVersion] = useState<string>("");
+    const [categories, setCategories] = useState<CLCategories[]>([]);
+    const [patches, setPatches] = useState<CLPatch[]>([]);
+    const [items, setItems] = useState<CLItem[]>([]);
+    const [collaborators, setCollaborators] = useState<Collaborators[]>([]);
+
+    useEffect(() => {
+        backend.current.getCollection().then((res) => {
+            setName(res.name);
+            setVersion(res.version);
+            setCategories(res.categories);
+            setPatches(res.patches);
+            setItems(res.items);
+            setCollaborators(res.collaborators);
+        });
+    }, [])
+
+    //Collaborator Apis
+    const addCollaborator = (alias: string, email: string) => {
+        return backend.current.addCollaborator(alias, email).then((res) => {
+            const copy = [ ...collaborators ];
+            copy.push(res);
+            console.log(res);
+            setCollaborators(copy);
+        });
+    }
+
+    const removeCollaborator = () => {
+        return Promise.reject("Not Implemented");
+    }
+
+    //Category Apis
+    const addCategory = (name: string, format: string) => {
+        return backend.current.addCategory(name, format).then((res) => {
+            const copy = [ ...categories ];
+            copy.push({
+                _id: res._id,
+                name: res.name,
+                format: res.format
+            })
+            setCategories(copy);
+        });
+    }
+
+    const deleteCategory = (id: string) => {
+        return backend.current.deleteCategory(id).then((res) => {
+            const copy = [ ...categories ];
+            setCategories(copy.filter(item => item._id != res._id))
+        });
+    } 
+
+    const editCategory = () => {
+        return Promise.reject("Not Implemented");
+    }
+
+    //Item Api
+    const addItem = (category: string, blurb: string) => {
+        return backend.current.addNewItem(category, blurb).then((res) => {
+            const copy = [ ...items ];
+            copy.push(res);
+            setItems(copy);
+        });
+    }
+
+    const updateItem = (id: string, update: CLItemPatch) => {
+        return backend.current.updateItem(id, update).then((res) => {
+            const copy = [ ...items ];
+            copy.find((item) => item._id == res._id)!.checked = res.checked;
+            setItems(copy);
+        });
+    }
+
+    const deleteItem = (id: string) => {
+        return backend.current.deleteItem(id).then(() => {
+            const copy = [ ...items ];
+            setItems(copy.filter(item => item._id != id));
+        });
+    }
 
     return (
         <div className='collection'>
             <BreadCrumb/>
-            <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
-                <CheckList api={collectionAPI.current}/>
-                <ItemEditor/>
-            </ItemEditorContext.Provider>
+            <CollectionContext.Provider value={{
+                name: name,
+                version: version,
+                categories: categories,
+                patches: patches,
+                items: items,
+                collaborators: collaborators
+            }}>
+            <CollaboratorApiContext.Provider value={{
+                addCollaborator,
+                removeCollaborator
+            }}>
+            <CategoryApiContext.Provider value={{
+                addCategory,
+                deleteCategory,
+                editCategory
+            }}>
+            <ItemApiContext.Provider value={{
+                addItem,
+                updateItem,
+                deleteItem
+            }}>
+                <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
+                    <CheckList/>
+                    <ItemEditor/>
+                </ItemEditorContext.Provider>
+            </ItemApiContext.Provider>
+            </CategoryApiContext.Provider>
+            </CollaboratorApiContext.Provider>
+            </CollectionContext.Provider>
         </div>
     );
 }

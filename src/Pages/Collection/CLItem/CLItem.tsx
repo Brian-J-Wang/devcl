@@ -1,21 +1,21 @@
 import "./CLItem.css"
 import { useContext, useState} from "react"
-import { CLItem, CLItemPatch } from "../../../Pages/Collection/interfaces"
+import { CLItem } from "../../../Pages/Collection/interfaces"
 import ItemEditorContext from "../../../Pages/Collection/ItemEditor/itemEditorContext"
 import { CheckBoxState } from "../../../Components/Icon/Checkbox/Checkbox"
 import Icon from "../../../Components/Icon"
+import { ItemApiContext } from "../Collection"
 
 type itemProps = {
-    clItem: CLItem,
-    updateItem: (itemId: string, update: CLItemPatch) => Promise<any>
-    deleteItem: (itemId: string) => Promise<any>
+    clItem: CLItem
 }
 
-const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) => {
+const CLItemElement: React.FC<itemProps> = ({ clItem }) => {
     const itemEditorContext = useContext(ItemEditorContext);
+    const itemApi = useContext(ItemApiContext);
 
     const handleCheckboxClick = () => {
-        updateItem(clItem._id, {
+        itemApi.updateItem(clItem._id, {
             checked: !clItem.checked
         })
     }
@@ -37,7 +37,7 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, updateItem, deleteItem}) =
                 </p>
             </div>
             <div className="clitem__right-container">
-                <Icon.TrashCan onClick={() => { deleteItem( clItem._id )}} data-editorIgnore/>
+                <Icon.TrashCan onClick={() => { itemApi.deleteItem( clItem._id )}} data-editorIgnore/>
             </div>
         </div>
     )

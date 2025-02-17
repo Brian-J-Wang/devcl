@@ -1,21 +1,22 @@
-import { ReactNode, useEffect, useState} from 'react'
+import { ReactNode, useContext, useState} from 'react'
 import "./Category.css"
 
 import arrow from "../../../assets/Arrow.svg";
+import { ItemApiContext } from '../Collection';
 
 interface categoryProps {
     id: string,
     name: string,
     children: ReactNode,
-    addNewItem: (categoryId: string, blurb: string) => Promise<any>;
 }
 
-const Category : React.FC<categoryProps> = ({ id, name, children, addNewItem}) => {
+const Category : React.FC<categoryProps> = ({ id, name, children}) => {
     const [isCollapsed, SetIsCollapsed] = useState<boolean>(false);
+    const itemAPI = useContext(ItemApiContext);
 
     const handleKeyboardInput = (evt: any) => {
         if (evt.key == "Enter") {
-            addNewItem(id, evt.target.value).then(() => {
+            itemAPI.addItem(id, evt.target.value).then(() => {
                 evt.target.value = "";
             });
         }

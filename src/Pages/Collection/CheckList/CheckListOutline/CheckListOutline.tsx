@@ -1,7 +1,6 @@
 import { useContext, useMemo } from "react"
 import Outline from "../../../../Components/Outline/Outline"
 import SubSection from "../../../../Components/Outline/SubSection/SubSection"
-import { CLCategories, CLItem, CLPatch, Collaborators } from "../../interfaces"
 
 import "./CheckListOutline.css"
 import Icon from "../../../../Components/Icon"
@@ -11,29 +10,20 @@ import Cross from "../../../../assets/cross.svg";
 import ConfirmDeleteModal from "../../Modals/ConfirmDeleteModal/ConfirmDeleteModal"
 import CreateCategoryModal from "../../Modals/CreateCategoryModal/CreateCategoryModal"
 import AddCollaboratorModal from "../../Modals/AddCollaboratorModal/AddCollaboratorModal"
+import { CategoryApiContext, CollaboratorApiContext, CollectionContext } from "../../Collection"
 
-interface CheckListOutlineProps {
-    createCategory: (name: string, format: string) => Promise<any>
-    deleteCategory: (id: string) => Promise<any>;
-    addCollaborator: (alias: string, email: string) => Promise<any>;
-    items: CLItem[];
-    categories: CLCategories[],
-    patch: CLPatch[],
-    collaborators: Collaborators[]
-}
-
-const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
+const CheckListOutline: React.FC<{}> = () => {
     const modalContext = useContext(ModalContext);
-    const buildCategoryOutline = (): {
-        _id: string,
-        name: string,
-        details: string
-    }[]  => {
-        return props.categories.map((category) => {
+    const collectionContext = useContext(CollectionContext);
+    const categoryApi = useContext(CategoryApiContext);
+    const collaboratorApi = useContext(CollaboratorApiContext);
+
+    const categoryOutline = useMemo(() => {
+        return collectionContext.categories.map((category) => {
             let numItemsCompleted = 0;
             let totalItems = 0;
 
-            props.items.forEach((item) => {
+            collectionContext.items.forEach((item) => {
                 if (item.category == category._id) {
                     numItemsCompleted += item.checked ? 1 : 0;
                     totalItems++;
@@ -45,34 +35,35 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
                 details: `${numItemsCompleted}/${totalItems}`
             }
         })
-    }
-    const categoryOutline = useMemo(buildCategoryOutline, [props.categories, props.items])
+    }, [collectionContext.categories, collectionContext.items])
 
     const openCreateCategoryModal = () => {
         modalContext.setModal(
             <CreateCategoryModal onSubmit={(name, format) => {
-                return props.createCategory(name, format);
+                return categoryApi.addCategory(name, format);
             }}></CreateCategoryModal>
         )
     }
 
     const openEditCategoryModal = (id: string) => {
         return () => {
-            const category = props.categories.find((category) => category._id == id);
+            const category = collectionContext.categories.find((category) => category._id == id);
     
             if (!category) {
                 return;
             }
     
             modalContext.setModal(
-                <EditCategoryModal category={category}/>
+                <EditCategoryModal category={category} onSubmit={function (): Promise<any> {
+                    throw new Error("Function not implemented.")
+                } }/>
             )
         }
     }
 
     const openConfirmDeleteModal = (id: string) => {
         return () => {
-            const category = props.categories.find((category) => category._id ==id);
+            const category = collectionContext.categories.find((category) => category._id ==id);
 
             if (!category) {
                 return
@@ -80,7 +71,7 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
 
             modalContext.setModal(
                 <ConfirmDeleteModal onConfirm={() => {
-                    return props.deleteCategory(id);
+                    return categoryApi.deleteCategory(id);
                 }}/>
             )
         }
@@ -89,7 +80,7 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
     const openAddCollaboratorModal = () => {
         modalContext.setModal(
             <AddCollaboratorModal onSubmit={(alias, email) => {
-                return props.addCollaborator(alias, email);
+                return collaboratorApi.addCollaborator(alias, email);
             }} />
         )
     }
@@ -98,17 +89,27 @@ const CheckListOutline: React.FC<CheckListOutlineProps> = (props) => {
         <Outline>
             <SubSection name="Collaborators" expanded={false} onPlusClick={openAddCollaboratorModal}>
                 {
-                    props.collaborators.length == 0
+                    collectionContext.collaborators.length == 0
                     ? (
                         <p className="cl-outline__empty">Empty</p>
                     ) : (
-                        <></>
+                        collectionContext.collaborators.map((collaborator) => (
+                            <div key={(collaborator.email)} className="cl-outline">
+                                {collaborator.alias}
+                            </div>
+                        ))
                     )
                 }
             </SubSection>
-            {/* <SubSection name="Patches" expanded={false}>
-                <></>
-            </SubSection> */}
+            <SubSection name="Patches" expanded={false}>
+                {
+                    collectionContext.patches.reverse().map((patch) => (
+                        <div>
+                            {patch.version}
+                        </div>
+                    ))
+                }
+            </SubSection>
             <SubSection name={"Categories"} expanded={true} onPlusClick={openCreateCategoryModal}>
                 {
                     categoryOutline.map((item) => (

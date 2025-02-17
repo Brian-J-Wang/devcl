@@ -7,7 +7,8 @@ import "./EditCategoryModal.css"
 import { TextButton } from "../../../../Components/Button/Button";
 
 interface EditCategoryModalProps {
-    category: CLCategories
+    category: CLCategories,
+    onSubmit: () => Promise<any>
 }
 
 const EditCategoryModal: React.FC<EditCategoryModalProps> = (props) => {

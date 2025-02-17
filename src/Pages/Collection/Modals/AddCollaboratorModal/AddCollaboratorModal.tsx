@@ -27,7 +27,7 @@ const AddCollaboratorModal: React.FC<AddCollaborator> = (props) => {
             <h2>Add Collaborator</h2>
             <div className="create-category__input">
                 <Input.Text type="text" name="Alias" stateHandler={setAlias}/>
-                <small>Collaborators will be referenced by their aliases</small>
+                <small>Collaborators will be referenced by their aliases. Aliases must be unique.</small>
             </div>
             <div className="create-category__input">
                 <Input.Text type="text" name="Email" stateHandler={setEmail}/>

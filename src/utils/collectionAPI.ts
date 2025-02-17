@@ -71,7 +71,7 @@ class CollectionAPI {
         })
     }
 
-    addNewCategory(name: string, format: string) {
+    addCategory(name: string, format: string) {
         return fetch(`${this.endpoint}/${this.collection}/category`, {
             method: "POST",
             headers: {
