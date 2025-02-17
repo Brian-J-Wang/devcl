@@ -16,7 +16,8 @@ export const UserContext = createContext<{
     user: User,
     api: apiFunctions,
     token: string,
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
+    isLoading: boolean,
     logUserOut: () => Promise<any>
 }>({
     user: {
@@ -38,7 +39,8 @@ export const UserContext = createContext<{
     isLoggedIn: false,
     logUserOut: function (): Promise<any> {
         throw new Error("Function not implemented.");
-    }
+    },
+    isLoading: false
 })
 
 
@@ -48,6 +50,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     const [user, setUser] = useState<User | undefined>(undefined);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [token, setToken] = useState<string>("");
+    const [isloading, setIsloading] = useState<boolean>(true);
 
     useEffect(() => {
         const jwt = localStorage.getItem("jwt");
@@ -60,6 +63,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
         userAPI.current.getUser(jwt).then((res: User) => {
             setIsLoggedIn(true);
             setUser(res);
+            setIsloading(false);
         });
         
     }, [])
@@ -112,6 +116,7 @@ const UserContextProvider: React.FC<{ children: ReactNode }> = (props) => {
             api: api,
             token: token,
             isLoggedIn: isLoggedIn,
+            isLoading: isloading,
             logUserOut: logUserOut
         }}>
             {props.children}
