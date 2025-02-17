@@ -24,13 +24,14 @@ const CheckList: React.FC<{}> = () => {
     }
 
     return (
-        <>
-            <CheckListOutline/>
+        <div className="check-list">
+            <div className='check-list__header'>
+                <input className='check-list__name' type="text" defaultValue={collectionContext.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
+            </div>
             <div className="check-list__content">
+                <CheckListOutline/>
                 <Container className="check-list__items">
-                    <div className='check-list__header'>
-                        <input id="check-list__name" className='check-list__name' type="text" defaultValue={collectionContext.name} onKeyDown={handleKeyboardInput} onBlur={handleInputBlur}/>
-                    </div>
+                    
                     {
                         collectionContext.categories.map((category) => {
                             return (
@@ -50,7 +51,7 @@ const CheckList: React.FC<{}> = () => {
                     <div className='check-list__footer'>Version {collectionContext.version}</div>
                 </Container>
             </div>
-        </>
+        </div>
     );
 }
 

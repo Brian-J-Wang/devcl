@@ -1,18 +1,6 @@
 .outline {
     width: 240px;
-    margin: 6px;
-    margin-right: 0px;
     background-color: white;
-    border-radius: 4px;
     overflow: hidden;
     padding: 0px;
-}
-
-.outline__header {
-    font-size: 16px;
-    height: 24px;
-    padding: 4px 0px 4px 5px;
-    box-sizing: border-box;
-    border-bottom: 1px solid rgba(29, 29, 29, 0.7);
-    letter-spacing: 1px;
 }
