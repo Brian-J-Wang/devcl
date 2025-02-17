@@ -30,7 +30,7 @@ export const CollectionContext = createContext<CollectionContextProps>({
 
 interface CollaboratorApiProps {
     addCollaborator: (alias: string, email: string) =>  Promise<any>;
-    removeCollaborator: () =>  Promise<any>;
+    removeCollaborator: (alias: string) =>  Promise<any>;
 }
 
 export const CollaboratorApiContext = createContext<CollaboratorApiProps>({
@@ -101,8 +101,11 @@ const Collection : React.FC = () => {
         });
     }
 
-    const removeCollaborator = () => {
-        return Promise.reject("Not Implemented");
+    const removeCollaborator = (alias: string) => {
+        return backend.current.removeCollaborator(alias).then(() => {
+            const copy = [...collaborators].filter((collaborators) => collaborators.alias != alias);
+            setCollaborators(copy);
+        });
     }
 
     //Category Apis

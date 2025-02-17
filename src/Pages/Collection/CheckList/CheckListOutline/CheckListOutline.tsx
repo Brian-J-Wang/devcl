@@ -84,6 +84,10 @@ const CheckListOutline: React.FC<{}> = () => {
             }} />
         )
     }
+
+    const removeCollaborator = (alias: string) => () => {
+        collaboratorApi.removeCollaborator(alias);
+    }
     
     return (
         <Outline>
@@ -95,7 +99,12 @@ const CheckListOutline: React.FC<{}> = () => {
                     ) : (
                         collectionContext.collaborators.map((collaborator) => (
                             <div key={(collaborator.email)} className="cl-outline">
-                                {collaborator.alias}
+                                <div className="cl-outline__left">
+                                    {collaborator.alias}
+                                </div>
+                                <div className="cl-outline__controls">
+                                    <img src={Cross} alt="" className="cl-outline__delete" onClick={removeCollaborator(collaborator.alias)}/>   
+                                </div>
                             </div>
                         ))
                     )
@@ -119,8 +128,8 @@ const CheckListOutline: React.FC<{}> = () => {
                                 <small className="cl-outline__detail">{item.details}</small>
                             </div>
                             <div className="cl-outline__controls">
-                                <img src={Cross} alt="" className="cl-outline__delete" onClick={openConfirmDeleteModal(item._id)}/>
                                 <Icon.Edit onClick={openEditCategoryModal(item._id)} className="cl-outline__edit"/>
+                                <img src={Cross} alt="" className="cl-outline__delete" onClick={openConfirmDeleteModal(item._id)}/>
                             </div>
                         </div>
                     ))

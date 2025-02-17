@@ -139,6 +139,21 @@ class CollectionAPI {
             return sanitize(res);
         })
     }
+
+    removeCollaborator(alias: string) {
+        return fetch(`${this.endpoint}/${this.collection}/collaborators`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.token}`
+            },
+            body: JSON.stringify({
+                alias: alias
+            })
+        }).then((res) => {
+            return res.ok ? Promise.resolve() : Promise.reject();
+        })
+    }
 }
 
 export default CollectionAPI;
