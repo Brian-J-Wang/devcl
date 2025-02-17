@@ -11,6 +11,7 @@ import ConfirmDeleteModal from "../../Modals/ConfirmDeleteModal/ConfirmDeleteMod
 import CreateCategoryModal from "../../Modals/CreateCategoryModal/CreateCategoryModal"
 import AddCollaboratorModal from "../../Modals/AddCollaboratorModal/AddCollaboratorModal"
 import { CategoryApiContext, CollaboratorApiContext, CollectionContext } from "../../Collection"
+import CreateNewPatchModal from "../../Modals/CreateNewPatchModal/CreateNewPatchModal"
 
 const CheckListOutline: React.FC<{}> = () => {
     const modalContext = useContext(ModalContext);
@@ -85,6 +86,12 @@ const CheckListOutline: React.FC<{}> = () => {
         )
     }
 
+    const openNewPatchModal = () => {
+        modalContext.setModal(
+            <CreateNewPatchModal version={collectionContext.version}/>
+        )
+    }
+
     const removeCollaborator = (alias: string) => () => {
         collaboratorApi.removeCollaborator(alias);
     }
@@ -110,7 +117,7 @@ const CheckListOutline: React.FC<{}> = () => {
                     )
                 }
             </SubSection>
-            <SubSection name="Patches" expanded={false}>
+            <SubSection name="Patches" expanded={false} onPlusClick={openNewPatchModal}>
                 {
                     collectionContext.patches.reverse().map((patch) => (
                         <div>

@@ -1,0 +1,12 @@
+.new-patch {
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.new-patch__radio {
+    display: flex;
+    justify-content: space-around;
+
+}
