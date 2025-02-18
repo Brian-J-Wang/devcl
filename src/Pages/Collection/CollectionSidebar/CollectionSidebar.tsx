@@ -51,17 +51,4 @@ const CollectionSidebar: React.FC<{}> = () => {
     )
 }
 
-interface SidebarItemProps {
-    icon: string,
-    title: string
-}
-
-const SidebarItem: React.FC<SidebarItemProps> = (props) => {
-    return (
-        <div className="cl-sidebar__item">
-            
-        </div>
-    )
-}
-
 export default CollectionSidebar
