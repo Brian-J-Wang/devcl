@@ -3,6 +3,10 @@
     flex: 1;
 }
 
+.check-list__toolbar {
+    padding: 2px;
+}
+
 .check-list__footer {
     padding: 0px 12px;
     justify-self: end;

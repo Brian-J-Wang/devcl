@@ -10,7 +10,16 @@ s {
 
 .section__header {
     display: flex;
+    flex-direction: row;
     padding: 0px 6px;
+    align-items: center;
+    height: 28px;
+    transition: background-color 0.5s;
+}
+
+.section__header:hover {
+    transition: background-color 0.2s;
+    background-color: var(--color-off-white);
 }
 
 .section__collapse-button {
@@ -47,6 +56,16 @@ s {
     margin: 0px;
     opacity: 80%;
     font-size: 18px;
+}
+
+.section__trash-can {
+    margin-left: auto !important; 
+    margin-right: 6px !important;
+    visibility: hidden;
+}
+
+.section__header:hover .section__trash-can {
+    visibility: visible;
 }
 
 .section__items {

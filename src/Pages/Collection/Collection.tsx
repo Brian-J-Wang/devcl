@@ -187,12 +187,12 @@ const Collection : React.FC = () => {
                 deleteItem
             }}>
                 <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
-                
+                <CheckListOutline setActivePage={setActivePage}/>
                 <div className="collection__content">
-                    <CheckListOutline setActivePage={setActivePage}/>
+                    
                     { RenderRightPanel(activePage) }
                 </div>
-                <ItemEditor/>
+                
                 </ItemEditorContext.Provider>
             </ItemApiContext.Provider>
             </CategoryApiContext.Provider>

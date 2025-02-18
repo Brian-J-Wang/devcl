@@ -7,7 +7,7 @@
 }
 
 .clitem:hover {
-    background-color: whitesmoke;
+    background-color: var(--color-off-white);
 }
 
 .clitem__left-container {

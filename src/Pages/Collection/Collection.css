@@ -4,7 +4,8 @@
     overflow: hidden;
     padding: 39px 6px 6px;
     display: flex;
-    flex-direction: column;
+    gap: 6px;
+
     
     box-sizing: border-box;
 }
@@ -31,6 +32,7 @@
 
 .collection__content {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: 6px;
     flex: 1
 }

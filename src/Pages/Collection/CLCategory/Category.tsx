@@ -2,7 +2,10 @@ import { ReactNode, useContext, useState} from 'react'
 import "./Category.css"
 
 import arrow from "../../../assets/Arrow.svg";
-import { ItemApiContext } from '../Collection';
+import { CategoryApiContext, ItemApiContext } from '../Collection';
+import Icon from '../../../Components/Icon';
+import { ModalContext } from '../../../Contexts/Modal/ModalContext';
+import ConfirmDeleteModal from '../Modals/ConfirmDeleteModal/ConfirmDeleteModal';
 
 interface categoryProps {
     id: string,
@@ -21,6 +24,14 @@ const Category : React.FC<categoryProps> = ({ id, name, children}) => {
             });
         }
     }
+
+    const modalContext = useContext(ModalContext);
+    const categoryApi = useContext(CategoryApiContext);
+    const openConfirmDeleteModal = () => {
+        modalContext.setModal(<ConfirmDeleteModal onConfirm={() => {
+            return categoryApi.deleteCategory(id);
+        }}/>)
+    }
     
     return (
         <div className="section">
@@ -29,6 +40,7 @@ const Category : React.FC<categoryProps> = ({ id, name, children}) => {
                     <img src={arrow} alt="" className={`${isCollapsed && 'section__drop-down-arrow_collapsed'} section__drop-down-arrow`}/>
                 </button>
                 <h2 className="section__name"> { name } </h2>
+                <Icon.TrashCan className="section__trash-can" onClick={openConfirmDeleteModal}/>
             </div>
             <div hidden={isCollapsed}>
                 <div className='section__items'>

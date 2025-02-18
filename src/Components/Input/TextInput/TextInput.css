@@ -9,16 +9,17 @@
     line-height: 10px;
     position: absolute;
     left: 6px;
-    bottom: 14px;
+    bottom: 12px;
     padding: 0px 2px 0px 2px;
     background-color: rgba(0, 0, 0, 0);
     pointer-events: none;
     cursor: none;
+    transition: bottom 0.2s;
 }
 
 .text-input__name-focused {
     background-color: rgba(255, 255, 255, 1);
-    bottom: 32px;
+    bottom: 30px;
 }
 
 .text-input__input {

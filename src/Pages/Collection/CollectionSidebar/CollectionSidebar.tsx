@@ -29,22 +29,21 @@ const CollectionSidebar: React.FC<CollectionSidebarProps> = (props) => {
         <Container className="cl-sidebar">
             <div className="cl-sidebar__profile">
                 <div className="cl-sidebar__profile-left">
-                    { generatePlaceHolder() }
+                    <p>{ generatePlaceHolder() }</p>
                 </div>
                 <div className="cl-sidebar__profile-right">
-                    <h1 className="cl-sidebar__name">{collectionContext.name}</h1>
+                    <h1>{collectionContext.name}</h1>
                     <small>owner name</small>
                 </div>
             </div>
-            <hr className="cl-sidebar__hr"/>
             <RadioGroup className="cl-sidebar__menu" styles={{
                 selected: "cl-sidebar__item_selected"
             }} onChange={(value) => { props.setActivePage(value); }}>
-                <Radio name="checklist" className="cl-sidebar__item">
+                <Radio name="checklist" className="cl-sidebar__item" initial>
                     <img src={collectionIcon} alt="missing" className="cl-sidebar__item-image"/>
                     <h2 className="cl-sidebar__item-title">CheckList</h2>
                 </Radio>
-                <Radio name="collaborators" className="cl-sidebar__item" initial>
+                <Radio name="collaborators" className="cl-sidebar__item">
                     <img src={personIcon} alt="missing" className="cl-sidebar__item-image"/>
                     <h2 className="cl-sidebar__item-title">Collaborators</h2>
                 </Radio>
