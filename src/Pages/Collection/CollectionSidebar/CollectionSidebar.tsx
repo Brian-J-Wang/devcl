@@ -1,0 +1,67 @@
+import "./CollectionSidebar.css"
+import { Container } from "../../../Components/Container/Container"
+import { useContext } from "react"
+import { CollectionContext } from "../Collection"
+
+import collectionIcon from "../../../assets/sidebar-collection-icon.svg"
+import personIcon from "../../../assets/person-icon.svg"
+import RadioGroup from "../../../Components/Input/Radio/RadioGroup"
+import Radio from "../../../Components/Input/Radio/Radio"
+
+const CollectionSidebar: React.FC<{}> = () => {
+    const collectionContext = useContext(CollectionContext);
+
+    const generatePlaceHolder = () => {
+        const names = collectionContext.name.split(" ").map((word) => {
+            return word.charAt(0);
+        });
+
+        return `${names[0] ?? ""}${names[1] ?? ""}`;
+    }
+
+    return (
+        <Container className="cl-sidebar">
+            <div className="cl-sidebar__profile">
+                <div className="cl-sidebar__profile-left">
+                    { generatePlaceHolder() }
+                </div>
+                <div className="cl-sidebar__profile-right">
+                    <h1 className="cl-sidebar__name">{collectionContext.name}</h1>
+                    <small>owner name</small>
+                </div>
+            </div>
+            <hr className="cl-sidebar__hr"/>
+            <RadioGroup className="cl-sidebar__menu" styles={{
+                selected: "cl-sidebar__item_selected"
+            }}>
+                <Radio name="checklist" className="cl-sidebar__item">
+                    <img src={collectionIcon} alt="missing" className="cl-sidebar__item-image"/>
+                    <h2 className="cl-sidebar__item-title">CheckList</h2>
+                </Radio>
+                <Radio name="collaborators" className="cl-sidebar__item" initial>
+                    <img src={personIcon} alt="missing" className="cl-sidebar__item-image"/>
+                    <h2 className="cl-sidebar__item-title">Collaborators</h2>
+                </Radio>
+                <Radio name="patches" className="cl-sidebar__item">
+                    <img src={personIcon} alt="missing" className="cl-sidebar__item-image"/>
+                    <h2 className="cl-sidebar__item-title">Patches</h2>
+                </Radio>
+            </RadioGroup>
+        </Container>
+    )
+}
+
+interface SidebarItemProps {
+    icon: string,
+    title: string
+}
+
+const SidebarItem: React.FC<SidebarItemProps> = (props) => {
+    return (
+        <div className="cl-sidebar__item">
+            
+        </div>
+    )
+}
+
+export default CollectionSidebar

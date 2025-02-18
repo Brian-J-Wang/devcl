@@ -1,26 +1,26 @@
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { RadioGroupContext } from "./RadioGroup";
-import { generateMongoID } from "../../../utils/dummyGenerators";
 
 import "./Radio.css";
 
 export interface RadioProps {
+    name: string,
     children: ReactNode,
-    className?: string
+    className?: string,
+    initial?: boolean
 }
 
 const getRadioGroupContext = () => {
     const radioContext = useContext(RadioGroupContext);
 
     if (!radioContext) {
-        console.error("radio component is not nested within a radio context group");
+        throw new Error("radio component is not nested within a radio context group");
     }
 
     return radioContext;
 }
 
 const Radio: React.FC<RadioProps> = (props) => {
-    const [ id ] = useState<string>(generateMongoID());
     const radioContext = getRadioGroupContext();
 
     const updateRadio = () => {
@@ -28,13 +28,19 @@ const Radio: React.FC<RadioProps> = (props) => {
             return;
         }
 
-        radioContext.setSelected(id);
+        radioContext.setActive(props.name);
     }
+
+    useEffect(() => {
+        if (props.initial) {
+            radioContext.setActive(props.name);
+        }
+    }, [])
 
     return (
         <div className={`
             radio
-            ${radioContext?.selected == id && `radio_selected`}
+            ${radioContext?.active == props.name && radioContext.selectedClass}
             ${props.className}
         `} onClick={updateRadio}>
             {props.children}

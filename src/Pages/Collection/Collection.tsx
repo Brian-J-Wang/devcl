@@ -9,6 +9,7 @@ import { UserContext } from '../../Contexts/UserContext';
 import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
 
 import './Collection.css';
+import CheckListOutline from "./CollectionSidebar/CollectionSidebar";
 
 interface CollectionContextProps {
     name: string,
@@ -182,8 +183,12 @@ const Collection : React.FC = () => {
                 deleteItem
             }}>
                 <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
+                
+                <div className="collection__content">
+                    <CheckListOutline/>
                     <CheckList/>
-                    <ItemEditor/>
+                </div>
+                <ItemEditor/>
                 </ItemEditorContext.Provider>
             </ItemApiContext.Provider>
             </CategoryApiContext.Provider>

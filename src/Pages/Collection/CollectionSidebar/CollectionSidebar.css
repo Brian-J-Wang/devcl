@@ -1,0 +1,83 @@
+.cl-sidebar {
+    width: 240px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.cl-sidebar__profile {
+    display: flex;
+    align-items: center;
+    padding: 8px 0px 8px 12px;
+    gap: 6px;
+}
+
+.cl-sidebar__profile-left {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: #002147;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.cl-sidebar__name {
+    font-size: 16px;
+    margin: 0px;
+}
+
+.cl-sidebar__hr {
+    border: none;
+    border-top: 1px solid #292929;
+    margin: 0px 6px;
+    opacity: 20%;
+}
+
+.cl-sidebar__menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.cl-sidebar__item {
+    height: 24px;
+    padding: 6px 0px 6px 12px;
+    display: flex;   
+    align-items: center;
+    opacity: 50%;
+    background-color: rgba(0, 0, 0, 0);
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+.cl-sidebar__item:hover {
+    background-color: rgba(29, 29, 29, 0.1);
+}
+
+.cl-sidebar__item:hover:not(.cl-sidebar__item_selected) {
+    opacity: 85%;
+}
+
+.cl-sidebar__item-image {
+    height: 24px;
+    width: 36px;
+}
+
+.cl-sidebar__item-title {
+    margin: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: margin-left 0.2s;
+}
+
+.cl-sidebar__item:hover .cl-sidebar__item-title {
+    margin-left: 10px;
+}
+
+.cl-sidebar__item_selected {
+    opacity: 100%;
+    background-color: rgba(29, 29, 29, 0.1);
+}
+
+.cl-sidebar__item_selected .cl-sidebar__item-title {
+    margin-left: 10px;
+}

@@ -1,32 +1,41 @@
-import { createContext, ReactElement, useState } from "react"
+import { Children, cloneElement, createContext, ReactElement, useState } from "react"
 import Radio from "./Radio"
 
 import "./Radio.css"
 
 interface RadioGroupContextProps {
-    selected: string,
-    setSelected: React.Dispatch<React.SetStateAction<string>>
+    active: string,
+    setActive: React.Dispatch<React.SetStateAction<string>>,
+    selectedClass: string
 }
 
 export const RadioGroupContext = createContext<RadioGroupContextProps | undefined>(undefined);
 
 export interface RadioGroupProps {
-    name: string,
+    name?: string,
     className?: string,
-    children: ReactElement<typeof Radio> | Array<ReactElement<typeof Radio>>
+    children: ReactElement<typeof Radio> | Array<ReactElement<typeof Radio>>,
+    styles?: {
+        group?: string
+        selected?: string
+    }
 }
 
 const RadioGroup: React.FC<RadioGroupProps> = (props) => {
-    const [selected, setSelected] = useState<string>("");
+    const [active, setActive] = useState<string>("");
+    const [ selected ] = useState(props.styles?.selected ?? "");
 
     return (
         <RadioGroupContext.Provider value={{
-            selected,
-            setSelected
+            active,
+            setActive,
+            selectedClass: selected
         }}>
-            <div className={`${props.className} radio__group`}>
-                <h2 className="radio__name">{props.name}</h2>
-                <div className="radio__group-items" >
+            <div className={props.className}>
+                {
+                    props.name && <h2 className="radio__name">{props.name}</h2>
+                }
+                <div className={`${props.styles?.group}`}>
                     {
                         props.children
                     }
