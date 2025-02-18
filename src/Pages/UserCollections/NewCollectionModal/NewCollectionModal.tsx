@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { TextButton } from "../../../Components/Button/Button";
 import Input from "../../../Components/Input";
 import "./NewCollectionModal.css"
 
@@ -20,7 +19,7 @@ const NewCollectionModal: React.FC<NewCollectionModalProps> = (props) => {
             <div className="new-collection__inputs">
                 <Input.Text type="text" name="Collection Name" stateHandler={setCollectionName}/>
             </div>
-            <TextButton size="s" radiusStyle="s" style="primary" className="new-collection__submit" onClick={handleSubmit}>Create</TextButton>
+            <Input.Button onClick={handleSubmit}>Create</Input.Button>
         </div>
     )
 }

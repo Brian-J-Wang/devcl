@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { TextButton } from "../../../../Components/Button/Button";
 import { Container } from "../../../../Components/Container/Container"
 import Input from "../../../../Components/Input";
 
@@ -33,7 +32,7 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = (props) => {
                 <br/>
                 <small className="edit-category__format-small">{format}: Did that unit of work</small>
             </div>
-            <TextButton size="m" radiusStyle="m" style="primary" onClick={AddCategory(name, format)}>Create</TextButton>
+            <Input.Button style="primary" onClick={AddCategory(name, format)}>Create</Input.Button>
         </Container>
     )
 }

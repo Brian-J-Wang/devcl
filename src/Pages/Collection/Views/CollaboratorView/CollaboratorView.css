@@ -1,0 +1,30 @@
+.collab-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.collab-view__header {
+    padding: 6px 6px ;
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    height: 32px;
+    line-height: 32px;
+    border-bottom: 1px solid white;
+    box-shadow: 0px 0px 3px rgba(29, 29, 29, 0.3);
+}
+
+.collab-view__button {
+    height: 32px
+}
+
+.collab-view__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: var(--color-off-white);
+    overflow: hidden;
+}

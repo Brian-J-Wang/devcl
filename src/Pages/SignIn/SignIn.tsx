@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useContext, useState } from "react"
 
-import { TextButton } from "../../Components/Button/Button"
 import { Container } from "../../Components/Container/Container"
 import { UserContext } from "../../Contexts/UserContext"
 import { ModalContext } from "../../Contexts/Modal/ModalContext"
@@ -54,7 +53,7 @@ const SignIn: React.FC<SignInProps> = (props) => {
                     <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
                 </div>
                 <div className="sign-in__controls"> 
-                    <TextButton size="s" radiusStyle="s" style="primary" className="sign-in__submit" onClick={handleSubmit}>Sign In</TextButton>
+                    <Input.Button style="primary" onClick={handleSubmit}>Sign In</Input.Button>
                     <p className="sign-in__switch"> Need an account? <button className="sign-in__switch-link" onClick={props.onSignUnClick}>Register</button>
                     </p>
                 </div>

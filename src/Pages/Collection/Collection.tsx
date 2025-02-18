@@ -10,6 +10,8 @@ import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
 
 import './Collection.css';
 import CheckListOutline from "./CollectionSidebar/CollectionSidebar";
+import InvalidView from "./Views/InvalidView/InvalidView";
+import CollaboratorView from "./Views/CollaboratorView/CollaboratorView";
 
 interface CollectionContextProps {
     name: string,
@@ -72,7 +74,7 @@ const Collection : React.FC = () => {
 
     useEffect(() => {
         backend.current = new CollectionAPI('http://localhost:5081/collections', id!, userContext.token)
-    }, [userContext.token])
+    }, [userContext.token]);
 
     const [name, setName] = useState<string>("");
     const [version, setVersion] = useState<string>("");
@@ -90,7 +92,7 @@ const Collection : React.FC = () => {
             setItems(res.items);
             setCollaborators(res.collaborators);
         });
-    }, [])
+    }, []);
 
     //Collaborator Apis
     const addCollaborator = (alias: string, email: string) => {
@@ -157,6 +159,8 @@ const Collection : React.FC = () => {
         });
     }
 
+    const [ activePage, setActivePage ] = useState<string>("");
+
     return (
         <div className='collection'>
             <BreadCrumb/>
@@ -185,8 +189,8 @@ const Collection : React.FC = () => {
                 <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
                 
                 <div className="collection__content">
-                    <CheckListOutline/>
-                    <CheckList/>
+                    <CheckListOutline setActivePage={setActivePage}/>
+                    { RenderRightPanel(activePage) }
                 </div>
                 <ItemEditor/>
                 </ItemEditorContext.Provider>
@@ -196,6 +200,23 @@ const Collection : React.FC = () => {
             </CollectionContext.Provider>
         </div>
     );
+}
+
+const RenderRightPanel = (panelName: string) => {
+    console.log(panelName);
+    if (panelName == "checklist") {
+        return (
+            <CheckList/>
+        )
+    } else if (panelName == "collaborators") {
+        return (
+            <CollaboratorView/>
+        )
+    } else {
+        return (
+            <InvalidView/>
+        )
+    }
 }
 
 export default Collection;

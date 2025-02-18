@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { TextButton } from "../../../../Components/Button/Button";
 import { Container } from "../../../../Components/Container/Container"
 import Input from "../../../../Components/Input";
 
@@ -33,7 +32,7 @@ const AddCollaboratorModal: React.FC<AddCollaborator> = (props) => {
                 <Input.Text type="text" name="Email" stateHandler={setEmail}/>
                 <small>Add a collaborator by adding their emails. If they exist they will be able to edit your collection.</small>
             </div>
-            <TextButton size="m" radiusStyle="m" style="primary" onClick={AddCollaborator(email)}>Add</TextButton>
+            <Input.Button style="primary" onClick={AddCollaborator(email)}>Add</Input.Button>
         </Container>
     )
 }

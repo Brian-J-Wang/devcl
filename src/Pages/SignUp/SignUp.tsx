@@ -1,6 +1,5 @@
 import { useContext, useState } from "react"
 
-import { TextButton } from "../../Components/Button/Button"
 import { Container } from "../../Components/Container/Container"
 import { UserContext } from "../../Contexts/UserContext"
 import { ModalContext } from "../../Contexts/Modal/ModalContext"
@@ -52,7 +51,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
                     <Input.Text name="Password" type="password" stateHandler={setPassword}></Input.Text>
                 </div>
                 <div className="sign-up__controls">
-                    <TextButton size="s" radiusStyle="s" style="primary" className="sign-up__submit" onClick={handleSignUp}>Sign Up</TextButton>
+                    <Input.Button style="primary" onClick={handleSignUp}>Sign Up</Input.Button>
                     <p className="sign-up__switch"> Already have an account? <button className="sign-up__switch-link" onClick={props.onSignInClick}>Sign In</button>
                     </p>
                 </div>

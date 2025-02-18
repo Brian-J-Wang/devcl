@@ -38,6 +38,7 @@
 
 .clitem__label {
     font-size: 16px;
+    line-height: 16px;
     font-weight: 400;
     position: relative;
     transition: color 0.15s

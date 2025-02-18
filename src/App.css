@@ -3,6 +3,12 @@
   src: url(../src/assets/Liter-Regular.ttf) format('truetype');
 }
 
+:root {
+  --color-primary: #74a12e;
+  --color-black: #292929;
+  --color-off-white: rgba(235, 235, 235);
+}
+
 body {
   font-family: liter, Helvetica, sans-serif;
   background: rgb(224,223,241);
@@ -33,8 +39,10 @@ p {
   margin: 0;
 }
 
+
+
 .app {
   padding: 0px;
-  color: #292929;
+  color: var(--color-black);
   transition: 0.2s -webkit-filter linear;
 }

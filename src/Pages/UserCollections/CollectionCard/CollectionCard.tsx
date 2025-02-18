@@ -2,11 +2,11 @@ import { useState } from "react";
 import { CLCollection } from "../../Collection/interfaces";
 import "./CollectionCard.css"
 import "./ContentPanel.css"
-import { TextButton } from "../../../Components/Button/Button";
 import arrow from "../../../assets/Arrow.svg";
 import popout from "../../../assets/pop-out.svg";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../../Components/Container/Container";
+import Input from "../../../Components/Input";
 
 interface CollectionCardTypes {
     collection: CLCollection
@@ -88,9 +88,7 @@ const CollectionCard: React.FC<CollectionCardTypes> = ({ collection, handleDelet
                             <h3> Delete Collection</h3>
                             <small>Removes this collection and all relevant data. This action CANNOT be undone.</small>
                         </div>
-                        <TextButton size="s" style="negative" radiusStyle="s" onClick={deleteCollection(collection._id)}>
-                            Delete Collection
-                        </TextButton>
+                        <Input.Button style="negative" onClick={deleteCollection(collection._id)}>Delete</Input.Button>
                     </div>
                 </div>
             </div>

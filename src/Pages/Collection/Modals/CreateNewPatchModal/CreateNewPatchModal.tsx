@@ -1,5 +1,4 @@
-import { Container } from "../../../../Components/Container/Container"
-import { TextButton } from "../../../../Components/Button/Button";
+import { Container } from "../../../../Components/Container/Container";
 import Input from "../../../../Components/Input";
 
 import "./CreateNewPatchModal.css"
@@ -16,18 +15,18 @@ const CreateNewPatchModal: React.FC<CreateNewPatchModalProps> = (props) => {
         <Container className="new-patch">
             <h2>Patch - {props.version}</h2>
             <Input.Text name="Name" initialValue="" type="text" stateHandler={setPatchName}/>
-            <Input.RadioGroup name="Patch Type">
-                <Input.Radio>
+            <Input.RadioGroup name="Patch Type" onChange={() => {}}>
+                <Input.Radio name="release">
                     Release
                 </Input.Radio>
-                <Input.Radio>
+                <Input.Radio name="major">
                     Major
                 </Input.Radio>
-                <Input.Radio>
+                <Input.Radio name="minor">
                     Minor
                 </Input.Radio>
             </Input.RadioGroup>
-            <TextButton size="s" radiusStyle="s" style="primary"> Create New Patch</TextButton>
+            <Input.Button style="primary">Create Patch</Input.Button>
         </Container>
     )
 }

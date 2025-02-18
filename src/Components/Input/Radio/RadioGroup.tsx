@@ -5,7 +5,7 @@ import "./Radio.css"
 
 interface RadioGroupContextProps {
     active: string,
-    setActive: React.Dispatch<React.SetStateAction<string>>,
+    setActive: (value: string) => void,
     selectedClass: string
 }
 
@@ -15,6 +15,7 @@ export interface RadioGroupProps {
     name?: string,
     className?: string,
     children: ReactElement<typeof Radio> | Array<ReactElement<typeof Radio>>,
+    onChange: (name: string) => void,
     styles?: {
         group?: string
         selected?: string
@@ -25,10 +26,15 @@ const RadioGroup: React.FC<RadioGroupProps> = (props) => {
     const [active, setActive] = useState<string>("");
     const [ selected ] = useState(props.styles?.selected ?? "");
 
+    const onChange = (value: string) => {
+        setActive(value);
+        props.onChange(value);
+    }
+
     return (
         <RadioGroupContext.Provider value={{
             active,
-            setActive,
+            setActive: onChange,
             selectedClass: selected
         }}>
             <div className={props.className}>

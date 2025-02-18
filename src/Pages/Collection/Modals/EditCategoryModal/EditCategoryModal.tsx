@@ -4,7 +4,6 @@ import Input from "../../../../Components/Input";
 import { CLCategories } from "../../interfaces";
 
 import "./EditCategoryModal.css"
-import { TextButton } from "../../../../Components/Button/Button";
 
 interface EditCategoryModalProps {
     category: CLCategories,
@@ -26,7 +25,7 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = (props) => {
                 <br/>
                 <small className="edit-category__format-small">{format}: Did that unit of work</small>
             </div>
-            <TextButton size="s" radiusStyle="s" style="primary">Update</TextButton>
+            <Input.Button style="primary">Update</Input.Button>
         </Container>
     )
 }

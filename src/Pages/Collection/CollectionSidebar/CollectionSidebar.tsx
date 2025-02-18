@@ -5,10 +5,16 @@ import { CollectionContext } from "../Collection"
 
 import collectionIcon from "../../../assets/sidebar-collection-icon.svg"
 import personIcon from "../../../assets/person-icon.svg"
+import patchIcon from "../../../assets/patch-icon.svg"
+
 import RadioGroup from "../../../Components/Input/Radio/RadioGroup"
 import Radio from "../../../Components/Input/Radio/Radio"
 
-const CollectionSidebar: React.FC<{}> = () => {
+interface CollectionSidebarProps {
+    setActivePage: React.Dispatch<React.SetStateAction<string>>
+}
+
+const CollectionSidebar: React.FC<CollectionSidebarProps> = (props) => {
     const collectionContext = useContext(CollectionContext);
 
     const generatePlaceHolder = () => {
@@ -33,7 +39,7 @@ const CollectionSidebar: React.FC<{}> = () => {
             <hr className="cl-sidebar__hr"/>
             <RadioGroup className="cl-sidebar__menu" styles={{
                 selected: "cl-sidebar__item_selected"
-            }}>
+            }} onChange={(value) => { props.setActivePage(value); }}>
                 <Radio name="checklist" className="cl-sidebar__item">
                     <img src={collectionIcon} alt="missing" className="cl-sidebar__item-image"/>
                     <h2 className="cl-sidebar__item-title">CheckList</h2>
@@ -43,7 +49,7 @@ const CollectionSidebar: React.FC<{}> = () => {
                     <h2 className="cl-sidebar__item-title">Collaborators</h2>
                 </Radio>
                 <Radio name="patches" className="cl-sidebar__item">
-                    <img src={personIcon} alt="missing" className="cl-sidebar__item-image"/>
+                    <img src={patchIcon} alt="missing" className="cl-sidebar__item-image"/>
                     <h2 className="cl-sidebar__item-title">Patches</h2>
                 </Radio>
             </RadioGroup>
