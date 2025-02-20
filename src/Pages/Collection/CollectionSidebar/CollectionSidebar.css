@@ -1,6 +1,7 @@
 .cl-sidebar {
     width: 240px;
     padding: 0px;
+    margin-right: 6px;
     box-sizing: border-box;
 }
 

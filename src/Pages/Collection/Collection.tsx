@@ -1,6 +1,5 @@
 import CheckList from "./CheckList/CheckList";
 import { useParams } from 'react-router-dom';
-import { ItemEditor } from './ItemEditor/ItemEditor';
 import ItemEditorContext from './ItemEditor/itemEditorContext';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { CLCategories, CLItem, CLItemPatch, CLPatch, Collaborators } from './interfaces';
@@ -12,6 +11,7 @@ import './Collection.css';
 import CheckListOutline from "./CollectionSidebar/CollectionSidebar";
 import InvalidView from "./Views/InvalidView/InvalidView";
 import CollaboratorView from "./Views/CollaboratorView/CollaboratorView";
+import { ItemEditor } from "./ItemEditor/ItemEditor";
 
 interface CollectionContextProps {
     name: string,
@@ -189,10 +189,9 @@ const Collection : React.FC = () => {
                 <ItemEditorContext.Provider value={{ activeItem, setActiveItem }}>
                 <CheckListOutline setActivePage={setActivePage}/>
                 <div className="collection__content">
-                    
                     { RenderRightPanel(activePage) }
                 </div>
-                
+                <ItemEditor/>
                 </ItemEditorContext.Provider>
             </ItemApiContext.Provider>
             </CategoryApiContext.Provider>
