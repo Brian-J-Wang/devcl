@@ -1,6 +1,7 @@
 .check-list {
     padding: 12px 0px;
     flex: 1;
+    overflow-y: scroll
 }
 
 .check-list__toolbar {
