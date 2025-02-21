@@ -1,5 +1,6 @@
 import { useState } from "react"
 import "./TextInput.css"
+import BaseInput from "../BaseInput";
 
 export interface TextInputProps {
     name: string,
@@ -18,16 +19,14 @@ const TextInput: React.FC<TextInputProps> = (props) => {
     }
 
     return (
-        <div className="text-input">
-            <div className={`text-input__name ${(isFocus || input.length != 0) && "text-input__name-focused"}`}>{props.name}</div>
-            <input type={props.type} className="text-input__input" 
+        <BaseInput title={props.name} isFocused={isFocus}>
+            <input type={props.type} className="text-input" 
                 onFocus={() => {setIsFocus(true)}} 
                 onBlur={() => {setIsFocus(false)}}
                 onChange={(evt) => {handleTextChange(evt)}}
                 value={input}
-            >
-            </input>        
-        </div>
+            ></input>
+        </BaseInput>
     )
 }
 

@@ -1,0 +1,22 @@
+.base-input__title {
+    margin: 0px 0px 2px 4px;
+    font-size: 14px;
+    opacity: 70%;
+}
+
+.base-input__content {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(29, 29, 29, 0.5);
+    border-radius: 4px;
+    height: 32px;
+    width: 100%;
+    outline: 0px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.base-input__content_focused {
+    outline: 2px solid rgba(00, 119, 255, 70%);
+    border: 1px solid rgba(00, 119, 255, 1);
+}

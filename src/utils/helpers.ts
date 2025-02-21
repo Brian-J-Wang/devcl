@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 export function sanitize(data: { [key: string]: any}) {
     const stack = [];
     stack.push(data);
@@ -18,4 +20,14 @@ export function sanitize(data: { [key: string]: any}) {
     }
 
     return data as any;
+}
+
+export function requireContext<T>(context: React.Context<T>) {
+    const result = useContext(context);
+
+    if (result == undefined) {
+        throw new Error("Context not found");
+    } else {
+        return result;
+    }
 }

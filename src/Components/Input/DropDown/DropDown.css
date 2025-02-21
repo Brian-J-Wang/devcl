@@ -1,0 +1,38 @@
+.drop-down {
+    position: relative
+}
+
+.drop-down__left {
+    margin: 0px 4px;
+}
+
+.drop-down__menu {
+    top: 54px;
+    left: 0px;
+    width: 100%;
+    max-height: 140px;
+    background-color: white;
+    border: 1px solid rgba(29, 29, 29, 0.5);
+    border-radius: 4px;
+    position: absolute;
+    box-sizing: border-box;
+    visibility: hidden;
+    overflow-y: auto;
+}
+
+.drop-down__menu_visible {
+    visibility: visible;
+}
+
+.drop-down__option {
+    display: flex;
+    height: 28px;
+    padding-left: 4px;
+    align-items: center;
+    background-color: white;
+    transition: background-color .20s;
+}
+
+.drop-down__option:hover {
+    background-color: var(--color-off-white);
+}

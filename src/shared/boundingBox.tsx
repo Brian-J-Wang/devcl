@@ -23,10 +23,10 @@ const BoundingBox = forwardRef<OutofBoundsHandle, BoundingBoxProps>(({children, 
 
     //cleans up event listeners in case this component gets unmounted.
     useEffect(() => {
-        document.addEventListener("mousedown", handleMouseDown);
+        document.addEventListener("click", handleMouseDown);
         
         return () => {
-            document.removeEventListener("mousedown", handleMouseDown);
+            document.removeEventListener("click", handleMouseDown);
         }
     }, [listen])
 

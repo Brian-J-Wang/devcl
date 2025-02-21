@@ -4,26 +4,20 @@ import "./CheckList.css"
 import { CLItem } from "../../../Pages/Collection/interfaces";
 import CLItemElement, { CLItemTag } from "../CLItem/CLItem";
 import { useContext } from "react";
-import { CategoryApiContext, CollectionContext } from "../Collection";
+import { CollectionContext } from "../Collection";
 import Input from "../../../Components/Input";
 import { ModalContext } from "../../../Contexts/Modal/ModalContext";
-import CreateCategoryModal from "../Modals/CreateCategoryModal/CreateCategoryModal";
 import ItemEditorContext from "../ItemEditor/itemEditorContext";
+import AddItemModal from "../Modals/AddItemModal/AddItemModal";
 
 const CheckList: React.FC<{}> = () => {
     const itemEditorContext = useContext(ItemEditorContext);
     const collectionContext = useContext(CollectionContext);
-    const categoryApi = useContext(CategoryApiContext);
     const modalContext = useContext(ModalContext);
 
-    const openAddCategoryModal = () => {
-        modalContext.setModal(<CreateCategoryModal onSubmit={(name, format) => {
-            return categoryApi.addCategory(name, format);
-        }}/>)
-    }
 
     const openAddItemModal = () => {
-
+        modalContext.setModal(<AddItemModal categories={collectionContext.categories}></AddItemModal>)
     }
 
     const openEditor = (item: CLItem) => () => {
@@ -34,7 +28,6 @@ const CheckList: React.FC<{}> = () => {
         <>
             <Container className="check-list__toolbar">
                 <Input.Button onClick={openAddItemModal}>Add Item</Input.Button>
-                <Input.Button onClick={openAddCategoryModal}>Add Category</Input.Button>
             </Container>
             <Container className="check-list">       
                 {
