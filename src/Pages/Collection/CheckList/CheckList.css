@@ -1,15 +1,18 @@
 .check-list {
-    padding: 12px 0px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0px 0px;
     flex: 1;
-    overflow-y: scroll
+    justify-content: space-between;
 }
 
-.check-list__toolbar {
-    padding: 2px;
+.check-list__add-more {
+    padding: 4px;
+    display: flex;
 }
 
-.check-list__footer {
-    padding: 0px 12px;
-    justify-self: end;
-    opacity: 40%;
+.check-list__input {
+    flex-grow: 2;
+    height: 36px;
+    outline: none;
 }

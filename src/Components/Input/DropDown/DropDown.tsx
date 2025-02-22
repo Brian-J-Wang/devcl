@@ -13,6 +13,7 @@ type DropDownProps = {
     children: ReactNode,
     title: string,
     placeholder: string,
+    className?: string
 }
 
 function DropDown(props: DropDownProps) {
@@ -20,7 +21,7 @@ function DropDown(props: DropDownProps) {
     const [ selected, setSelected ] = useState<string>("");
 
     return (
-        <BaseInput title={props.title} onClick={() => { setFocused(true)}} onBlur={() => { setFocused(false) }} isFocused={focused} className="drop-down">
+        <BaseInput title={props.title} onClick={() => { setFocused(true)}} onBlur={() => { setFocused(false) }} isFocused={focused} className={`drop-down ${props.className}`}>
             <div className="drop-down__left">
                 { selected == ""
                     ? props.placeholder

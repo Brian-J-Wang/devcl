@@ -1,3 +1,7 @@
+.base-input {
+    flex-grow: 1;
+}
+
 .base-input__title {
     margin: 0px 0px 2px 4px;
     font-size: 14px;
@@ -14,6 +18,10 @@
     outline: 0px;
     box-sizing: border-box;
     overflow: hidden;
+}
+
+.base-input__content_no-border {
+    width: 100%;
 }
 
 .base-input__content_focused {

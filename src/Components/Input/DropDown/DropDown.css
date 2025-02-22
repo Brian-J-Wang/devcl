@@ -36,3 +36,7 @@
 .drop-down__option:hover {
     background-color: var(--color-off-white);
 }
+
+.add-item__drop-down {
+    flex-basis: 50%;
+}

@@ -1,27 +1,61 @@
-import { ReactNode, useContext, useEffect } from "react";
-import { RadioGroupContext } from "./RadioGroup";
+import { createContext, ReactElement, ReactNode, useEffect, useState } from "react";
+import { requireContext } from "../../../utils/helpers";
 
-import "./Radio.css";
+import "./Radio.css"
+import BaseInput from "../BaseInput";
 
-export interface RadioProps {
+interface RadioGroupContextProps {
+    active: string,
+    setActive: (value: string) => void,
+    selectedClass: string
+}
+
+export const RadioGroupContext = createContext<RadioGroupContextProps | undefined>(undefined);
+
+export interface RadioGroupProps {
+    name?: string,
+    className?: string,
+    children: ReactElement<typeof Radio> | Array<ReactElement<typeof Radio>>,
+    onChange: (name: string) => void,
+    selectedStyle?: string,
+    childrenStyle?: string
+}
+
+function Radio(props: RadioGroupProps) {
+    const [active, setActive] = useState<string>("");
+    const [ selected ] = useState(props.selectedStyle ?? "");
+
+    const onChange = (value: string) => {
+        setActive(value);
+        props.onChange(value);
+    }
+
+    return (
+        <RadioGroupContext.Provider value={{
+            active,
+            setActive: onChange,
+            selectedClass: selected
+        }}>
+            <BaseInput title={props.name ?? ""} noBorder>
+                <div className={`${props.className}`}>
+                    {
+                        props.children
+                    }
+                </div>
+            </BaseInput>
+        </RadioGroupContext.Provider>
+    )
+}
+
+interface RadioProps {
     name: string,
     children: ReactNode,
     className?: string,
     initial?: boolean
 }
 
-const getRadioGroupContext = () => {
-    const radioContext = useContext(RadioGroupContext);
-
-    if (!radioContext) {
-        throw new Error("radio component is not nested within a radio context group");
-    }
-
-    return radioContext;
-}
-
-const Radio: React.FC<RadioProps> = (props) => {
-    const radioContext = getRadioGroupContext();
+const RadioOption: React.FC<RadioProps> = (props) => {
+    const radioContext = requireContext(RadioGroupContext);
 
     const updateRadio = () => {
         if (!radioContext) {
@@ -47,5 +81,7 @@ const Radio: React.FC<RadioProps> = (props) => {
         </div>
     )
 }
+
+Radio.Option = RadioOption;
 
 export default Radio;

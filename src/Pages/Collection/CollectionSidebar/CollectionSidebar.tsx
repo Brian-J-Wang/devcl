@@ -6,8 +6,6 @@ import { CollectionContext } from "../Collection"
 import collectionIcon from "../../../assets/sidebar-collection-icon.svg"
 import personIcon from "../../../assets/person-icon.svg"
 import patchIcon from "../../../assets/patch-icon.svg"
-
-import RadioGroup from "../../../Components/Input/Radio/RadioGroup"
 import Radio from "../../../Components/Input/Radio/Radio"
 
 interface CollectionSidebarProps {
@@ -36,22 +34,20 @@ const CollectionSidebar: React.FC<CollectionSidebarProps> = (props) => {
                     <small>owner name</small>
                 </div>
             </div>
-            <RadioGroup className="cl-sidebar__menu" styles={{
-                selected: "cl-sidebar__item_selected"
-            }} onChange={(value) => { props.setActivePage(value); }}>
-                <Radio name="checklist" className="cl-sidebar__item" initial>
+            <Radio className="cl-sidebar__menu" selectedStyle="cl-sidebar__item_selected" onChange={(value) => { props.setActivePage(value); }}>
+                <Radio.Option name="checklist" className="cl-sidebar__item" initial>
                     <img src={collectionIcon} alt="missing" className="cl-sidebar__item-image"/>
                     <h2 className="cl-sidebar__item-title">CheckList</h2>
-                </Radio>
-                <Radio name="collaborators" className="cl-sidebar__item">
+                </Radio.Option>
+                <Radio.Option name="collaborators" className="cl-sidebar__item">
                     <img src={personIcon} alt="missing" className="cl-sidebar__item-image"/>
                     <h2 className="cl-sidebar__item-title">Collaborators</h2>
-                </Radio>
-                <Radio name="patches" className="cl-sidebar__item">
+                </Radio.Option>
+                <Radio.Option name="patches" className="cl-sidebar__item">
                     <img src={patchIcon} alt="missing" className="cl-sidebar__item-image"/>
                     <h2 className="cl-sidebar__item-title">Patches</h2>
-                </Radio>
-            </RadioGroup>
+                </Radio.Option>
+            </Radio>
         </Container>
     )
 }
