@@ -1,4 +1,4 @@
-import { Children, ReactElement, ReactNode, cloneElement, createContext, useEffect, useRef, useState } from "react";
+import { Children, ReactElement, ReactNode, cloneElement, createContext, isValidElement, useEffect, useRef, useState } from "react";
 import { Container } from "../../Container/Container";
 
 import "./RichInput.css";
@@ -7,6 +7,7 @@ import { generateMongoID } from "../../../utils/dummyGenerators";
 
 interface RichInputContextProps {
     addGroup: (name: string, id: string, children: ReactNode) => void,
+    toggleCursor: (type: "parent" | "child", id: string) => void,
     cursor: {
         parent: string,
         child: string,
@@ -16,6 +17,7 @@ interface RichInputContextProps {
 
 const RichInputContext = createContext<RichInputContextProps>({
     addGroup: () => {},
+    toggleCursor: () => {},
     cursor: {
         parent: "",
         child: ""
@@ -96,6 +98,20 @@ function RichInput(props: RichInputProps) {
         );
     }
 
+    const toggleCursor = (type: "parent" | "child", id: string) => {
+        if (type == "parent") {
+            setCursor({
+                parent: id,
+                child: cursor.child
+            });
+        } else {
+            setCursor({
+                parent: cursor.parent,
+                child: id
+            });
+        }
+    }
+
     useEffect(() => {
         if (state == "group") {
             if (hidden.includes(cursor.parent)) {
@@ -156,7 +172,7 @@ function RichInput(props: RichInputProps) {
     }
 
     return (
-        <RichInputContext.Provider value={{ addGroup, hidden, cursor }}>
+        <RichInputContext.Provider value={{ addGroup, hidden, cursor, toggleCursor }}>
             <div className={`rich-input ${props.className}`}>
                 <Container className="rich-input__menu" hidden={state == "none"}>
                     { 
@@ -172,7 +188,7 @@ function RichInput(props: RichInputProps) {
 interface RichInputGroupProps {
     name: string,
     children: ReactElement<RichInputItemProps> | Array<ReactElement<RichInputItemProps>>
-    element: ReactElement<{className: string}>,
+    element: ReactNode,
     selectedStyle?: string
 }
 
@@ -184,10 +200,14 @@ function RichInputGroup(props: RichInputGroupProps) {
         richInputContext.addGroup(props.name, id, props.children);
     }, []);
 
+    const toggleCursor = () => {
+        richInputContext.toggleCursor("parent", id);
+    }
+
     return (
-        <div id={id} hidden={richInputContext.hidden.includes(id)}>
+        <div id={id} hidden={richInputContext.hidden.includes(id)} onMouseEnter={toggleCursor} className={`${richInputContext.cursor.parent == id && "rich-input__group-selected"}`}>
             {
-                  cloneElement(props.element, { className: "hi"})
+                props.element
             }
         </div>
     )
