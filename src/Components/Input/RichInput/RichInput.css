@@ -1,0 +1,22 @@
+.rich-input {
+    display: flex;
+    position: relative;
+}
+
+.rich-input__menu {
+    max-height: 180px;
+    width: 100%;
+    padding: 0px;
+    background-color: white;
+    position: absolute;
+    bottom: calc(100% + 3px);
+}
+
+.rich-input__input {
+    width: 100%;
+    outline: none;
+}
+
+.rich-input__group-selected {
+    background-color: var(--color-off-white);
+}

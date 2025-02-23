@@ -2,7 +2,6 @@ import "./ItemEditor.css"
 import { RefObject, useContext, useEffect, useRef, useState } from "react"
 import ItemEditorContext from "./itemEditorContext"
 import BoundingBox, { OutofBoundsHandle } from "../../../shared/boundingBox";
-import cross from "../../../assets/cross.svg";
 import { CLItem } from "../interfaces";
 import { Container } from "../../../Components/Container/Container";
 

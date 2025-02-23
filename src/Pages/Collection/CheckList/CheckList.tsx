@@ -6,6 +6,7 @@ import CLItemElement, { CLItemTag } from "../CLItem/CLItem";
 import { useContext } from "react";
 import { CollectionContext } from "../Collection";
 import ItemEditorContext from "../ItemEditor/itemEditorContext";
+import RichInput from "../../../Components/Input/RichInput/RichInput";
 
 const CheckList: React.FC<{}> = () => {
     const itemEditorContext = useContext(ItemEditorContext);
@@ -36,12 +37,50 @@ const CheckList: React.FC<{}> = () => {
                         })
                     }
                 </div>
-                <div className="check-list__add-more">
-                    <input type="text" className="check-list__input" placeholder="Add Item"/>
-                </div>
+                <RichInput className="check-list__add-item" placeholder="Type to add. Use '/' to add attributes">
+                    <RichInput.Group name="category" element={
+                        <CheckListGroupElement name={"Category"} description={"The type of task that this belongs to"}/>
+                    }>  
+                        {
+                            collectionContext.categories.map((category) => {
+                                return <RichInput.Item >{category.name}</RichInput.Item>
+                            })
+                        }
+                        
+                    </RichInput.Group>
+                    <RichInput.Group name="importance" element={
+                        <CheckListGroupElement name={"Importance"} description={"How much attention to give this task"}/>
+                    }>
+                        <RichInput.Item>Importance</RichInput.Item>
+                    </RichInput.Group>
+                    <RichInput.Group name="assign" element={
+                        <CheckListGroupElement name={"Assign"} description={"Who is responsible for this task"}/>
+                    }>
+                        <RichInput.Item>Assign</RichInput.Item>
+                    </RichInput.Group>
+                </RichInput>
             </Container>
         </>
     );
+}
+
+
+
+const CheckListGroupElement: React.FC<{
+    name: string,
+    description: string,
+    className?: string,
+}> = (props) => {
+    return (
+        <div className="check-list__group-element">
+            <span className="check-list__group-element-name">
+                / {props.name}
+            </span>
+            <span className="check-list__group-element-desc">
+                {props.description}
+            </span>
+        </div>
+    )
 }
 
 export default CheckList;

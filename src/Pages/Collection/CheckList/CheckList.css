@@ -6,13 +6,23 @@
     justify-content: space-between;
 }
 
-.check-list__add-more {
-    padding: 4px;
-    display: flex;
+.check-list__add-item {
+    margin: 4px;
+    height: 32px;
 }
 
-.check-list__input {
-    flex-grow: 2;
-    height: 36px;
-    outline: none;
+.check-list__group-element {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+    gap: 8px;
+}
+
+.check-list__group-element-name {
+    font-weight: 700;
+}
+
+.check-list__group-element-desc {
+    opacity: 50%;
 }
