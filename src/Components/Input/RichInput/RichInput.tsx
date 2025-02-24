@@ -61,6 +61,11 @@ function RichInput(props: RichInputProps) {
 
         if (evt.key == "/" && (evt.target as HTMLInputElement).value.length == 0) {
             setState("group");
+            console.log(nodeTree.current[0].id);
+            setCursor({
+                parent: nodeTree.current[0].id,
+                child: ""
+            });
             return;
         }
 
@@ -68,11 +73,55 @@ function RichInput(props: RichInputProps) {
         //handle the case where it is the child being moved
         if (evt.key == "ArrowUp") {
             evt.preventDefault();
+            //find index of current cursor
+            const cursorIndex = nodeTree.current.findIndex((item) => item.id == cursor.parent);
+            //move up, skip if index id included with hidden
+            for (let i = cursorIndex; i >= 0; i--) {
+                if (i == cursorIndex) {
+                    continue;
+                }
+
+                if (hidden.includes(nodeTree.current[i].id)) {
+                    continue;
+                }
+
+                setCursor({
+                    parent: nodeTree.current[i].id,
+                    child: ""
+                });
+                
+                return;
+            }
+            //when end is reached and nothing is found, cursor remains the same
+            
             return;
         } 
 
         if (evt.key == "ArrowDown") {
             evt.preventDefault();
+
+            const cursorIndex = nodeTree.current.findIndex((item) => item.id == cursor.parent);
+            //move up, skip if index id included with hidden
+            for (let i = cursorIndex; i < nodeTree.current.length; i++) {
+                if (i == cursorIndex) {
+                    continue;
+                }
+
+                if (hidden.includes(nodeTree.current[i].id)) {
+                    continue;
+                }
+
+                setCursor({
+                    parent: nodeTree.current[i].id,
+                    child: ""
+                });
+                
+                return;
+            }
+            //when end is reached and nothing is found, cursor remains the same
+            
+            return;
+
             return;
         }
     }
@@ -114,6 +163,7 @@ function RichInput(props: RichInputProps) {
 
     useEffect(() => {
         if (state == "group") {
+            //moves the cursor to the next valid item
             if (hidden.includes(cursor.parent)) {
                 const newCursor = nodeTree.current.filter((tree) => {
                     if (tree.id == cursor.parent) {
