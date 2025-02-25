@@ -1,4 +1,4 @@
-import { Children, ReactElement, ReactNode, cloneElement, createContext, isValidElement, useEffect, useRef, useState } from "react";
+import { ReactElement, ReactNode, createContext, useEffect, useRef, useState } from "react";
 import { Container } from "../../Container/Container";
 
 import "./RichInput.css";
@@ -12,7 +12,8 @@ interface RichInputContextProps {
         parent: string,
         child: string,
     }
-    hidden: string[]
+    hidden: string[],
+    
 }
 
 const RichInputContext = createContext<RichInputContextProps>({
@@ -22,13 +23,20 @@ const RichInputContext = createContext<RichInputContextProps>({
         parent: "",
         child: ""
     },
-    hidden: []
+    hidden: [],
 });
 
 interface RichInputProps {
     children: ReactElement<RichInputGroupProps> | Array<ReactElement<RichInputGroupProps>>,
     className?: string
     placeholder?: string,
+    onSubmit: (values: {
+        input: string,
+        attributes: {
+            name: string,
+            value: string,
+        }[]
+    }) => void
 }
 
 function RichInput(props: RichInputProps) {
@@ -46,6 +54,11 @@ function RichInput(props: RichInputProps) {
         child: ""
     }); //cursor contains the id of the last visible item;
     const [hidden, setHidden] = useState<string[]>([]);
+    const [ display, setDisplay ] = useState<string>();
+
+    useEffect(() => {
+
+    }, [cursor, hidden]);
 
     const addGroup = (name: string, id: string, children: ReactNode) => {
         if (!nodeTree.current.find((item) => item.id == id)) {
@@ -57,8 +70,6 @@ function RichInput(props: RichInputProps) {
 
     //handle events before the input is registered
     const onKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        const target = evt.target as HTMLInputElement;
-
         if (evt.key == "/" && (evt.target as HTMLInputElement).value.length == 0) {
             setState("group");
             console.log(nodeTree.current[0].id);
@@ -92,9 +103,6 @@ function RichInput(props: RichInputProps) {
                 
                 return;
             }
-            //when end is reached and nothing is found, cursor remains the same
-            
-            return;
         } 
 
         if (evt.key == "ArrowDown") {
@@ -118,15 +126,10 @@ function RichInput(props: RichInputProps) {
                 
                 return;
             }
-            //when end is reached and nothing is found, cursor remains the same
-            
-            return;
-
-            return;
         }
     }
 
-    //handle events after the input is registered
+    //handle events after the input is registered, recommended to 
     const onKeyUp = (evt: React.KeyboardEvent<HTMLInputElement>) => {
         const target = evt.target as HTMLInputElement;
 
@@ -136,7 +139,16 @@ function RichInput(props: RichInputProps) {
         }
 
         if (evt.key == "Enter") {
-
+            if (state == "group") {
+                setState("item");
+            } else if (state == "item") {
+                setState("group");
+            } else if (state == "none") {   //input  is submitted 
+                props.onSubmit({
+                    input: target.value,
+                    attributes: []
+                })
+            }
         }
 
         const test = target.value.slice(1, target.value.length).toLowerCase();
@@ -161,13 +173,15 @@ function RichInput(props: RichInputProps) {
         }
     }
 
+    //moves the cursor the hidden
     useEffect(() => {
         if (state == "group") {
             //moves the cursor to the next valid item
+            console.log(hidden.includes(cursor.parent));
             if (hidden.includes(cursor.parent)) {
                 const newCursor = nodeTree.current.filter((tree) => {
                     if (tree.id == cursor.parent) {
-                        return false;
+                        return true;
                     } else {
                         return (!hidden.includes(tree.id));
                     }
@@ -175,30 +189,27 @@ function RichInput(props: RichInputProps) {
 
                 //There are no valid ids to point the index to
                 if (newCursor.length == 1) {
-                    return;
-                }
-                
-                let oldCursorIndex = -1;
-                
-                newCursor.forEach((item, index) => {
-                    if (item.id == cursor.parent) {
-                        oldCursorIndex = index;
-                    }
-                });
-
-                if (oldCursorIndex == -1) {
+                    console.log("no valid ids to point to");
                     return;
                 }
 
-                if (oldCursorIndex == newCursor.length - 1) {
+                const oldIndex = newCursor.findIndex((item) => {
+                    return item.id == cursor.parent;
+                })
+
+                if (oldIndex == -1) {
+                    return;
+                }
+
+                if (oldIndex == newCursor.length - 1) {
                     setCursor({
-                        parent: newCursor[oldCursorIndex - 1].id,
+                        parent: newCursor[oldIndex - 1].id,
                         child: ""
                     });
                     return;
                 } else {
                     setCursor({
-                        parent: newCursor[oldCursorIndex + 1].id,
+                        parent: newCursor[oldIndex + 1].id,
                         child: ""
                     });
                     return;
@@ -219,13 +230,17 @@ function RichInput(props: RichInputProps) {
 
     const resetInput = () => {
         setState("none");
+        setCursor({
+            parent: "",
+            child: ""
+        })
     }
 
     return (
         <RichInputContext.Provider value={{ addGroup, hidden, cursor, toggleCursor }}>
             <div className={`rich-input ${props.className}`}>
                 <Container className="rich-input__menu" hidden={state == "none"}>
-                    { 
+                    {
                         props.children
                     }
                 </Container>
@@ -245,17 +260,26 @@ interface RichInputGroupProps {
 function RichInputGroup(props: RichInputGroupProps) {
     const [ id ] = useState(generateMongoID());
     const richInputContext = requireContext(RichInputContext);
+    const [ hidden, setHidden ] = useState<boolean>(false);
 
     useEffect(() => {
         richInputContext.addGroup(props.name, id, props.children);
     }, []);
+
+    useEffect(() => {
+        if (id == richInputContext.cursor.parent) {
+            setHidden(true);
+        } else {
+            setHidden(false);
+        }
+    }, [richInputContext.cursor])
 
     const toggleCursor = () => {
         richInputContext.toggleCursor("parent", id);
     }
 
     return (
-        <div id={id} hidden={richInputContext.hidden.includes(id)} onMouseEnter={toggleCursor} className={`${richInputContext.cursor.parent == id && "rich-input__group-selected"}`}>
+        <div id={id} hidden={richInputContext.hidden.includes(id)} onMouseEnter={toggleCursor} className={`${hidden && "rich-input__group-selected"}`}>
             {
                 props.element
             }
