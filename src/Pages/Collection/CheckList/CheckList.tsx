@@ -39,8 +39,12 @@ const CheckList: React.FC<{}> = () => {
                         })
                     }
                 </div>
-                <RichInput className="check-list__add-item" placeholder="Type to add. Use '/' to add attributes" onSubmit={handleSubmit}>
-                    <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>} style={{base: "check-list__rich-input-key", onSelect: "check-list__rich-input-key_selected"}}>
+                <RichInput className="check-list__add-item" placeholder="Type to add. Use '/' to add attributes" onSubmit={handleSubmit} 
+                    style={{
+                        onKeySelect: "check-list__rich-input-key_selected",
+                        onPairSelect: "check-list__rich-input-key_selected"
+                    }}>
+                    <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}>
                         <RichInput.Value value="something">
                             Hi
                         </RichInput.Value>
@@ -51,12 +55,12 @@ const CheckList: React.FC<{}> = () => {
                             My
                         </RichInput.Value>
                     </RichInput.Key>
-                    <RichInput.Key name="importance" element={ <CheckListKeyComponent name="Importance" desc=""/>} style={{base: "check-list__rich-input-key", onSelect: "check-list__rich-input-key_selected"}}>
+                    <RichInput.Key name="importance" element={ <CheckListKeyComponent name="Importance" desc=""/>}>
                         <RichInput.Value value="something">
                             hi
                         </RichInput.Value>
                     </RichInput.Key>
-                    <RichInput.Key name="assign" element={ <CheckListKeyComponent name="Assign" desc=""/>} style={{base: "check-list__rich-input-key", onSelect: "check-list__rich-input-key_selected"}}>
+                    <RichInput.Key name="assign" element={ <CheckListKeyComponent name="Assign" desc=""/>}>
                         <RichInput.Value value="something">
                             hi
                         </RichInput.Value>

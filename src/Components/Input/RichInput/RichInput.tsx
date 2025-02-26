@@ -33,7 +33,11 @@ interface RichInputProps {
             name: string,
             value: string,
         }[]
-    }) => void
+    }) => void,
+    style: {
+        onKeySelect: string,
+        onPairSelect: string
+    }
 }
 
 function RichInput(props: RichInputProps) {
@@ -58,8 +62,6 @@ function RichInput(props: RichInputProps) {
             }
         });
     }
-
-    console.log(keyValues);
 
     const handleKeyDown = (evt: React.KeyboardEvent) => {
         if (state == "key") {
@@ -155,16 +157,20 @@ function RichInput(props: RichInputProps) {
                 
             <Container className="rich-input__menu" hidden={state == "none"}>
                 {
-                    state == "key"
-                    ? keyValues.map((kvp, index) => 
-                        hidden.includes(index)
-                            ? <></>
-                            : cloneElement(kvp.render, { isSelected: index == keyValuePair.key, key: index }, kvp.render.props.children))
-                    : keyValues.find((_, index) => index == keyValuePair.key)?.children?.map((pair, index) => 
-                        hidden.includes(index)
-                            ? <></>
-                            : cloneElement(pair.render, { isSelected: index == keyValuePair.pair, key: index}, )
-                )
+                    state == "key" && keyValues.map((kvp, index) => {
+                        if (hidden.includes(index)) {
+                            return <></>
+                        } else {
+                            const isSelected = index == keyValuePair.key;
+
+                            return cloneElement(kvp.render, { isSelected: isSelected, classStyle: {onSelect: props.style.onKeySelect}}, kvp.render.props.children);
+                        }
+                    })
+                }
+                {
+                    state == "pair" && keyValues.find((_, index) => index == keyValuePair.key )?.children?.map((child) => {
+                        return child.render;
+                    })
                 }
             </Container>
             <input className="rich-input__input" placeholder={props.placeholder} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}/>
@@ -176,10 +182,7 @@ interface RichInputKeyProps {
     name: string
     children: ReactElement<RichInputValueProps>,
     element: ReactNode,
-    style: {
-        base: string,
-        onSelect: string
-    }
+
 }
 
 const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
@@ -190,10 +193,7 @@ const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
         
         const kvp: KeyProps = {
             name: props.name,
-            render: <RichInputInternalKey isSelected={false} style={{
-                base: props.style.base,
-                onSelect: props.style.onSelect
-            }}>
+            render: <RichInputInternalKey isSelected={false}>
                 {props.element}
             </RichInputInternalKey>,
             children: Children.map(props.children, (child) => {
@@ -216,15 +216,14 @@ const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
 interface RichInputInternalKeyProps {
     children: ReactNode,
     isSelected: boolean,
-    style: { 
-        base: string,
-         onSelect: string
+    classStyle?: {
+        onSelect: string,
     }
 }
 
 const RichInputInternalKey: React.FC<RichInputInternalKeyProps> = (props) => {
     return (
-        <div className={`${props.style.base} ${props.isSelected && props.style.onSelect}`}>
+        <div className={` ${props.isSelected && props.classStyle?.onSelect}`}>
             { props.children }
         </div>
     )
@@ -238,7 +237,7 @@ interface RichInputValueProps {
 interface RichInputInternalPairProps {
     children: ReactElement<RichInputValueProps>,
     isSelected: boolean,
-    className: string
+    onSelectStyle: string
 }
 
 const RichInputValue: React.FC<RichInputValueProps> = (props) => {
@@ -250,7 +249,11 @@ const RichInputValue: React.FC<RichInputValueProps> = (props) => {
 }
 
 const RichInputInternalPair: React.FC<RichInputInternalPairProps> = (props) => {
-    return 
+    return (
+        <div className={`${props.isSelected && props.onSelectStyle}`}>
+            {props.children}
+        </div>
+    )
 }
 
 RichInput.Key = RichInputKey;
