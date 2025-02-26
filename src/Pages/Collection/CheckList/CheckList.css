@@ -19,6 +19,14 @@
     gap: 8px;
 }
 
+.check-list__rich-input-key {
+    height: 24px;
+}
+
+.check-list__rich-input-key_selected {
+    background-color: var(--color-off-white);
+}
+
 .check-list__group-element-name {
     font-weight: 700;
 }

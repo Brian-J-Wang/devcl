@@ -16,6 +16,8 @@ const CheckList: React.FC<{}> = () => {
         itemEditorContext.setActiveItem(item);
     }
 
+    const handleSubmit = () => {}
+
     return (
         <>
             <Container className="check-list">
@@ -37,50 +39,45 @@ const CheckList: React.FC<{}> = () => {
                         })
                     }
                 </div>
-                <RichInput className="check-list__add-item" placeholder="Type to add. Use '/' to add attributes">
-                    <RichInput.Group name="category" element={
-                        <CheckListGroupElement name={"Category"} description={"The type of task that this belongs to"}/>
-                    }>  
-                        {
-                            collectionContext.categories.map((category) => {
-                                return <RichInput.Item >{category.name}</RichInput.Item>
-                            })
-                        }
-                        
-                    </RichInput.Group>
-                    <RichInput.Group name="importance" element={
-                        <CheckListGroupElement name={"Importance"} description={"How much attention to give this task"}/>
-                    }>
-                        <RichInput.Item>Importance</RichInput.Item>
-                    </RichInput.Group>
-                    <RichInput.Group name="assign" element={
-                        <CheckListGroupElement name={"Assign"} description={"Who is responsible for this task"}/>
-                    }>
-                        <RichInput.Item>Assign</RichInput.Item>
-                    </RichInput.Group>
+                <RichInput className="check-list__add-item" placeholder="Type to add. Use '/' to add attributes" onSubmit={handleSubmit}>
+                    <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>} style={{base: "check-list__rich-input-key", onSelect: "check-list__rich-input-key_selected"}}>
+                        <RichInput.Value value="something">
+                            Hi
+                        </RichInput.Value>
+                        <RichInput.Value value="else">
+                            Sigh
+                        </RichInput.Value>
+                        <RichInput.Value value="poggers">
+                            My
+                        </RichInput.Value>
+                    </RichInput.Key>
+                    <RichInput.Key name="importance" element={ <CheckListKeyComponent name="Importance" desc=""/>} style={{base: "check-list__rich-input-key", onSelect: "check-list__rich-input-key_selected"}}>
+                        <RichInput.Value value="something">
+                            hi
+                        </RichInput.Value>
+                    </RichInput.Key>
+                    <RichInput.Key name="assign" element={ <CheckListKeyComponent name="Assign" desc=""/>} style={{base: "check-list__rich-input-key", onSelect: "check-list__rich-input-key_selected"}}>
+                        <RichInput.Value value="something">
+                            hi
+                        </RichInput.Value>
+                    </RichInput.Key>
                 </RichInput>
             </Container>
         </>
     );
 }
 
-
-
-const CheckListGroupElement: React.FC<{
+interface CheckListKeyComponentProps {
     name: string,
-    description: string,
-    className?: string,
-}> = (props) => {
+    desc: string
+}
+
+const CheckListKeyComponent: React.FC<CheckListKeyComponentProps> = (props) => {
     return (
-        <div className="check-list__group-element">
-            <span className="check-list__group-element-name">
-                / {props.name}
-            </span>
-            <span className="check-list__group-element-desc">
-                {props.description}
-            </span>
+        <div>
+            {props.name}
         </div>
     )
 }
 
-export default CheckList;
+export default CheckList

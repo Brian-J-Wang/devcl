@@ -1,35 +1,32 @@
-import { ReactElement, ReactNode, createContext, useEffect, useRef, useState } from "react";
+import { Children, cloneElement, ReactElement, ReactNode, useEffect, useState, createContext, useContext } from "react";
 import { Container } from "../../Container/Container";
 
 import "./RichInput.css";
 import { requireContext } from "../../../utils/helpers";
-import { generateMongoID } from "../../../utils/dummyGenerators";
 
-interface RichInputContextProps {
-    addGroup: (name: string, id: string, children: ReactNode) => void,
-    toggleCursor: (type: "parent" | "child", id: string) => void,
-    cursor: {
-        parent: string,
-        child: string,
-    }
-    hidden: string[],
-    
+export interface KeyProps {
+    name: string,
+    render: ReactElement<RichInputInternalKeyProps>,
+    children?: PairProps[];
+}
+
+export interface PairProps {
+    value: string,
+    render: ReactElement
+}
+
+interface RichInputContextProps { 
+    addKeyValuePair: (evt: KeyProps) => void
 }
 
 const RichInputContext = createContext<RichInputContextProps>({
-    addGroup: () => {},
-    toggleCursor: () => {},
-    cursor: {
-        parent: "",
-        child: ""
-    },
-    hidden: [],
+    addKeyValuePair: () => {}
 });
 
 interface RichInputProps {
-    children: ReactElement<RichInputGroupProps> | Array<ReactElement<RichInputGroupProps>>,
     className?: string
     placeholder?: string,
+    children: ReactElement<RichInputKeyProps> | Array<ReactElement<RichInputKeyProps>>,
     onSubmit: (values: {
         input: string,
         attributes: {
@@ -40,267 +37,223 @@ interface RichInputProps {
 }
 
 function RichInput(props: RichInputProps) {
-    const nodeTree = useRef<{
-        name: string,
-        id: string,
-        children: ReactNode
-    }[]>([]);
-    const [ state, setState ] = useState<"none" | "group" | "item">("none");
-    const [ cursor, setCursor ] = useState<{
-        parent: string,
-        child: string
+    const [ keyValues, setKeyValues ] = useState<KeyProps[]>([]);
+    const [ state, setState ] = useState<"none" | "key" | "pair">("none");
+    const [ keyValuePair, setKeyValuePair ] = useState<{
+        key: number,
+        pair: number
     }>({
-        parent: "",
-        child: ""
-    }); //cursor contains the id of the last visible item;
-    const [hidden, setHidden] = useState<string[]>([]);
-    const [ display, setDisplay ] = useState<string>();
+        key: 0,
+        pair: 0
+    });
+    const [hidden, setHidden] = useState<number[]>([]);
 
-    useEffect(() => {
-
-    }, [cursor, hidden]);
-
-    const addGroup = (name: string, id: string, children: ReactNode) => {
-        if (!nodeTree.current.find((item) => item.id == id)) {
-            nodeTree.current.push({
-                name, id, children
-            });
-        }
+    const addKeyValuePair = (kvp: KeyProps) => {
+        //key values are added only if there does not already exists a key for it.
+        setKeyValues(prev => {
+            if (prev.find((key) => key.name == kvp.name)) {
+                return [ ...prev];
+            } else {
+                return [ ...prev, kvp];
+            }
+        });
     }
 
-    //handle events before the input is registered
-    const onKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        if (evt.key == "/" && (evt.target as HTMLInputElement).value.length == 0) {
-            setState("group");
-            console.log(nodeTree.current[0].id);
-            setCursor({
-                parent: nodeTree.current[0].id,
-                child: ""
-            });
-            return;
-        }
+    console.log(keyValues);
 
-        //handle the case where it is the parent being moved
-        //handle the case where it is the child being moved
-        if (evt.key == "ArrowUp") {
-            evt.preventDefault();
-            //find index of current cursor
-            const cursorIndex = nodeTree.current.findIndex((item) => item.id == cursor.parent);
-            //move up, skip if index id included with hidden
-            for (let i = cursorIndex; i >= 0; i--) {
-                if (i == cursorIndex) {
-                    continue;
+    const handleKeyDown = (evt: React.KeyboardEvent) => {
+        if (state == "key") {
+            if (evt.key == "ArrowUp") {
+                evt.preventDefault();
+
+                for (let i = keyValuePair.key - 1; i >= 0; i--) {
+                    if (!hidden.includes(i)) {
+                        setKeyValuePair({
+                            key: i,
+                            pair: 0
+                        })
+                    
+                        return;
+                    }
                 }
-
-                if (hidden.includes(nodeTree.current[i].id)) {
-                    continue;
-                }
-
-                setCursor({
-                    parent: nodeTree.current[i].id,
-                    child: ""
-                });
-                
-                return;
             }
-        } 
+    
+            if (evt.key == "ArrowDown") {
+                evt.preventDefault();
 
-        if (evt.key == "ArrowDown") {
-            evt.preventDefault();
+                for (let i = keyValuePair.key + 1; i < keyValues.length; i++) {
+                    if (!hidden.includes(i)) {
+                        setKeyValuePair({
+                            key: i,
+                            pair: 0
+                        })
 
-            const cursorIndex = nodeTree.current.findIndex((item) => item.id == cursor.parent);
-            //move up, skip if index id included with hidden
-            for (let i = cursorIndex; i < nodeTree.current.length; i++) {
-                if (i == cursorIndex) {
-                    continue;
+                        return;
+                    }
                 }
-
-                if (hidden.includes(nodeTree.current[i].id)) {
-                    continue;
-                }
-
-                setCursor({
-                    parent: nodeTree.current[i].id,
-                    child: ""
-                });
-                
-                return;
             }
         }
+        
     }
 
-    //handle events after the input is registered, recommended to 
-    const onKeyUp = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        const target = evt.target as HTMLInputElement;
+    const handleKeyUp = (evt: React.KeyboardEvent) => {
+        const target = (evt.target as HTMLInputElement);
+        if (evt.key == "Backspace" && target.value == "") {
+            setState("none");
+        }
 
-        if (evt.key == "Backspace" && target.value.length == 0) {
-            resetInput();
-            return;
+        if (evt.key == "/" && target.value.length == 1) {
+            setState("key");
+        }
+
+        if (target.value.charAt(0) == "/") {
+            const test = target.value.slice(1, target.value.length);
+
+            const newHidden: number[] = [];
+            
+            keyValues.forEach((kvp, index) => {
+                if (kvp.name.slice(0, test.length) != test) {
+                    newHidden.push(index);
+                }
+            })
+            setHidden(newHidden);
         }
 
         if (evt.key == "Enter") {
-            if (state == "group") {
-                setState("item");
-            } else if (state == "item") {
-                setState("group");
-            } else if (state == "none") {   //input  is submitted 
-                props.onSubmit({
-                    input: target.value,
-                    attributes: []
-                })
+            if (state == "key") {
+                target.value = "/" + keyValues[keyValuePair.key].name + ":"
+                setState("pair");
             }
         }
 
-        const test = target.value.slice(1, target.value.length).toLowerCase();
-        setHidden(
-            nodeTree.current.filter((node) => {
-                return test != node.name.slice(0, test.length).toLowerCase();
-            }).map((node) => node.id)
-        );
+        console.log(evt.key);
     }
 
-    const toggleCursor = (type: "parent" | "child", id: string) => {
-        if (type == "parent") {
-            setCursor({
-                parent: id,
-                child: cursor.child
-            });
-        } else {
-            setCursor({
-                parent: cursor.parent,
-                child: id
-            });
-        }
-    }
-
-    //moves the cursor the hidden
     useEffect(() => {
-        if (state == "group") {
-            //moves the cursor to the next valid item
-            console.log(hidden.includes(cursor.parent));
-            if (hidden.includes(cursor.parent)) {
-                const newCursor = nodeTree.current.filter((tree) => {
-                    if (tree.id == cursor.parent) {
-                        return true;
-                    } else {
-                        return (!hidden.includes(tree.id));
+        if (state == "key") {
+            if (hidden.includes(keyValuePair.key)) {
+                for (let i = 0; i < keyValues.length; i++) {
+                    if (!hidden.includes(i)) {
+                        setKeyValuePair({
+                            key: i,
+                            pair: 0
+                        });
+
+                        return;
                     }
-                })
-
-                //There are no valid ids to point the index to
-                if (newCursor.length == 1) {
-                    console.log("no valid ids to point to");
-                    return;
-                }
-
-                const oldIndex = newCursor.findIndex((item) => {
-                    return item.id == cursor.parent;
-                })
-
-                if (oldIndex == -1) {
-                    return;
-                }
-
-                if (oldIndex == newCursor.length - 1) {
-                    setCursor({
-                        parent: newCursor[oldIndex - 1].id,
-                        child: ""
-                    });
-                    return;
-                } else {
-                    setCursor({
-                        parent: newCursor[oldIndex + 1].id,
-                        child: ""
-                    });
-                    return;
                 }
             }
         }
+        
     }, [hidden]);
 
+    return (
+        <div className={`rich-input ${props.className}`}>
+            <RichInputContext.Provider value={{ addKeyValuePair }}>
+                { props.children }
+            </RichInputContext.Provider>
+                
+            <Container className="rich-input__menu" hidden={state == "none"}>
+                {
+                    state == "key"
+                    ? keyValues.map((kvp, index) => 
+                        hidden.includes(index)
+                            ? <></>
+                            : cloneElement(kvp.render, { isSelected: index == keyValuePair.key, key: index }, kvp.render.props.children))
+                    : keyValues.find((_, index) => index == keyValuePair.key)?.children?.map((pair, index) => 
+                        hidden.includes(index)
+                            ? <></>
+                            : cloneElement(pair.render, { isSelected: index == keyValuePair.pair, key: index}, )
+                )
+                }
+            </Container>
+            <input className="rich-input__input" placeholder={props.placeholder} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}/>
+        </div>
+    )
+}
+
+interface RichInputKeyProps {
+    name: string
+    children: ReactElement<RichInputValueProps>,
+    element: ReactNode,
+    style: {
+        base: string,
+        onSelect: string
+    }
+}
+
+const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
+    const richInputContext = requireContext(RichInputContext);
+
     useEffect(() => {
-        if (state == "group") {
-            console.log(nodeTree.current[0]);
-            setCursor({
-                parent: nodeTree.current[0].id,
-                child: ""
+        console.log(props);
+        
+        const kvp: KeyProps = {
+            name: props.name,
+            render: <RichInputInternalKey isSelected={false} style={{
+                base: props.style.base,
+                onSelect: props.style.onSelect
+            }}>
+                {props.element}
+            </RichInputInternalKey>,
+            children: Children.map(props.children, (child) => {
+                return {
+                    value: child.props.value,
+                    render: child
+                }
             })
         }
-    }, [state])
 
-    const resetInput = () => {
-        setState("none");
-        setCursor({
-            parent: "",
-            child: ""
-        })
-    }
+        console.log(kvp);
 
-    return (
-        <RichInputContext.Provider value={{ addGroup, hidden, cursor, toggleCursor }}>
-            <div className={`rich-input ${props.className}`}>
-                <Container className="rich-input__menu" hidden={state == "none"}>
-                    {
-                        props.children
-                    }
-                </Container>
-                <input className="rich-input__input" placeholder={props.placeholder} onKeyDown={onKeyDown} onKeyUp={onKeyUp}onBlur={resetInput}/>
-            </div>
-        </RichInputContext.Provider>
-    )
-}
-
-interface RichInputGroupProps {
-    name: string,
-    children: ReactElement<RichInputItemProps> | Array<ReactElement<RichInputItemProps>>
-    element: ReactNode,
-    selectedStyle?: string
-}
-
-function RichInputGroup(props: RichInputGroupProps) {
-    const [ id ] = useState(generateMongoID());
-    const richInputContext = requireContext(RichInputContext);
-    const [ hidden, setHidden ] = useState<boolean>(false);
-
-    useEffect(() => {
-        richInputContext.addGroup(props.name, id, props.children);
+        richInputContext.addKeyValuePair(kvp);
     }, []);
 
-    useEffect(() => {
-        if (id == richInputContext.cursor.parent) {
-            setHidden(true);
-        } else {
-            setHidden(false);
-        }
-    }, [richInputContext.cursor])
+    return (<></>)
+}
 
-    const toggleCursor = () => {
-        richInputContext.toggleCursor("parent", id);
+
+interface RichInputInternalKeyProps {
+    children: ReactNode,
+    isSelected: boolean,
+    style: { 
+        base: string,
+         onSelect: string
     }
+}
 
+const RichInputInternalKey: React.FC<RichInputInternalKeyProps> = (props) => {
     return (
-        <div id={id} hidden={richInputContext.hidden.includes(id)} onMouseEnter={toggleCursor} className={`${hidden && "rich-input__group-selected"}`}>
-            {
-                props.element
-            }
+        <div className={`${props.style.base} ${props.isSelected && props.style.onSelect}`}>
+            { props.children }
         </div>
     )
 }
 
-interface RichInputItemProps {
-    className?: string,
+interface RichInputValueProps {
     children: ReactNode
+    value: string,
 }
 
-function RichInputItem(props: RichInputItemProps) {
+interface RichInputInternalPairProps {
+    children: ReactElement<RichInputValueProps>,
+    isSelected: boolean,
+    className: string
+}
+
+const RichInputValue: React.FC<RichInputValueProps> = (props) => {
     return (
-        <div className={props.className}>
+        <>
             {props.children}
-        </div>
+        </>
     )
 }
 
-RichInput.Group = RichInputGroup;
-RichInput.Item = RichInputItem;
+const RichInputInternalPair: React.FC<RichInputInternalPairProps> = (props) => {
+    return 
+}
+
+RichInput.Key = RichInputKey;
+RichInput.Value = RichInputValue;
 
 export default RichInput;
