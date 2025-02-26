@@ -10,11 +10,21 @@
     background-color: white;
     position: absolute;
     bottom: calc(100% + 3px);
+    display: flex;
+    flex-direction: column;
+}
+
+.rich-input__input-container {
+    display: flex;
+    border: 1px solid rgba(29, 29, 29, 0.2);
+    border-radius: 3px;
+    width: 100%;
 }
 
 .rich-input__input {
-    width: 100%;
+    flex: 2;
     outline: none;
+    border: none;
 }
 
 

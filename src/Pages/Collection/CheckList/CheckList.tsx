@@ -46,7 +46,7 @@ const CheckList: React.FC<{}> = () => {
                     }}>
                     <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}>
                         <RichInput.Value value="something">
-                            Hi
+                            <p>Hi</p>
                         </RichInput.Value>
                         <RichInput.Value value="else">
                             Sigh

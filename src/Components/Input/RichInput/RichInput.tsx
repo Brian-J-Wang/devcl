@@ -7,7 +7,7 @@ import { requireContext } from "../../../utils/helpers";
 export interface KeyProps {
     name: string,
     render: ReactElement<RichInputInternalKeyProps>,
-    children?: PairProps[];
+    children: PairProps[];
 }
 
 export interface PairProps {
@@ -42,15 +42,20 @@ interface RichInputProps {
 
 function RichInput(props: RichInputProps) {
     const [ keyValues, setKeyValues ] = useState<KeyProps[]>([]);
-    const [ state, setState ] = useState<"none" | "key" | "pair">("none");
-    const [ keyValuePair, setKeyValuePair ] = useState<{
+    const [ state, setState ] = useState<"none" | "key" | "value">("none");
+    const [ cursor, setCursor ] = useState<{
         key: number,
-        pair: number
+        value: number
     }>({
         key: 0,
-        pair: 0
+        value: 0
     });
     const [hidden, setHidden] = useState<number[]>([]);
+    const [ attributes, setAttributes ] = useState<{
+        name: string,
+        value: string
+    }[]>([]);
+    const [ input, setInput ] = useState<string>("");
 
     const addKeyValuePair = (kvp: KeyProps) => {
         //key values are added only if there does not already exists a key for it.
@@ -63,40 +68,59 @@ function RichInput(props: RichInputProps) {
         });
     }
 
-    const handleKeyDown = (evt: React.KeyboardEvent) => {
-        if (state == "key") {
-            if (evt.key == "ArrowUp") {
-                evt.preventDefault();
-
-                for (let i = keyValuePair.key - 1; i >= 0; i--) {
-                    if (!hidden.includes(i)) {
-                        setKeyValuePair({
-                            key: i,
-                            pair: 0
-                        })
-                    
-                        return;
-                    }
-                }
-            }
     
-            if (evt.key == "ArrowDown") {
-                evt.preventDefault();
+    const moveCursor = (direction: 'ArrowUp' | 'ArrowDown', state: 'key' | 'value' | 'none') => {
+        if (state == "none") {
+            return;
+        }
 
-                for (let i = keyValuePair.key + 1; i < keyValues.length; i++) {
-                    if (!hidden.includes(i)) {
-                        setKeyValuePair({
-                            key: i,
-                            pair: 0
-                        })
+        for (let i = getCursor(); satisfies(i); direction == "ArrowUp" ? i-- : i++) {
+            if (!hidden.includes(i)) {
+                
+                setCursor({
+                    key: state == "key" ? i : cursor.key,
+                    value: state == "value" ? i : cursor.value
+                });
 
-                        return;
-                    }
-                }
+                return;
             }
         }
-        
+
+        function getCursor() {
+            if (state == "key") {
+                return direction == "ArrowUp"
+                    ? cursor.key - 1
+                    : cursor.key + 1;
+            } else {
+                return direction == "ArrowUp"
+                    ? cursor.value - 1
+                    : cursor.value + 1;
+            }
+        }
+
+        function satisfies(i: number) {
+            if (state == "key") {
+                return direction == "ArrowUp"
+                    ? i >= 0
+                    : i < keyValues.length
+            } else {
+                console.log("children length: ", keyValues[cursor.key].children?.length!);
+                return direction == "ArrowUp"
+                    ? i >= 0
+                    : i < keyValues[cursor.key].children?.length!
+            }
+        }
     }
+    
+    const handleKeyDown = (evt: React.KeyboardEvent) => {
+        if (evt.key == "ArrowUp" || evt.key == "ArrowDown") {
+            evt.preventDefault();
+            moveCursor(evt.key, state);
+        }
+
+        setInput((evt.target as HTMLInputElement).value);
+    }
+
 
     const handleKeyUp = (evt: React.KeyboardEvent) => {
         const target = (evt.target as HTMLInputElement);
@@ -104,11 +128,11 @@ function RichInput(props: RichInputProps) {
             setState("none");
         }
 
-        if (evt.key == "/" && target.value.length == 1) {
+        if (evt.key == "/") {
             setState("key");
         }
 
-        if (target.value.charAt(0) == "/") {
+        if (target.value.charAt(0) == "/" && state == "key") {
             const test = target.value.slice(1, target.value.length);
 
             const newHidden: number[] = [];
@@ -123,8 +147,15 @@ function RichInput(props: RichInputProps) {
 
         if (evt.key == "Enter") {
             if (state == "key") {
-                target.value = "/" + keyValues[keyValuePair.key].name + ":"
-                setState("pair");
+                target.value = "/" + keyValues[cursor.key].name + ":"
+                setState("value");
+            } else if (state == "value") {
+                target.value == "";
+                setAttributes([ ...attributes, {
+                    name: keyValues[cursor.key].name,
+                    value: keyValues[cursor.key].children[cursor.value].value
+                }]);
+                setState("none");
             }
         }
 
@@ -133,12 +164,12 @@ function RichInput(props: RichInputProps) {
 
     useEffect(() => {
         if (state == "key") {
-            if (hidden.includes(keyValuePair.key)) {
+            if (hidden.includes(cursor.key)) {
                 for (let i = 0; i < keyValues.length; i++) {
                     if (!hidden.includes(i)) {
-                        setKeyValuePair({
+                        setCursor({
                             key: i,
-                            pair: 0
+                            value: 0
                         });
 
                         return;
@@ -148,6 +179,10 @@ function RichInput(props: RichInputProps) {
         }
         
     }, [hidden]);
+
+    useEffect(() => {
+        setHidden([]);
+    }, [state])
 
     return (
         <div className={`rich-input ${props.className}`}>
@@ -161,28 +196,33 @@ function RichInput(props: RichInputProps) {
                         if (hidden.includes(index)) {
                             return <></>
                         } else {
-                            const isSelected = index == keyValuePair.key;
+                            const isSelected = index == cursor.key;
 
                             return cloneElement(kvp.render, { isSelected: isSelected, classStyle: {onSelect: props.style.onKeySelect}}, kvp.render.props.children);
                         }
                     })
                 }
                 {
-                    state == "pair" && keyValues.find((_, index) => index == keyValuePair.key )?.children?.map((child) => {
-                        return child.render;
+                    state == "value" && keyValues.find((_, index) => index == cursor.key )?.children?.map((child, index) => {
+                        const isSelected = index == cursor.value;
+
+                        return cloneElement(child.render, { isSelected: isSelected, onSelectStyle: props.style.onPairSelect }, child.render.props.children);
                     })
                 }
             </Container>
-            <input className="rich-input__input" placeholder={props.placeholder} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}/>
+            <div className="rich-input__input-container">
+                <span hidden={state == "none"}>{keyValues[cursor.key]?.name ?? ""}</span>
+                <input className="rich-input__input" placeholder={props.placeholder} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} value={input}/>
+            </div>
+            
         </div>
     )
 }
 
 interface RichInputKeyProps {
     name: string
-    children: ReactElement<RichInputValueProps>,
-    element: ReactNode,
-
+    children: ReactElement<RichInputValueProps> | Array<ReactElement<RichInputValueProps>>,
+    element: ReactNode
 }
 
 const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
@@ -194,17 +234,17 @@ const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
         const kvp: KeyProps = {
             name: props.name,
             render: <RichInputInternalKey isSelected={false}>
-                {props.element}
-            </RichInputInternalKey>,
+                        {props.element}
+                    </RichInputInternalKey>,
             children: Children.map(props.children, (child) => {
                 return {
                     value: child.props.value,
-                    render: child
+                    render: <RichInputInternalValue isSelected={false}>
+                                {child}
+                            </RichInputInternalValue>
                 }
             })
         }
-
-        console.log(kvp);
 
         richInputContext.addKeyValuePair(kvp);
     }, []);
@@ -234,10 +274,10 @@ interface RichInputValueProps {
     value: string,
 }
 
-interface RichInputInternalPairProps {
+interface RichInputInternalValueProps {
     children: ReactElement<RichInputValueProps>,
     isSelected: boolean,
-    onSelectStyle: string
+    onSelectStyle?: string
 }
 
 const RichInputValue: React.FC<RichInputValueProps> = (props) => {
@@ -248,7 +288,7 @@ const RichInputValue: React.FC<RichInputValueProps> = (props) => {
     )
 }
 
-const RichInputInternalPair: React.FC<RichInputInternalPairProps> = (props) => {
+const RichInputInternalValue: React.FC<RichInputInternalValueProps> = (props) => {
     return (
         <div className={`${props.isSelected && props.onSelectStyle}`}>
             {props.children}
