@@ -15,8 +15,14 @@ export interface PairProps {
     render: ReactElement
 }
 
-interface RichInputContextProps { 
+export interface RichInputContextProps { 
     addKeyValuePair: (evt: KeyProps) => void
+}
+
+export interface AttributeComponentProps {
+    name: string,
+    value: string,
+    onDeleteClick: (name: string) => void
 }
 
 const RichInputContext = createContext<RichInputContextProps>({
@@ -38,6 +44,7 @@ interface RichInputProps {
         onKeySelect: string,
         onPairSelect: string
     }
+    attributeComponent: ReactElement<AttributeComponentProps>
 }
 
 function RichInput(props: RichInputProps) {
@@ -117,19 +124,28 @@ function RichInput(props: RichInputProps) {
             evt.preventDefault();
             moveCursor(evt.key, state);
         }
+    }
+
+    const handleChange = (evt: any) => {
+        console.log(evt);
 
         setInput((evt.target as HTMLInputElement).value);
     }
+
+    useEffect(() => {
+        if (state == "none" && input.charAt(0) == "/") {
+            setState("key");
+            setInput(input.slice(1, input.length));
+        }
+
+
+    }, [input]);
 
 
     const handleKeyUp = (evt: React.KeyboardEvent) => {
         const target = (evt.target as HTMLInputElement);
         if (evt.key == "Backspace" && target.value == "") {
             setState("none");
-        }
-
-        if (evt.key == "/") {
-            setState("key");
         }
 
         if (target.value.charAt(0) == "/" && state == "key") {
@@ -157,9 +173,8 @@ function RichInput(props: RichInputProps) {
                 }]);
                 setState("none");
             }
+            return;
         }
-
-        console.log(evt.key);
     }
 
     useEffect(() => {
@@ -211,10 +226,18 @@ function RichInput(props: RichInputProps) {
                 }
             </Container>
             <div className="rich-input__input-container">
-                <span hidden={state == "none"}>{keyValues[cursor.key]?.name ?? ""}</span>
-                <input className="rich-input__input" placeholder={props.placeholder} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} value={input}/>
+                <div className="rich-input__input">
+                    <span hidden={state == "none"}>{keyValues[cursor.key]?.name ?? ""}</span>
+                    <input className="rich-input__input-element" placeholder={props.placeholder} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} value={input} onChange={handleChange}/>
+                </div>
+                <div className="rich-input__attributes">
+                    {
+                        attributes.map((attribute) => {
+                            return cloneElement(props.attributeComponent, { name: attribute.name, value: attribute.value });
+                        })
+                    }
+                </div>
             </div>
-            
         </div>
     )
 }

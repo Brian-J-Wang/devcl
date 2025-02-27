@@ -19,12 +19,25 @@
     border: 1px solid rgba(29, 29, 29, 0.2);
     border-radius: 3px;
     width: 100%;
+    flex-direction: column;
 }
 
 .rich-input__input {
     flex: 2;
     outline: none;
     border: none;
+}
+
+.rich-input__input-element {
+    width: calc(100% - 4px);
+    flex: 2;
+    outline: none;
+    border: none;
+}
+
+.rich-input__attributes {
+    display: flex;
+    gap: 8px;
 }
 
 

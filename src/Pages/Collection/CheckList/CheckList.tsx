@@ -7,6 +7,8 @@ import { useContext } from "react";
 import { CollectionContext } from "../Collection";
 import ItemEditorContext from "../ItemEditor/itemEditorContext";
 import RichInput from "../../../Components/Input/RichInput/RichInput";
+import CheckListInputAttribute from "./Components/CheckListInputAttribute";
+
 
 const CheckList: React.FC<{}> = () => {
     const itemEditorContext = useContext(ItemEditorContext);
@@ -39,11 +41,13 @@ const CheckList: React.FC<{}> = () => {
                         })
                     }
                 </div>
-                <RichInput className="check-list__add-item" placeholder="Type to add. Use '/' to add attributes" onSubmit={handleSubmit} 
+                <RichInput className="" placeholder="Type to add. Use '/' to add attributes" onSubmit={handleSubmit} 
                     style={{
                         onKeySelect: "check-list__rich-input-key_selected",
                         onPairSelect: "check-list__rich-input-key_selected"
-                    }}>
+                    }}
+                    attributeComponent={<CheckListInputAttribute name={""} value={""} onDeleteClick={() => {}}/>}
+                    >
                     <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}>
                         <RichInput.Value value="something">
                             <p>Hi</p>
