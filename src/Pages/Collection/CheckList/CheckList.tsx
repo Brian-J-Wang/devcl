@@ -43,10 +43,11 @@ const CheckList: React.FC<{}> = () => {
                 </div>
                 <RichInput className="" placeholder="Type to add. Use '/' to add attributes" onSubmit={handleSubmit} 
                     style={{
+                        defaultTagColor: "mistyrose",
                         onKeySelect: "check-list__rich-input-key_selected",
                         onPairSelect: "check-list__rich-input-key_selected"
                     }}
-                    attributeComponent={<CheckListInputAttribute name={""} value={""} onDeleteClick={() => {}}/>}
+                    attributeComponent={ <CheckListInputAttribute name={""} value={""} onDeleteClick={() => {}}/>}
                     >
                     <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}>
                         <RichInput.Value value="something">

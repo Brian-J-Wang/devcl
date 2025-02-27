@@ -26,6 +26,20 @@
     flex: 2;
     outline: none;
     border: none;
+    display: flex;
+    align-items: center;
+}
+
+.rich-input__dummy-tag {
+    padding: 3px;
+}
+
+.rich-input__input-element {
+    height: 32px;
+}
+
+.rich-input__input-element_hidden {
+    opacity: 0%;
 }
 
 .rich-input__input-element {
@@ -37,7 +51,8 @@
 
 .rich-input__attributes {
     display: flex;
-    gap: 8px;
+    padding: 4px;
+    gap: 4px;
 }
 
 

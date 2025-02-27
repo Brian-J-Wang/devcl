@@ -1,4 +1,4 @@
-import { Children, cloneElement, ReactElement, ReactNode, useEffect, useState, createContext, useContext } from "react";
+import { Children, cloneElement, ReactElement, ReactNode, useEffect, useState, createContext, useRef, RefObject, CSSProperties } from "react";
 import { Container } from "../../Container/Container";
 
 import "./RichInput.css";
@@ -41,6 +41,7 @@ interface RichInputProps {
         }[]
     }) => void,
     style: {
+        defaultTagColor: CSSProperties["color"],
         onKeySelect: string,
         onPairSelect: string
     }
@@ -63,6 +64,8 @@ function RichInput(props: RichInputProps) {
         value: string
     }[]>([]);
     const [ input, setInput ] = useState<string>("");
+    const [ validInput, setValidInput ] = useState<boolean>(true);
+    const dummyTag = useRef<HTMLSpanElement>() as RefObject<HTMLSpanElement>;
 
     const addKeyValuePair = (kvp: KeyProps) => {
         //key values are added only if there does not already exists a key for it.
@@ -74,7 +77,6 @@ function RichInput(props: RichInputProps) {
             }
         });
     }
-
     
     const moveCursor = (direction: 'ArrowUp' | 'ArrowDown', state: 'key' | 'value' | 'none') => {
         if (state == "none") {
@@ -83,13 +85,15 @@ function RichInput(props: RichInputProps) {
 
         for (let i = getCursor(); satisfies(i); direction == "ArrowUp" ? i-- : i++) {
             if (!hidden.includes(i)) {
-                
-                setCursor({
+
+                const newCursor = {
                     key: state == "key" ? i : cursor.key,
                     value: state == "value" ? i : cursor.value
-                });
+                }
+                
+                setCursor(newCursor);
 
-                return;
+                return newCursor;
             }
         }
 
@@ -120,62 +124,71 @@ function RichInput(props: RichInputProps) {
     }
     
     const handleKeyDown = (evt: React.KeyboardEvent) => {
+        const target = (evt.target as HTMLInputElement);
+
         if (evt.key == "ArrowUp" || evt.key == "ArrowDown") {
             evt.preventDefault();
-            moveCursor(evt.key, state);
+            const newCursor = moveCursor(evt.key, state);
+
+            if (!newCursor) {
+                return;
+            }
+
+            if (state == "key") {
+                setInput(keyValues[newCursor.key].name);
+            }
+        }
+
+        if (evt.key == "Backspace") {
+            if (target.value == "" && state != "none") {
+                setState("none");
+            }
         }
     }
 
     const handleChange = (evt: any) => {
-        console.log(evt);
+        const value = (evt.target as HTMLInputElement).value;
+        setInput(value);
 
-        setInput((evt.target as HTMLInputElement).value);
-    }
+        if (state == "key") {
+            const nonMatching: number[] = [];
 
-    useEffect(() => {
-        if (state == "none" && input.charAt(0) == "/") {
-            setState("key");
-            setInput(input.slice(1, input.length));
-        }
-
-
-    }, [input]);
-
-
-    const handleKeyUp = (evt: React.KeyboardEvent) => {
-        const target = (evt.target as HTMLInputElement);
-        if (evt.key == "Backspace" && target.value == "") {
-            setState("none");
-        }
-
-        if (target.value.charAt(0) == "/" && state == "key") {
-            const test = target.value.slice(1, target.value.length);
-
-            const newHidden: number[] = [];
-            
-            keyValues.forEach((kvp, index) => {
-                if (kvp.name.slice(0, test.length) != test) {
-                    newHidden.push(index);
+            keyValues.forEach((key, index) => {
+                if (key.name.slice(0, value.length) != value) {
+                    nonMatching.push(index);
                 }
             })
-            setHidden(newHidden);
-        }
 
+            setHidden(nonMatching);
+        }
+    }
+
+    const handleKeyUp = (evt: React.KeyboardEvent) => {
+        
         if (evt.key == "Enter") {
             if (state == "key") {
-                target.value = "/" + keyValues[cursor.key].name + ":"
+                setInput(keyValues[cursor.key].name);
                 setState("value");
             } else if (state == "value") {
-                target.value == "";
+                setInput("");
                 setAttributes([ ...attributes, {
                     name: keyValues[cursor.key].name,
                     value: keyValues[cursor.key].children[cursor.value].value
                 }]);
-                setState("none");
             }
             return;
         }
+
     }
+
+    useEffect(() => {
+        //sets the state to 
+        if (state == "none" && input.charAt(0) == "/") {
+            setState("key");
+            setInput(input.slice(1, input.length));
+            return;
+        }
+    }, [input]);
 
     useEffect(() => {
         if (state == "key") {
@@ -227,8 +240,8 @@ function RichInput(props: RichInputProps) {
             </Container>
             <div className="rich-input__input-container">
                 <div className="rich-input__input">
-                    <span hidden={state == "none"}>{keyValues[cursor.key]?.name ?? ""}</span>
-                    <input className="rich-input__input-element" placeholder={props.placeholder} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} value={input} onChange={handleChange}/>
+                    <span hidden={state == "none"} className="rich-input__dummy-tag" contentEditable ref={dummyTag} style={{backgroundColor: props.style.defaultTagColor}}>{input}</span>
+                    <input className={`rich-input__input-element ${state != "none" && 'rich-input__input-element_hidden'}`} placeholder={state == "none" ? props.placeholder : ""} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} value={input} onChange={handleChange}/>
                 </div>
                 <div className="rich-input__attributes">
                     {
@@ -263,7 +276,7 @@ const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
                 return {
                     value: child.props.value,
                     render: <RichInputInternalValue isSelected={false}>
-                                {child}
+                                { child }
                             </RichInputInternalValue>
                 }
             })
@@ -311,6 +324,7 @@ const RichInputValue: React.FC<RichInputValueProps> = (props) => {
     )
 }
 
+//internal components contains props that isn't used by the user. Wraps the RichInputValue which is a user facing component
 const RichInputInternalValue: React.FC<RichInputInternalValueProps> = (props) => {
     return (
         <div className={`${props.isSelected && props.onSelectStyle}`}>
