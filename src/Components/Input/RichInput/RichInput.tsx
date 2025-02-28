@@ -3,6 +3,7 @@ import { Container } from "../../Container/Container";
 
 import "./RichInput.css";
 import { requireContext } from "../../../utils/helpers";
+import ResizeableInput from "../ResizeableInput/ResizeableInput";
 
 export interface KeyProps {
     name: string,
@@ -58,14 +59,13 @@ function RichInput(props: RichInputProps) {
         key: 0,
         value: 0
     });
-    const [hidden, setHidden] = useState<number[]>([]);
+    
     const [ attributes, setAttributes ] = useState<{
         name: string,
         value: string
     }[]>([]);
     const [ input, setInput ] = useState<string>("");
-    const [ validInput, setValidInput ] = useState<boolean>(true);
-    const dummyTag = useRef<HTMLSpanElement>() as RefObject<HTMLSpanElement>;
+    const attributeSelector = useRef<HTMLInputElement>(null) as RefObject<HTMLInputElement>;
 
     const addKeyValuePair = (kvp: KeyProps) => {
         //key values are added only if there does not already exists a key for it.
@@ -140,7 +140,9 @@ function RichInput(props: RichInputProps) {
         }
 
         if (evt.key == "Backspace") {
-            if (target.value == "" && state != "none") {
+            if (target.value == "" && state == "value") {
+                setState("key");
+            } else if (target.value == "" && state == "key") {
                 setState("none");
             }
         }
@@ -167,10 +169,8 @@ function RichInput(props: RichInputProps) {
         
         if (evt.key == "Enter") {
             if (state == "key") {
-                setInput(keyValues[cursor.key].name);
                 setState("value");
             } else if (state == "value") {
-                setInput("");
                 setAttributes([ ...attributes, {
                     name: keyValues[cursor.key].name,
                     value: keyValues[cursor.key].children[cursor.value].value
@@ -178,17 +178,48 @@ function RichInput(props: RichInputProps) {
             }
             return;
         }
-
     }
 
     useEffect(() => {
         //sets the state to 
         if (state == "none" && input.charAt(0) == "/") {
             setState("key");
+
             setInput(input.slice(1, input.length));
+            console.log(attributeSelector.current);
+            attributeSelector.current?.focus();
             return;
         }
     }, [input]);
+
+    
+
+    useEffect(() => {
+        setHidden([]);
+    }, [state]);
+
+    //attribute selector logic
+    const [hidden, setHidden] = useState<number[]>([]);
+    const handleAttributeSelectorInput = (evt: React.FormEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
+        const value = (evt.target as HTMLInputElement).value
+        setState(value);
+
+        if (state == "key") {
+            const nonMatching: number[] = [];
+
+            keyValues.forEach((key, index) => {
+                if (key.name.slice(0, value.length) != value) {
+                    nonMatching.push(index);
+                }
+            })
+
+            setHidden(nonMatching);
+        }
+    }
+
+    const handleSpecialKeys = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log(evt.key);
+    }
 
     useEffect(() => {
         if (state == "key") {
@@ -207,10 +238,6 @@ function RichInput(props: RichInputProps) {
         }
         
     }, [hidden]);
-
-    useEffect(() => {
-        setHidden([]);
-    }, [state])
 
     return (
         <div className={`rich-input ${props.className}`}>
@@ -240,7 +267,10 @@ function RichInput(props: RichInputProps) {
             </Container>
             <div className="rich-input__input-container">
                 <div className="rich-input__input">
-                    <span hidden={state == "none"} className="rich-input__dummy-tag" contentEditable ref={dummyTag} style={{backgroundColor: props.style.defaultTagColor}}>{input}</span>
+                    <ResizeableInput 
+                        ref={attributeSelector} className={`rich-input__attribute-selector ${state == "none" && "rich-input__attribute-selector"}`}
+                        style={{ backgroundColor: props.style.defaultTagColor }} onInputChange={handleAttributeSelectorInput}
+                        onKeyDown={handleSpecialKeys} />
                     <input className={`rich-input__input-element ${state != "none" && 'rich-input__input-element_hidden'}`} placeholder={state == "none" ? props.placeholder : ""} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} value={input} onChange={handleChange}/>
                 </div>
                 <div className="rich-input__attributes">

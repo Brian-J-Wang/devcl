@@ -30,8 +30,18 @@
     align-items: center;
 }
 
-.rich-input__dummy-tag {
+.rich-input__attribute-selector {
+    border: none;
     padding: 3px;
+    outline: none;
+    font-size: 12px;
+    min-width: 0px;
+    font-weight: 700;
+}
+
+.rich-input__attribute-selector_hidden {
+    padding: 0px;
+    width: 0px;
 }
 
 .rich-input__input-element {
