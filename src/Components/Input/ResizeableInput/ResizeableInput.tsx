@@ -1,4 +1,4 @@
-import {  useState, forwardRef, useRef, RefObject, useEffect } from "react";
+import { useState, forwardRef, useRef, RefObject } from "react";
 
 import "./ResizeableInput.css"
 
@@ -8,7 +8,6 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 const ResizeableInput = forwardRef<HTMLInputElement, InputProps>(({ style, className, onChange, onInputChange, value, ...props}, ref) => {
     const [defaultValue, setDefaultValue] = useState<string>("");
-    const [width, setWidth] = useState<number>(0);
     const hiddenSpan = useRef<HTMLSpanElement>() as RefObject<HTMLSpanElement>;
 
     const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {       
@@ -19,19 +18,10 @@ const ResizeableInput = forwardRef<HTMLInputElement, InputProps>(({ style, class
         }
     }
 
-    useEffect(() => {
-        if (!hiddenSpan.current) return;
-
-        hiddenSpan.current.innerHTML = value as string ?? "";
-        setWidth(hiddenSpan.current.getBoundingClientRect().width + 1);
-    })
-
-    useEffect(() => {
-        
-    }, [value]);
-
     const calculateWidth = () => {
         if (!hiddenSpan.current) return 0;
+
+        hiddenSpan.current.innerHTML = value as string ?? "";
         return hiddenSpan.current.getBoundingClientRect().width + 1;
     }
 
