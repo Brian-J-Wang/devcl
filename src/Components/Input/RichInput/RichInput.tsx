@@ -8,6 +8,7 @@ import ResizeableInput from "../ResizeableInput/ResizeableInput";
 export interface KeyProps {
     name: string,
     render: ReactElement<RichInputInternalKeyProps>,
+    color: CSSProperties["color"],
     children: PairProps[];
 }
 
@@ -45,6 +46,8 @@ interface RichInputProps {
         defaultTagColor: CSSProperties["color"],
         onKeySelect: string,
         onPairSelect: string
+        inputBar: string,
+        inputBarTag: string
     }
     attributeComponent: ReactElement<AttributeComponentProps>
 }
@@ -66,6 +69,7 @@ function RichInput(props: RichInputProps) {
     }[]>([]);
     const [ input, setInput ] = useState<string>("");
     const attributeSelector = useRef<HTMLInputElement>(null) as RefObject<HTMLInputElement>;
+    const mainInput = useRef<HTMLInputElement>(null) as RefObject<HTMLInputElement>;
 
     const addKeyValuePair = (kvp: KeyProps) => {
         //key values are added only if there does not already exists a key for it.
@@ -122,31 +126,6 @@ function RichInput(props: RichInputProps) {
             }
         }
     }
-    
-    const handleKeyDown = (evt: React.KeyboardEvent) => {
-        const target = (evt.target as HTMLInputElement);
-
-        if (evt.key == "ArrowUp" || evt.key == "ArrowDown") {
-            evt.preventDefault();
-            const newCursor = moveCursor(evt.key, state);
-
-            if (!newCursor) {
-                return;
-            }
-
-            if (state == "key") {
-                setInput(keyValues[newCursor.key].name);
-            }
-        }
-
-        if (evt.key == "Backspace") {
-            if (target.value == "" && state == "value") {
-                setState("key");
-            } else if (target.value == "" && state == "key") {
-                setState("none");
-            }
-        }
-    }
 
     const handleChange = (evt: any) => {
         const value = (evt.target as HTMLInputElement).value;
@@ -171,10 +150,7 @@ function RichInput(props: RichInputProps) {
             if (state == "key") {
                 setState("value");
             } else if (state == "value") {
-                setAttributes([ ...attributes, {
-                    name: keyValues[cursor.key].name,
-                    value: keyValues[cursor.key].children[cursor.value].value
-                }]);
+                
             }
             return;
         }
@@ -186,7 +162,6 @@ function RichInput(props: RichInputProps) {
             setState("key");
 
             setInput(input.slice(1, input.length));
-            console.log(attributeSelector.current);
             attributeSelector.current?.focus();
             return;
         }
@@ -200,9 +175,10 @@ function RichInput(props: RichInputProps) {
 
     //attribute selector logic
     const [hidden, setHidden] = useState<number[]>([]);
-    const handleAttributeSelectorInput = (evt: React.FormEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
+    const [attributeValue, setAttributeValue] = useState<string>("");
+    const handleAttributeSelectorInput = (evt: React.FormEvent<HTMLInputElement>) => {
         const value = (evt.target as HTMLInputElement).value
-        setState(value);
+        setAttributeValue(value);
 
         if (state == "key") {
             const nonMatching: number[] = [];
@@ -218,7 +194,49 @@ function RichInput(props: RichInputProps) {
     }
 
     const handleSpecialKeys = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        console.log(evt.key);
+        if (evt.key == "ArrowUp" || evt.key == "ArrowDown") {
+            evt.preventDefault();
+            const newCursor = moveCursor(evt.key, state);
+
+            if (!newCursor) {
+                return;
+            }
+
+            if (state == "key") {
+                setAttributeValue(keyValues[newCursor.key].name);
+            }
+        }
+
+        if (evt.key == "Backspace" ) {
+            if (state == "key" && attributeValue == "") {
+                setState("none");
+                mainInput.current?.focus();
+            } else if (state == "value" && attributeValue.includes(":")) {
+                evt.preventDefault(); 
+                setState("key");
+            }   
+        }
+
+        if (evt.key == ":" && attributeValue.includes(":")) {
+            evt.preventDefault();
+        }
+
+        if (evt.key == "Enter") {
+            if (state == "key") {
+                setState("value");
+                setAttributeValue(`${keyValues[cursor.key].name}:`);
+            } else if (state == "value") {
+                setState("none");
+                setAttributeValue("");
+                mainInput.current?.focus();
+                setAttributes([ ...attributes, {
+                    name: keyValues[cursor.key].name,
+                    value: keyValues[cursor.key].children[cursor.value].value
+                }]);
+            }
+        }
+
+        console.log("contains color", attributeValue.includes(":"));
     }
 
     useEffect(() => {
@@ -266,12 +284,14 @@ function RichInput(props: RichInputProps) {
                 }
             </Container>
             <div className="rich-input__input-container">
-                <div className="rich-input__input">
+                <div className={`rich-input__input ${props.style.inputBar}`}>
                     <ResizeableInput 
-                        ref={attributeSelector} className={`rich-input__attribute-selector ${state == "none" && "rich-input__attribute-selector"}`}
+                        ref={attributeSelector} className={`${props.style.inputBarTag} rich-input__attribute-selector ${state == "none" && "rich-input__attribute-selector_hidden"} `}
                         style={{ backgroundColor: props.style.defaultTagColor }} onInputChange={handleAttributeSelectorInput}
-                        onKeyDown={handleSpecialKeys} />
-                    <input className={`rich-input__input-element ${state != "none" && 'rich-input__input-element_hidden'}`} placeholder={state == "none" ? props.placeholder : ""} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} value={input} onChange={handleChange}/>
+                        onKeyDown={handleSpecialKeys} value={attributeValue}/>
+                    <input className={`rich-input__input-element ${state != "none" && 'rich-input__input-element_hidden'}`} placeholder={state == "none" ? props.placeholder : ""} 
+                        onKeyUp={handleKeyUp} value={input} onChange={handleChange}
+                        ref={mainInput}/>
                 </div>
                 <div className="rich-input__attributes">
                     {
@@ -288,6 +308,7 @@ function RichInput(props: RichInputProps) {
 interface RichInputKeyProps {
     name: string
     children: ReactElement<RichInputValueProps> | Array<ReactElement<RichInputValueProps>>,
+    color: CSSProperties["color"],
     element: ReactNode
 }
 
@@ -302,6 +323,7 @@ const RichInputKey: React.FC<RichInputKeyProps> = (props) => {
             render: <RichInputInternalKey isSelected={false}>
                         {props.element}
                     </RichInputInternalKey>,
+            color: props.color,
             children: Children.map(props.children, (child) => {
                 return {
                     value: child.props.value,

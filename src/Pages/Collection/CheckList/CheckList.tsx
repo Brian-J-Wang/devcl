@@ -45,11 +45,15 @@ const CheckList: React.FC<{}> = () => {
                     style={{
                         defaultTagColor: "mistyrose",
                         onKeySelect: "check-list__rich-input-key_selected",
-                        onPairSelect: "check-list__rich-input-key_selected"
+                        onPairSelect: "check-list__rich-input-key_selected",
+                        inputBar: "check-list__rich-input-bar",
+                        inputBarTag: "check-list__rich-input-bar-tag"
                     }}
                     attributeComponent={ <CheckListInputAttribute name={""} value={""} onDeleteClick={() => {}}/>}
                     >
-                    <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}>
+                    <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}
+                    color={"wheat"}
+                    >
                         <RichInput.Value value="something">
                             <p>Hi</p>
                         </RichInput.Value>
@@ -60,12 +64,16 @@ const CheckList: React.FC<{}> = () => {
                             My
                         </RichInput.Value>
                     </RichInput.Key>
-                    <RichInput.Key name="importance" element={ <CheckListKeyComponent name="Importance" desc=""/>}>
+                    <RichInput.Key name="importance" element={ <CheckListKeyComponent name="Importance" desc=""/>}
+                    color={"red"}
+                    >
                         <RichInput.Value value="something">
                             hi
                         </RichInput.Value>
                     </RichInput.Key>
-                    <RichInput.Key name="assign" element={ <CheckListKeyComponent name="Assign" desc=""/>}>
+                    <RichInput.Key name="assign" element={ <CheckListKeyComponent name="Assign" desc=""/>}
+                    color={"orange"}
+                    >
                         <RichInput.Value value="something">
                             hi
                         </RichInput.Value>
