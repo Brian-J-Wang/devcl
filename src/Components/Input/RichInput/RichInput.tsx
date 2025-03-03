@@ -4,6 +4,7 @@ import { Container } from "../../Container/Container";
 import "./RichInput.css";
 import { requireContext } from "../../../utils/helpers";
 import ResizeableInput from "../ResizeableInput/ResizeableInput";
+import { DoublyLinkedHeirarchicTree } from "../../../Pages/Collection/CheckList/DoublyLinkedHeirarchicTree";
 
 export interface KeyProps {
     name: string,
@@ -54,6 +55,7 @@ interface RichInputProps {
 
 function RichInput(props: RichInputProps) {
     const [ keyValues, setKeyValues ] = useState<KeyProps[]>([]);
+    const heirarchy = useRef<DoublyLinkedHeirarchicTree<KeyProps>>(new DoublyLinkedHeirarchicTree());
     const [ state, setState ] = useState<"none" | "key" | "value">("none");
     const [ cursor, setCursor ] = useState<{
         key: number,
@@ -62,7 +64,6 @@ function RichInput(props: RichInputProps) {
         key: 0,
         value: 0
     });
-    
     const [ attributes, setAttributes ] = useState<{
         name: string,
         value: string
@@ -167,8 +168,6 @@ function RichInput(props: RichInputProps) {
         }
     }, [input]);
 
-    
-
     useEffect(() => {
         setHidden([]);
     }, [state]);
@@ -211,14 +210,18 @@ function RichInput(props: RichInputProps) {
             if (state == "key" && attributeValue == "") {
                 setState("none");
                 mainInput.current?.focus();
-            } else if (state == "value" && attributeValue.includes(":")) {
-                evt.preventDefault(); 
+            } else if (state == "value" && attributeValue.charAt(attributeValue.length - 1) == ":") {
                 setState("key");
             }   
         }
 
-        if (evt.key == ":" && attributeValue.includes(":")) {
-            evt.preventDefault();
+        // ":" is used to separate between the key and the value
+        if (evt.key == ":") {
+            if (attributeValue.includes(":")) {
+                evt.preventDefault();
+            } else {
+                setState("value");
+            }
         }
 
         if (evt.key == "Enter") {
@@ -266,7 +269,7 @@ function RichInput(props: RichInputProps) {
             <Container className="rich-input__menu" hidden={state == "none"}>
                 {
                     state == "key" && keyValues.map((kvp, index) => {
-                        if (hidden.includes(index)) {
+                        if (hidden.includes(index) || attributes.some((attribute) => attribute.name == kvp.name)) {
                             return <></>
                         } else {
                             const isSelected = index == cursor.key;

@@ -54,15 +54,15 @@ const CheckList: React.FC<{}> = () => {
                     <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}
                     color={"wheat"}
                     >
-                        <RichInput.Value value="something">
-                            <p>Hi</p>
-                        </RichInput.Value>
-                        <RichInput.Value value="else">
-                            Sigh
-                        </RichInput.Value>
-                        <RichInput.Value value="poggers">
-                            My
-                        </RichInput.Value>
+                        {
+                            collectionContext.categories.map((category) => {
+                                return (
+                                    <RichInput.Value value={category._id}>
+                                        {category.format}
+                                    </RichInput.Value>
+                                )
+                            })
+                        }
                     </RichInput.Key>
                     <RichInput.Key name="importance" element={ <CheckListKeyComponent name="Importance" desc=""/>}
                     color={"red"}
