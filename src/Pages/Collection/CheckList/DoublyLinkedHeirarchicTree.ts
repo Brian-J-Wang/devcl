@@ -1,7 +1,6 @@
 class Node<T> {
     prev: Node<T> | null = null;
     next: Node<T> | null = null;
-    parent: Node<T> | null = null;
     children: Node<T>[] = [];
 
     constructor(public content: T) {
@@ -9,24 +8,14 @@ class Node<T> {
     }
 }
 
-export class DoublyLinkedHeirarchicTree<T> {
-    nodes: Node<T>[] = [];
-
-    constructor() {}
-    
-    appendContent(content: T) {
-        const node = new Node(content);
-        
-        const lastIndex = this.nodes.length - 1;
-        if (lastIndex >= 0) {
-            node.prev = this.nodes[lastIndex];
-            this.nodes[lastIndex].next = node;
-        };
-
-        this.nodes.push(node);
+class LinkedNodes<T> extends Array<T> {
+    constructor() {
+        super();
     }
 
-    removeAtIndex(index: number) {
-        
+    Forwards(start: number, fn: (item: T, index: number, array: Array<T>) => boolean) {
+
     }
 }
+
+const test = new LinkedNodes<number>();

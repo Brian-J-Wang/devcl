@@ -4,7 +4,6 @@ import { Container } from "../../Container/Container";
 import "./RichInput.css";
 import { requireContext } from "../../../utils/helpers";
 import ResizeableInput from "../ResizeableInput/ResizeableInput";
-import { DoublyLinkedHeirarchicTree } from "../../../Pages/Collection/CheckList/DoublyLinkedHeirarchicTree";
 
 export interface KeyProps {
     name: string,
@@ -55,7 +54,6 @@ interface RichInputProps {
 
 function RichInput(props: RichInputProps) {
     const [ keyValues, setKeyValues ] = useState<KeyProps[]>([]);
-    const heirarchy = useRef<DoublyLinkedHeirarchicTree<KeyProps>>(new DoublyLinkedHeirarchicTree());
     const [ state, setState ] = useState<"none" | "key" | "value">("none");
     const [ cursor, setCursor ] = useState<{
         key: number,
