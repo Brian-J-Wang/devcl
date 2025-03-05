@@ -51,33 +51,7 @@ const CheckList: React.FC<{}> = () => {
                     }}
                     attributeComponent={ <CheckListInputAttribute name={""} value={""} onDeleteClick={() => {}}/>}
                     >
-                    <RichInput.Key name="category" element={ <CheckListKeyComponent name="Category" desc=""/>}
-                    color={"wheat"}
-                    >
-                        {
-                            collectionContext.categories.map((category) => {
-                                return (
-                                    <RichInput.Value value={category._id}>
-                                        {category.format}
-                                    </RichInput.Value>
-                                )
-                            })
-                        }
-                    </RichInput.Key>
-                    <RichInput.Key name="importance" element={ <CheckListKeyComponent name="Importance" desc=""/>}
-                    color={"red"}
-                    >
-                        <RichInput.Value value="something">
-                            hi
-                        </RichInput.Value>
-                    </RichInput.Key>
-                    <RichInput.Key name="assign" element={ <CheckListKeyComponent name="Assign" desc=""/>}
-                    color={"orange"}
-                    >
-                        <RichInput.Value value="something">
-                            hi
-                        </RichInput.Value>
-                    </RichInput.Key>
+                    
                 </RichInput>
             </Container>
         </>
