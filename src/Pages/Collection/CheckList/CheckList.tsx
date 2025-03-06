@@ -6,8 +6,6 @@ import CLItemElement, { CLItemTag } from "../CLItem/CLItem";
 import { useContext } from "react";
 import { CollectionContext } from "../Collection";
 import ItemEditorContext from "../ItemEditor/itemEditorContext";
-import RichInput from "../../../Components/Input/RichInput/RichInput";
-import CheckListInputAttribute from "./Components/CheckListInputAttribute";
 
 
 const CheckList: React.FC<{}> = () => {
@@ -41,18 +39,6 @@ const CheckList: React.FC<{}> = () => {
                         })
                     }
                 </div>
-                <RichInput className="" placeholder="Type to add. Use '/' to add attributes" onSubmit={handleSubmit} 
-                    style={{
-                        defaultTagColor: "mistyrose",
-                        onKeySelect: "check-list__rich-input-key_selected",
-                        onPairSelect: "check-list__rich-input-key_selected",
-                        inputBar: "check-list__rich-input-bar",
-                        inputBarTag: "check-list__rich-input-bar-tag"
-                    }}
-                    attributeComponent={ <CheckListInputAttribute name={""} value={""} onDeleteClick={() => {}}/>}
-                    >
-                    
-                </RichInput>
             </Container>
         </>
     );
