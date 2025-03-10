@@ -1,12 +1,14 @@
 import { createContext, ReactNode, SetStateAction, useState } from "react";
-import { Attribute, AttributeNode } from "./interface";
+import { AttributeNode } from "./interface";
 
 interface RichInputContextProps {
     attributes: AttributeNode[],
     cursor: AttributeNode | null,
     input: string,
     setInput: React.Dispatch<SetStateAction<string>>,
-    addAttribute: (content: Attribute) => void,
+    menuState: "attributeMenu" | "attributeWindow",
+    setMenuState: React.Dispatch<SetStateAction<"attributeMenu" | "attributeWindow">>,
+    addAttribute: (name: string) => void,
     removeAttribute: (name: string) => void,
     moveCursor: (direction: "prev" | "next") => void
 }
@@ -16,6 +18,8 @@ export const RichInputContext = createContext<RichInputContextProps>({
     cursor: null,
     input: "",
     setInput: () => {},
+    menuState: "attributeMenu",
+    setMenuState: () => {},
     addAttribute: () => {},
     removeAttribute: () => {},
     moveCursor: () => {}
@@ -30,9 +34,10 @@ const RichInput: React.FC<RichInputProps> = (props) => {
     const [ attributes, setAttributes ] = useState<AttributeNode[]>([]);
     const [ cursor, setCursor ] = useState<AttributeNode | null>(null);
     const [ input, setInput ] = useState<string>("");
+    const [ menuState, setMenuState ] = useState<"attributeMenu" | "attributeWindow">("attributeMenu");
 
-    const addAttribute = (content: Attribute) => {
-        if (attributes.some((value) => value.attribute.name == content.name)) {
+    const addAttribute = (name: string) => {
+        if (attributes.some((value) => value.name == name)) {
             throw new Error("Cannot add an attribute which already exists");
         }
 
@@ -40,7 +45,7 @@ const RichInput: React.FC<RichInputProps> = (props) => {
             prev: attributes[attributes.length - 1],
             next: null,
             hidden: false,
-            attribute: content
+            name: name
         }
 
 
@@ -49,7 +54,7 @@ const RichInput: React.FC<RichInputProps> = (props) => {
 
     //removes the attribute in question and rejoins it
     const removeAttribute = (name: string) => {
-        const attribute = attributes.find((value) => value.attribute.name == name);
+        const attribute = attributes.find((value) => value.name == name);
 
         if (!attribute) {
             throw new Error("Attribute name does not exist");
@@ -85,7 +90,7 @@ const RichInput: React.FC<RichInputProps> = (props) => {
 
     return (
         <RichInputContext.Provider value={{
-            attributes, cursor, addAttribute, removeAttribute, moveCursor, input, setInput
+            attributes, cursor, addAttribute, removeAttribute, moveCursor, input, setInput, menuState, setMenuState
         }}>
             <div className={props.className}>
                 {props.children}

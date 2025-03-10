@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
+import { requireContext } from "../../../../utils/helpers";
+import { RichInputContext } from "../RichInput";
 
 export interface RichInputAttributeProps {
     children: ReactNode,
@@ -7,11 +9,23 @@ export interface RichInputAttributeProps {
 }
 
 const RichInputAttribute: React.FC<RichInputAttributeProps> = (props) => {
-    return (
-        <>
-            {props.children}
-        </>
-    );
+    const richInputContext = requireContext(RichInputContext);
+
+    useEffect(() => {
+        richInputContext.addAttribute(props.name);
+
+        return () => {
+            richInputContext.removeAttribute(props.name);
+        }
+    }, []);
+    
+    if (richInputContext.menuState == "attributeMenu") {
+        return props.menuDisplay;
+    } else if (richInputContext.cursor?.name == props.name) {
+        return props.children;
+    } else {
+        return <></>
+    }
 }
 
 export default RichInputAttribute;
