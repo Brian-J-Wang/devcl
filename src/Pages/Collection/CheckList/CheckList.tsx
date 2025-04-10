@@ -1,12 +1,11 @@
 import { Container } from "../../../Components/Container/Container";
-
-import "./CheckList.css"
 import { CLItem } from "../../../Pages/Collection/interfaces";
 import CLItemElement, { CLItemTag } from "../CLItem/CLItem";
 import { useContext } from "react";
 import { CollectionContext } from "../Collection";
 import ItemEditorContext from "../ItemEditor/itemEditorContext";
 
+import style from "./checklist.module.css";
 
 const CheckList: React.FC<{}> = () => {
     const itemEditorContext = useContext(ItemEditorContext);
@@ -16,12 +15,10 @@ const CheckList: React.FC<{}> = () => {
         itemEditorContext.setActiveItem(item);
     }
 
-    const handleSubmit = () => {}
-
     return (
         <>
-            <Container className="check-list">
-                <div className="check-list__content">
+            <Container className={style.checklist}>
+                <div className={style.checklist}>
                     {
                         collectionContext.items.map((item) => {
                             const tag = collectionContext.categories.find((category) => category._id == item.category);
