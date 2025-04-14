@@ -2,7 +2,7 @@ import "./Home.css"
 import "../Collection/CheckList/CheckList.css"
 import iconWhite from "../../assets/icon-white.svg";
 import { Container } from "../../Components/Container/Container";
-import { FakeCLItemElement } from "../Collection/CLItem/CLItem";
+import { FakeCLItemElement } from "../Collection/Task/CLItem";
 import NavBar from "../../Components/NavBar/Navbar";
 import SignUp from "../SignUp/SignUp";
 import { useState } from "react";

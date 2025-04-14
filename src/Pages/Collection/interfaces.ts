@@ -1,3 +1,5 @@
+import { Task } from "../../utils/collectionAPI"
+
 export interface CLCollection {
     _id: string,
     name: string,
@@ -5,7 +7,7 @@ export interface CLCollection {
     version: string,
     categories: CLCategories[]
     patches: CLPatch[],
-    items: CLItem[]
+    items: Task[]
     collaborators: Collaborators[]
 }
 
@@ -18,25 +20,6 @@ export interface CLCategories {
 export interface id {
     item: string,
     category: string
-}
-
-export interface CLItem {
-    _id: string,        //the databaseId
-    category: string,    //the section it belongs to
-    checked: boolean,   //is it checked or not
-    blurb: string,      //the blurb in the checklist
-}
-
-export interface CLItemPost {
-    category: string,
-    blurb: string
-}
-
-//updateItems only contains the values that are changed
-export interface CLItemPatch {
-    category?: string,
-    checked?: boolean,
-    blurb?: string,
 }
 
 export interface CLPatch {

@@ -2,8 +2,8 @@ import CheckList from "./CheckList/CheckList";
 import { useParams } from 'react-router-dom';
 import ItemEditorContext from './ItemEditor/itemEditorContext';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { CLCategories, CLItem, CLItemPatch, CLPatch, Collaborators } from './interfaces';
-import CollectionAPI from '../../utils/collectionAPI';
+import { CLCategories, CLPatch, Collaborators } from './interfaces';
+import CollectionAPI, { Task, TaskRequest } from '../../utils/collectionAPI';
 import { UserContext } from '../../Contexts/UserContext';
 import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
 
@@ -18,7 +18,7 @@ interface CollectionContextProps {
     version: string,
     categories: CLCategories[],
     patches: CLPatch[],
-    items: CLItem[],
+    items: Task[],
     collaborators: Collaborators[]
 }
 
@@ -54,19 +54,19 @@ export const CategoryApiContext = createContext<CategoryApiProps>({
 })
 
 interface ItemApiProps {
-    addItem: (category: string, blurb: string) => Promise<any>,
-    updateItem: (id: string, update: CLItemPatch) => Promise<any>,
-    deleteItem: (id: string) => Promise<any>
+    postItem: (request: TaskRequest) => Promise<any>,
+    updateItem: (request: TaskRequest) => Promise<any>,
+    deleteItem: (request: TaskRequest) => Promise<any>
 }
 
 export const ItemApiContext = createContext<ItemApiProps>({
-    addItem: () => Promise.reject(),
+    postItem: () => Promise.reject(),
     updateItem: () => Promise.reject(),
     deleteItem: () => Promise.reject()
 })
 
 const Collection : React.FC = () => {
-    const [ activeItem, setActiveItem ] = useState<CLItem>();
+    const [ activeItem, setActiveItem ] = useState<Task>();
 
     const { id } = useParams();
     const userContext = useContext(UserContext);
@@ -80,7 +80,7 @@ const Collection : React.FC = () => {
     const [version, setVersion] = useState<string>("");
     const [categories, setCategories] = useState<CLCategories[]>([]);
     const [patches, setPatches] = useState<CLPatch[]>([]);
-    const [items, setItems] = useState<CLItem[]>([]);
+    const [items, setItems] = useState<Task[]>([]);
     const [collaborators, setCollaborators] = useState<Collaborators[]>([]);
 
     useEffect(() => {
@@ -136,26 +136,34 @@ const Collection : React.FC = () => {
     }
 
     //Item Api
-    const addItem = (category: string, blurb: string) => {
-        return backend.current.addNewItem(category, blurb).then((res) => {
+    const postItem = (request: TaskRequest) => {
+        return backend.current.postItem(request).then((res) => {
             const copy = [ ...items ];
             copy.push(res);
             setItems(copy);
-        });
+        })
     }
 
-    const updateItem = (id: string, update: CLItemPatch) => {
-        return backend.current.updateItem(id, update).then((res) => {
+    const updateItem = (request: TaskRequest) => {
+        return backend.current.updateItem(request).then((res) => {
             const copy = [ ...items ];
-            copy.find((item) => item._id == res._id)!.checked = res.checked;
+            const item = copy.find((item) => item._id == res._id);
+
+            if (!item) return;
+            if (res.blurb) item.blurb = res.blurb;
+
+            Object.keys(res.attributes).forEach((key) => {
+                item.attributes[key] = res.attributes[key]
+            });
+            
             setItems(copy);
         });
     }
 
-    const deleteItem = (id: string) => {
-        return backend.current.deleteItem(id).then(() => {
+    const deleteItem = (request: TaskRequest) => {
+        return backend.current.deleteItem(request).then(() => {
             const copy = [ ...items ];
-            setItems(copy.filter(item => item._id != id));
+            setItems(copy.filter(item => item._id != request._id));
         });
     }
 
@@ -182,7 +190,7 @@ const Collection : React.FC = () => {
                 editCategory
             }}>
             <ItemApiContext.Provider value={{
-                addItem,
+                postItem,
                 updateItem,
                 deleteItem
             }}>

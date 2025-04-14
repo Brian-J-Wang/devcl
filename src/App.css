@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 @font-face {
   font-family: liter;
   src: url(../src/assets/Liter-Regular.ttf) format('truetype');

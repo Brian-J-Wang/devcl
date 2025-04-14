@@ -1,23 +1,27 @@
 import "./CLItem.css"
 import { ReactNode, useContext, useState} from "react"
-import { CLItem } from "../../../Pages/Collection/interfaces"
 import { CheckBoxState } from "../../../Components/Icon/Checkbox/Checkbox"
 import Icon from "../../../Components/Icon"
 import { ItemApiContext } from "../Collection"
+import { Task } from "../../../utils/collectionAPI"
 
 type itemProps = {
-    clItem: CLItem,
+    task: Task,
     onClick: () => void,
     tags?: ReactNode,
 }
 
-const CLItemElement: React.FC<itemProps> = ({ clItem, tags = (<></>), onClick }) => {
+const CLItemElement: React.FC<itemProps> = ({ task, tags = (<></>), onClick }) => {
     const itemApi = useContext(ItemApiContext);
+    const { checked } = task.attributes;
 
     const handleCheckboxClick = () => {
-        itemApi.updateItem(clItem._id, {
-            checked: !clItem.checked
-        })
+        itemApi.updateItem({
+            _id: task._id,
+            attributes: {
+                checked: !task.attributes.checked
+            }
+        });
     }
 
     const openPopup = (evt: React.MouseEvent) => {
@@ -32,13 +36,13 @@ const CLItemElement: React.FC<itemProps> = ({ clItem, tags = (<></>), onClick })
         <div className="clitem" onClick={openPopup}>
             <div className="clitem__top">
                 <div className="clitem__left-container">
-                    <Icon.CheckBox state={clItem.checked ? CheckBoxState.checked : CheckBoxState.unchecked} onClick={handleCheckboxClick} data-editorIgnore className="clitem__checkbox"/>
-                    <p className={`clitem__label ${clItem.checked && "clitem__strike"}`}>
-                        {clItem.blurb}
+                    <Icon.CheckBox state={checked ? CheckBoxState.checked : CheckBoxState.unchecked} onClick={handleCheckboxClick} data-editorIgnore className="clitem__checkbox"/>
+                    <p className={`clitem__label ${checked && "clitem__strike"}`}>
+                        {task.blurb}
                     </p>
                 </div>
                 <div className="clitem__right-container">
-                    <Icon.TrashCan onClick={() => { itemApi.deleteItem( clItem._id )}} data-editorIgnore/>
+                    <Icon.TrashCan onClick={() => { itemApi.deleteItem({ _id: task._id })}} data-editorIgnore/>
                 </div>
             </div>
             <div className="clitem__bottom">

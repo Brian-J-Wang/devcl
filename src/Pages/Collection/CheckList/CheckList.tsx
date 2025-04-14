@@ -1,41 +1,41 @@
 import { Container } from "../../../Components/Container/Container";
-import { CLItem } from "../../../Pages/Collection/interfaces";
-import CLItemElement, { CLItemTag } from "../CLItem/CLItem";
+import CLItemElement, { CLItemTag } from "../Task/CLItem";
 import { useContext } from "react";
 import { CollectionContext } from "../Collection";
 import ItemEditorContext from "../ItemEditor/itemEditorContext";
 
 import style from "./checklist.module.css";
+import AddItemInput from "./AddItemInput/AddItemInput";
 
 const CheckList: React.FC<{}> = () => {
     const itemEditorContext = useContext(ItemEditorContext);
     const collectionContext = useContext(CollectionContext);
 
-    const openEditor = (item: CLItem) => () => {
-        itemEditorContext.setActiveItem(item);
-    }
-
     return (
         <>
             <Container className={style.checklist}>
-                <div className={style.checklist}>
+                <div className={collectionContext.items.length == 0 ? style.noContent : style.content}>
                     {
-                        collectionContext.items.map((item) => {
-                            const tag = collectionContext.categories.find((category) => category._id == item.category);
+                        collectionContext.items.length == 0
+                        ? (
+                            <>
+                                <h1 className={style.noContentBlurb}>
+                                    You don't have any active tasks.
+                                </h1>
+                            </>
+                        )
+                        : collectionContext.items.map((item) => {
+                            console.log(item);
 
                             return <CLItemElement 
                                 key={item._id} 
-                                clItem={item as CLItem} 
-                                onClick={openEditor(item)} 
-                                tags={ tag && (
-                                    <CLItemTag>
-                                        {tag?.format}
-                                    </CLItemTag>
-                                )}
+                                task={item} 
+                                onClick={() => {}} 
                             />
                         })
                     }
                 </div>
+                <AddItemInput/>
             </Container>
         </>
     );

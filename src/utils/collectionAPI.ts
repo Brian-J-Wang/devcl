@@ -1,5 +1,21 @@
-import { CLCollection, CLItem, CLItemPatch } from "../Pages/Collection/interfaces"
+import { CLCollection } from "../Pages/Collection/interfaces"
 import { sanitize } from "./helpers";
+
+export type Task = {
+    _id: string,
+    blurb: string,
+    attributes: {
+        [ key: string ]: any
+    }
+}
+
+export type TaskRequest = {
+    _id?: string,
+    blurb?: string,
+    attributes?: {
+        [ key: string ]: any
+    }
+}
 
 export enum PatchType {
     major,
@@ -29,39 +45,52 @@ class CollectionAPI {
         })
     }
 
-    addNewItem(parentCategory: string, blurb: string) {
+    postItem(request: TaskRequest) {
+        if (!request.blurb) {
+            return Promise.reject();
+        }
+        
         return fetch(`${this.endpoint}/${this.collection}/items`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                category: parentCategory,
-                blurb: blurb
-            })
+            body: JSON.stringify(request)
         }).then((res) => {
             return res.ok ? res.json() : Promise.reject();
         }).then((res) => {
-            return sanitize(res) as CLItem;
+            return sanitize(res) as Task;
         })
     }
 
-    updateItem(itemId: string, update: CLItemPatch) {
-        return fetch(`${this.endpoint}/${this.collection}/items/${itemId}`, {
+    updateItem(request: TaskRequest) {
+        if (!request._id) {
+            return Promise.reject("Missing item id");
+        }
+
+        if (!request.blurb && Object.keys(request.attributes ?? {}).length == 0) {
+            return Promise.reject("Request is missing changes");
+        }
+
+        return fetch(`${this.endpoint}/${this.collection}/items/${request._id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(update)
+            body: JSON.stringify(request)
         }).then((res) => {
             return res.ok ? res.json() : Promise.reject();
         }).then((res) => {
-            return sanitize(res) as CLItem;
+            return sanitize(res) as Task;
         })
     }
 
-    deleteItem(itemId: string) {
-        return fetch(`${this.endpoint}/${this.collection}/items/${itemId}`, {
+    deleteItem(request: TaskRequest) {
+        if (!request._id) {
+            return Promise.reject("Missing item id");
+        }
+        
+        return fetch(`${this.endpoint}/${this.collection}/items/${request._id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
