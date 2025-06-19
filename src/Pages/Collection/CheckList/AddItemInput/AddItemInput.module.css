@@ -1,6 +1,5 @@
 .main {
     position: relative;
-    
     width: 100%;
     padding: 0px 8px 8px;
     box-sizing: border-box;
@@ -10,18 +9,26 @@
     position: absolute;
     background-color: white;
     border: 1px solid rgba(29, 29, 29, 0.5);
-    width: calc(100% - 16px);
-    transform: translateY(calc(-100% - 8px));
+    min-width: calc(40% - 16px);
+    border-radius: 4px;
+    transform: translateY(calc(-100% - 2px));
     display: flex;
     flex-direction: column;
 }
 
-.input {
+.inputContainer {
     display: flex;
+    flex-direction: column;
     border: 1px solid rgba(29, 29, 29, 0.5);
-    height: 32px;
     box-sizing: content-box;
     border-radius: 4px;
+    overflow: hidden;
+}
+
+.input {
+    display: flex;
+    flex-grow: 1;
+    height: 32px;
 }
 
 .primaryInput {
@@ -34,9 +41,13 @@
 }
 
 .secondaryInput {
-    margin: 4px;
-    height: 24px;
-    border-radius: 8px;
+    background-color: #77A2CF;
+    height: 100%;
     display: flex;
     align-items: center;
+}
+
+.attributeRenderer {
+    display: flex;
+    background-color: rgba(29, 29, 29, 0.1);
 }

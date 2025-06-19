@@ -1,0 +1,16 @@
+.title {
+    padding: 2px;
+    color: rgba(29, 29, 29, 0.7);
+    background-color: rgba(29, 29, 29, 0.3);
+}
+
+.category {
+    padding: 2px 0px 2px 8px;
+    cursor: pointer;
+    color: rgba(29, 29, 29, 0.7)
+}
+
+.category:hover {
+    background-color: rgba(29, 29, 29, 0.05);
+    font-weight: 700;
+}

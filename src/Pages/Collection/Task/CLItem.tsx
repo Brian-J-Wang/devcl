@@ -11,7 +11,7 @@ type itemProps = {
     tags?: ReactNode,
 }
 
-const CLItemElement: React.FC<itemProps> = ({ task, tags = (<></>), onClick }) => {
+const CLItemElement: React.FC<itemProps> = ({ task, tags, onClick }) => {
     const itemApi = useContext(ItemApiContext);
     const { checked } = task.attributes;
 
@@ -45,9 +45,13 @@ const CLItemElement: React.FC<itemProps> = ({ task, tags = (<></>), onClick }) =
                     <Icon.TrashCan onClick={() => { itemApi.deleteItem({ _id: task._id })}} data-editorIgnore/>
                 </div>
             </div>
-            <div className="clitem__bottom">
-                { tags }
-            </div>
+            {
+                tags != undefined && (
+                    <div className="clitem__bottom">
+                        { tags }
+                    </div>
+                )
+            }
         </div>
     )
 }

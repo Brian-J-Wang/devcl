@@ -1,4 +1,4 @@
-import { AttributeMenu, PrimaryInput, RichInput, SecondaryInput, SubmissionItem, Submit } from "@brwwang/react-components"
+import { AttributeMenu, PrimaryInput, RenderAttributes, RichInput, SecondaryInput, SubmissionItem } from "@brwwang/react-components"
 
 import styles from "./AddItemInput.module.css";
 import { AssigneeAttribute } from "./Attributes";
@@ -6,10 +6,10 @@ import { TagAttribute } from "./Attributes/TagAttribute/TagAttribute";
 import { requireContext } from "../../../../utils/helpers";
 import { ItemApiContext } from "../../Collection";
 import { TaskRequest } from "../../../../utils/collectionAPI";
+import AttributeTag from "./AttributeTag";
 
 const AddItemInput: React.FC = () => {
     const { postItem } = requireContext(ItemApiContext);
-
 
     const handleSubmit = (submission: SubmissionItem) => {
         const request: TaskRequest = {
@@ -30,10 +30,19 @@ const AddItemInput: React.FC = () => {
                 <AssigneeAttribute/>
                 <TagAttribute/>
             </AttributeMenu>
-            <div className={styles.input}>
-                <SecondaryInput className={styles.secondaryInput}/>
-                <PrimaryInput placeholder="Begin typing or use '/' to add attributes." className={styles.primaryInput}/>
+            <div className={styles.inputContainer}>
+                <div className={styles.input}>
+                    <SecondaryInput className={styles.secondaryInput}/>
+                    <PrimaryInput placeholder="Begin typing or use '/' to add attributes." className={styles.primaryInput}/>
+                </div>
+                <div className={styles.attributeRenderer}>
+                    <RenderAttributes render={(attribute, context) => (
+                        <AttributeTag attribute={attribute}/>
+                    )}/>
+                </div>
             </div>
+            
+            
         </RichInput>
     )
 }
