@@ -1,20 +1,26 @@
 import { CLCollection } from "../Pages/Collection/interfaces"
 import { sanitize } from "./helpers";
 
+type TaskStatus = "incomplete" | "inprogress" | "complete"
+
 export type Task = {
     _id: string,
+    status?: TaskStatus,
     blurb: string,
     attributes: {
-        [ key: string ]: any
-    }
+        key: string,
+        value: string,
+    }[]
 }
 
 export type TaskRequest = {
     _id?: string,
     blurb?: string,
+    status?: TaskStatus
     attributes?: {
-        [ key: string ]: any
-    }
+        key: string,
+        value: string,
+    }[]
 }
 
 export enum PatchType {
@@ -68,7 +74,7 @@ class CollectionAPI {
             return Promise.reject("Missing item id");
         }
 
-        if (!request.blurb && Object.keys(request.attributes ?? {}).length == 0) {
+        if (!request.blurb && Object.keys(request.attributes ?? {}).length == 0 && !request.status) {
             return Promise.reject("Request is missing changes");
         }
 

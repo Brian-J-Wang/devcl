@@ -14,7 +14,9 @@ const AddItemInput: React.FC = () => {
     const handleSubmit = (submission: SubmissionItem) => {
         const request: TaskRequest = {
             blurb: submission.input,
-            attributes: { ...submission.attributes }
+            attributes: [
+                ...submission.attributes
+            ]
         }
 
         console.log(request);
@@ -37,7 +39,7 @@ const AddItemInput: React.FC = () => {
                 </div>
                 <div className={styles.attributeRenderer}>
                     <RenderAttributes render={(attribute, context) => (
-                        <AttributeTag attribute={attribute}/>
+                        <AttributeTag attribute={attribute} showKey/>
                     )}/>
                 </div>
             </div>

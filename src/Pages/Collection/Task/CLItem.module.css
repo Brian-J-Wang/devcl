@@ -1,0 +1,19 @@
+.top {
+
+}
+
+.topRight {
+
+}
+
+.topLeft {
+
+}
+
+.bottom {
+    display: flex;
+    padding-left: 24px;
+}
+
+.attributeTag {
+}

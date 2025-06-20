@@ -4,6 +4,9 @@ import { CheckBoxState } from "../../../Components/Icon/Checkbox/Checkbox"
 import Icon from "../../../Components/Icon"
 import { ItemApiContext } from "../Collection"
 import { Task } from "../../../utils/collectionAPI"
+import AttributeTag from "../CheckList/AddItemInput/AttributeTag"
+
+import style from "./CLItem.module.css";
 
 type itemProps = {
     task: Task,
@@ -13,14 +16,12 @@ type itemProps = {
 
 const CLItemElement: React.FC<itemProps> = ({ task, tags, onClick }) => {
     const itemApi = useContext(ItemApiContext);
-    const { checked } = task.attributes;
+    const checked = task.status == "complete"
 
     const handleCheckboxClick = () => {
         itemApi.updateItem({
             _id: task._id,
-            attributes: {
-                checked: !task.attributes.checked
-            }
+            status: checked ? "incomplete" : "complete"
         });
     }
 
@@ -46,9 +47,13 @@ const CLItemElement: React.FC<itemProps> = ({ task, tags, onClick }) => {
                 </div>
             </div>
             {
-                tags != undefined && (
-                    <div className="clitem__bottom">
-                        { tags }
+                task.attributes.length != 0 && (        
+                    <div className={style.bottom}>
+                        {
+                            task.attributes.map((attribute) => (
+                                <AttributeTag attribute={attribute} className={style.attributeTag}/>
+                            ))
+                        }
                     </div>
                 )
             }

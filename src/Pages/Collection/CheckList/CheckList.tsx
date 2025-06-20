@@ -25,8 +25,6 @@ const CheckList: React.FC<{}> = () => {
                             </>
                         )
                         : collectionContext.items.map((item) => {
-                            console.log(item);
-
                             return <CLItemElement 
                                 key={item._id} 
                                 task={item} 

@@ -146,15 +146,15 @@ const Collection : React.FC = () => {
 
     const updateItem = (request: TaskRequest) => {
         return backend.current.updateItem(request).then((res) => {
+            console.log(res);
             const copy = [ ...items ];
             const item = copy.find((item) => item._id == res._id);
 
             if (!item) return;
             if (res.blurb) item.blurb = res.blurb;
+            if (res.status) item.status = res.status;
 
-            Object.keys(res.attributes).forEach((key) => {
-                item.attributes[key] = res.attributes[key]
-            });
+            //
             
             setItems(copy);
         });
