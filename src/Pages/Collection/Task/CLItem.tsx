@@ -11,10 +11,9 @@ import style from "./CLItem.module.css";
 type itemProps = {
     task: Task,
     onClick: () => void,
-    tags?: ReactNode,
 }
 
-const CLItemElement: React.FC<itemProps> = ({ task, tags, onClick }) => {
+const CLItemElement: React.FC<itemProps> = ({ task, onClick }) => {
     const itemApi = useContext(ItemApiContext);
     const checked = task.status == "complete"
 

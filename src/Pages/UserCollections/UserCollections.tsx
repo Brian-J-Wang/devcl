@@ -14,7 +14,7 @@ import UserCollectionAPI from "../../utils/userCollectionAPI";
 import BreadCrumb from "../../Components/BreadCrumb/BreadCrumb";
 import { Container } from "../../Components/Container/Container";
 
-const UserCollection: React.FC<{}> = () => {
+const UserCollection: React.FC = () => {
     const [collections, setCollections] = useState<CLCollection[]>([]);
     const modalContextConsumer = useContext(ModalContext);
     const userContext = useContext(UserContext);
