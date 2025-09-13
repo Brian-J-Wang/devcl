@@ -1,4 +1,5 @@
-import "./CollectionSidebar.css"
+import "./sidebar.css"
+import Radio from "../../../Components/Input/Radio/Radio"
 import { Container } from "../../../Components/Container/Container"
 import { useContext } from "react"
 import { CollectionContext } from "../Collection"
@@ -6,7 +7,6 @@ import { CollectionContext } from "../Collection"
 import collectionIcon from "../../../assets/sidebar-collection-icon.svg"
 import personIcon from "../../../assets/person-icon.svg"
 import patchIcon from "../../../assets/patch-icon.svg"
-import Radio from "../../../Components/Input/Radio/Radio"
 
 interface CollectionSidebarProps {
     setActivePage: React.Dispatch<React.SetStateAction<string>>
@@ -27,12 +27,9 @@ const CollectionSidebar: React.FC<CollectionSidebarProps> = (props) => {
         <Container className="cl-sidebar">
             <div className="cl-sidebar__profile">
                 <div className="cl-sidebar__profile-left">
-                    <p>{ generatePlaceHolder() }</p>
+                    { generatePlaceHolder() }
                 </div>
-                <div className="cl-sidebar__profile-right">
-                    <h1>{collectionContext.name}</h1>
-                    <small>owner name</small>
-                </div>
+                <h1>{collectionContext.name}</h1>
             </div>
             <Radio className="cl-sidebar__menu" selectedStyle="cl-sidebar__item_selected" onChange={(value) => { props.setActivePage(value); }}>
                 <Radio.Option name="checklist" className="cl-sidebar__item" initial>

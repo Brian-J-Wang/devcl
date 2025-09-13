@@ -8,10 +8,11 @@ import { UserContext } from '../../Contexts/UserContext';
 import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
 
 import './Collection.css';
-import CheckListOutline from "./CollectionSidebar/CollectionSidebar";
+import CheckListOutline from "./sidebar/sidebar";
 import InvalidView from "./Views/InvalidView/InvalidView";
 import CollaboratorView from "./Views/CollaboratorView/CollaboratorView";
 import { ItemEditor } from "./ItemEditor/ItemEditor";
+import TaskMeter from "./components/taskMeter/taskMeter";
 
 interface CollectionContextProps {
     name: string,
@@ -198,6 +199,7 @@ const Collection : React.FC = () => {
                 <CheckListOutline setActivePage={setActivePage}/>
                 <div className="collection__content">
                     { RenderRightPanel(activePage) }
+                    <TaskMeter/>
                 </div>
                 <ItemEditor/>
                 </ItemEditorContext.Provider>

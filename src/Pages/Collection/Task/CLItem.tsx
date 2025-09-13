@@ -13,43 +13,43 @@ type itemProps = {
     onClick: () => void,
 }
 
-const CLItemElement: React.FC<itemProps> = ({ task, onClick }) => {
+const CLItemElement: React.FC<itemProps> = (props) => {
     const itemApi = useContext(ItemApiContext);
-    const checked = task.status == "complete"
+    const checked = props.task.status == "complete"
 
     const handleCheckboxClick = () => {
         itemApi.updateItem({
-            _id: task._id,
+            _id: props.task._id,
             status: checked ? "incomplete" : "complete"
         });
     }
 
-    const openPopup = (evt: React.MouseEvent) => {
+    const onClick = (evt: React.MouseEvent) => {
         //does not open popup if element that was clicked on includes data-editorIgnore
         if ((evt.target as HTMLElement).hasAttribute('data-editorIgnore')) {
             return;
         }
-        onClick();
+        props.onClick();
     }
 
     return (
-        <div className="clitem" onClick={openPopup}>
+        <div className="clitem" onClick={onClick}>
             <div className="clitem__top">
                 <div className="clitem__left-container">
                     <Icon.CheckBox state={checked ? CheckBoxState.checked : CheckBoxState.unchecked} onClick={handleCheckboxClick} data-editorIgnore className="clitem__checkbox"/>
                     <p className={`clitem__label ${checked && "clitem__strike"}`}>
-                        {task.blurb}
+                        {props.task.blurb}
                     </p>
                 </div>
                 <div className="clitem__right-container">
-                    <Icon.TrashCan onClick={() => { itemApi.deleteItem({ _id: task._id })}} data-editorIgnore/>
+                    <Icon.TrashCan onClick={() => { itemApi.deleteItem({ _id: props.task._id })}} data-editorIgnore/>
                 </div>
             </div>
             {
-                task.attributes.length != 0 && (        
+                props.task.attributes.length != 0 && (        
                     <div className={style.bottom}>
                         {
-                            task.attributes.map((attribute) => (
+                            props.task.attributes.map((attribute) => (
                                 <AttributeTag attribute={attribute} className={style.attributeTag}/>
                             ))
                         }

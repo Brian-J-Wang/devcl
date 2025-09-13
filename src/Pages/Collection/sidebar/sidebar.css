@@ -14,21 +14,15 @@
 }
 
 .cl-sidebar__profile-left {
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
     background-color: #002147;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-}
-
-.cl-sidebar__hr {
-    border: none;
-    border-top: 1px solid #292929;
-    margin: 0px 6px;
-    opacity: 20%;
+    font-weight: 700;
 }
 
 .cl-sidebar__menu {
@@ -38,7 +32,7 @@
 
 .cl-sidebar__item {
     height: 24px;
-    padding: 2px 0px 2px 8px;
+    padding: 2px 0px 2px 5px;
     margin: 2px 4px;
     display: flex;   
     align-items: center;
@@ -62,8 +56,8 @@
 }
 
 .cl-sidebar__item-title {
-    margin: 0px 6px;
-    line-height: 0px;
+    margin: 0px 5px;
+    line-height: 26px;
     font-size: 14px;
     font-weight: 500;
     transition: margin-left 0.2s;
@@ -72,6 +66,5 @@
 .cl-sidebar__item_selected {
     opacity: 100%;
     background-color: rgba(116, 161, 46, 0.8);
-    
     color: white;
 }

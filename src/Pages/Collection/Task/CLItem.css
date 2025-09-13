@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 6px 12px 6px 12px;
+    padding: 6px 8px;
     gap: 4px;
 }
 
@@ -70,7 +70,6 @@
     font-weight: 400;
     position: relative;
     transition: color 0.15s;
-    transform: translateY(1px);
 }
 
 .clitem__strike {

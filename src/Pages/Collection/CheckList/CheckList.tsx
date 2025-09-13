@@ -9,31 +9,35 @@ import AddItemInput from "./AddItemInput/AddItemInput";
 const CheckList: React.FC = () => {
     const collectionContext = useContext(CollectionContext);
 
+    const openPopup = () => {
+
+    }
+
     return (
-        <>
-            <Container className={style.checklist}>
-                <div className={collectionContext.items.length == 0 ? style.noContent : style.content}>
-                    {
-                        collectionContext.items.length == 0
-                        ? (
-                            <>
-                                <h1 className={style.noContentBlurb}>
-                                    You don't have any active tasks.
-                                </h1>
-                            </>
-                        )
-                        : collectionContext.items.map((item) => {
-                            return <CLItemElement 
-                                key={item._id} 
-                                task={item} 
-                                onClick={() => {}} 
-                            />
-                        })
-                    }
-                </div>
-                <AddItemInput/>
-            </Container>
-        </>
+        <Container className={style.checklist}>
+            <div className={collectionContext.items.length == 0 ? style.noContent : style.content}>
+                {
+                    collectionContext.items.length == 0
+                    ? (
+                        <h1 className={style.noContentBlurb}>
+                            You don't have any active tasks.
+                        </h1>
+                    ) : (
+                        <>
+                            <div>
+
+                            </div>
+                            {
+                                collectionContext.items.map((item) => {
+                                    return <CLItemElement key={item._id} task={item} onClick={openPopup} />
+                                })
+                            }
+                        </>
+                    )
+                }
+            </div>
+            <AddItemInput/>
+        </Container>
     );
 }
 
