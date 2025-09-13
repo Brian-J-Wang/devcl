@@ -25,7 +25,7 @@ const CheckList: React.FC = () => {
                     ) : (
                         <>
                             <div>
-
+                                
                             </div>
                             {
                                 collectionContext.items.map((item) => {

@@ -24,9 +24,9 @@ type TaskMeterProps = {
 const TaskMeter: React.FC<TaskMeterProps> = (props) => {
     return (
         <Container className={props.className}>
-            <div >
+            {/* <div>
 
-            </div>
+            </div> */}
             <div className={styles.legend}>
                 {
                     taskTypes.map((item) => (

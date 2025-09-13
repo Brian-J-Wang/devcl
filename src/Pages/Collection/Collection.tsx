@@ -42,18 +42,6 @@ export const CollaboratorApiContext = createContext<CollaboratorApiProps>({
     removeCollaborator: () => Promise.reject()
 })
 
-interface CategoryApiProps {
-    addCategory: (name: string, format: string) => Promise<any>,
-    deleteCategory: (id: string) => Promise<any>,
-    editCategory: () => Promise<any>
-}
-
-export const CategoryApiContext = createContext<CategoryApiProps>({
-    addCategory: () => Promise.reject(),
-    deleteCategory: () => Promise.reject(),
-    editCategory: () => Promise.reject()
-})
-
 interface ItemApiProps {
     postItem: (request: TaskRequest) => Promise<any>,
     updateItem: (request: TaskRequest) => Promise<any>,
@@ -100,7 +88,6 @@ const Collection : React.FC = () => {
         return backend.current.addCollaborator(alias, email).then((res) => {
             const copy = [ ...collaborators ];
             copy.push(res);
-            console.log(res);
             setCollaborators(copy);
         });
     }
@@ -110,30 +97,6 @@ const Collection : React.FC = () => {
             const copy = [...collaborators].filter((collaborators) => collaborators.alias != alias);
             setCollaborators(copy);
         });
-    }
-
-    //Category Apis
-    const addCategory = (name: string, format: string) => {
-        return backend.current.addCategory(name, format).then((res) => {
-            const copy = [ ...categories ];
-            copy.push({
-                _id: res._id,
-                name: res.name,
-                format: res.format
-            })
-            setCategories(copy);
-        });
-    }
-
-    const deleteCategory = (id: string) => {
-        return backend.current.deleteCategory(id).then((res) => {
-            const copy = [ ...categories ];
-            setCategories(copy.filter(item => item._id != res._id))
-        });
-    } 
-
-    const editCategory = () => {
-        return Promise.reject("Not Implemented");
     }
 
     //Item Api
@@ -185,11 +148,6 @@ const Collection : React.FC = () => {
                 addCollaborator,
                 removeCollaborator
             }}>
-            <CategoryApiContext.Provider value={{
-                addCategory,
-                deleteCategory,
-                editCategory
-            }}>
             <ItemApiContext.Provider value={{
                 postItem,
                 updateItem,
@@ -204,7 +162,6 @@ const Collection : React.FC = () => {
                 <ItemEditor/>
                 </ItemEditorContext.Provider>
             </ItemApiContext.Provider>
-            </CategoryApiContext.Provider>
             </CollaboratorApiContext.Provider>
             </CollectionContext.Provider>
         </div>
