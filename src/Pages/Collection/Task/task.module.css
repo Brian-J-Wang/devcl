@@ -1,0 +1,76 @@
+.root {
+    position: relative;
+    display: flex;
+    padding: 6px 8px;
+    gap: 8px;
+}
+
+.root:hover {
+    background-color: rgba(29, 29, 29, 0.1);
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.right {
+    right: 0px;
+    top: 0px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    
+}
+
+.middle {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.top {
+    display: flex;
+}
+
+.bottom {
+    display: flex;
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.label {
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 400;
+    position: relative;
+    transition: color 0.15s;
+}
+
+.labelStrike {
+    color: rgba(29, 29, 29, 0.5);
+    text-decoration: line-through 1px;
+}
+
+.attributeTag {
+    font-weight: 700;
+    font-size: 12px;
+    align-content: center;
+    padding: 1px 4px 1px 4px;
+}
+
+.trashCan {
+    height: 16px;
+    width: 16px;
+    margin: 0px 0px auto auto;
+    visibility: hidden;
+}
+
+.root:hover .trashCan {
+    visibility: visible;
+}
