@@ -31,7 +31,7 @@ const CLItemElement: React.FC<itemProps> = (props) => {
                 </p>
                 {
                     props.task.attributes.length != 0 && (        
-                        <div className={styles.bottom}>
+                        <div className={styles.attributeBar} hidden={props.task.attributes.length == 0}>
                             {
                                 props.task.attributes.map((attribute) => (
                                     <AttributeTag attribute={attribute} className={styles.attributeTag}/>

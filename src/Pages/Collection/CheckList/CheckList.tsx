@@ -1,16 +1,29 @@
 import { Container } from "../../../Components/Container/Container";
-import CLItemElement from "../Task/CLItem";
+import CLItemElement from "../Task/task";
 import { useContext } from "react";
-import { CollectionContext } from "../Collection";
+import { CollectionContext, ItemApiContext } from "../Collection";
 
 import style from "./checklist.module.css";
 import AddItemInput from "./AddItemInput/AddItemInput";
+import { Task } from "../../../utils/collectionAPI";
 
 const CheckList: React.FC = () => {
     const collectionContext = useContext(CollectionContext);
+    const itemAPI = useContext(ItemApiContext);
 
     const openPopup = () => {
 
+    }
+
+    const onCheckboxClick = (task: Task) => () => {
+        itemAPI.updateItem({
+            _id: task._id,
+            status: task.status == "complete" ? "incomplete" : "complete"
+        });
+    }
+
+    const onDeleteClick = (task: Task) => () => {
+        itemAPI.deleteItem({ _id: task._id })
     }
 
     return (
@@ -29,7 +42,8 @@ const CheckList: React.FC = () => {
                             </div>
                             {
                                 collectionContext.items.map((item) => {
-                                    return <CLItemElement key={item._id} task={item} onClick={openPopup} />
+                                    return <CLItemElement key={item._id} task={item} onClick={openPopup} 
+                                    onCheckboxClick={onCheckboxClick(item)} onDeleteClick={onDeleteClick(item)}/>
                                 })
                             }
                         </>

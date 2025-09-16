@@ -33,8 +33,8 @@ export const CollectionContext = createContext<CollectionContextProps>({
 });
 
 interface CollaboratorApiProps {
-    addCollaborator: (alias: string, email: string) =>  Promise<any>;
-    removeCollaborator: (alias: string) =>  Promise<any>;
+    addCollaborator: (alias: string, email: string) =>  Promise<void>;
+    removeCollaborator: (alias: string) =>  Promise<void>;
 }
 
 export const CollaboratorApiContext = createContext<CollaboratorApiProps>({
@@ -43,9 +43,9 @@ export const CollaboratorApiContext = createContext<CollaboratorApiProps>({
 })
 
 interface ItemApiProps {
-    postItem: (request: TaskRequest) => Promise<any>,
-    updateItem: (request: TaskRequest) => Promise<any>,
-    deleteItem: (request: TaskRequest) => Promise<any>
+    postItem: (request: TaskRequest) => Promise<void>,
+    updateItem: (request: TaskRequest) => Promise<void>,
+    deleteItem: (request: TaskRequest) => Promise<void>
 }
 
 export const ItemApiContext = createContext<ItemApiProps>({
@@ -63,7 +63,7 @@ const Collection : React.FC = () => {
 
     useEffect(() => {
         backend.current = new CollectionAPI('http://localhost:5081/collections', id!, userContext.token)
-    }, [userContext.token]);
+    }, [userContext.token, id]);
 
     const [name, setName] = useState<string>("");
     const [version, setVersion] = useState<string>("");
@@ -102,24 +102,19 @@ const Collection : React.FC = () => {
     //Item Api
     const postItem = (request: TaskRequest) => {
         return backend.current.postItem(request).then((res) => {
-            const copy = [ ...items ];
-            copy.push(res);
-            setItems(copy);
+            items.push(res);
+            setItems([ ...items ]);
         })
     }
 
     const updateItem = (request: TaskRequest) => {
         return backend.current.updateItem(request).then((res) => {
-            console.log(res);
             const copy = [ ...items ];
             const item = copy.find((item) => item._id == res._id);
 
             if (!item) return;
             if (res.blurb) item.blurb = res.blurb;
-            if (res.status) item.status = res.status;
-
-            //
-            
+            if (res.status) item.status = res.status;    
             setItems(copy);
         });
     }

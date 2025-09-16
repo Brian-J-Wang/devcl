@@ -9,32 +9,13 @@
     background-color: rgba(29, 29, 29, 0.1);
 }
 
-.left {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-}
-
-.right {
-    right: 0px;
-    top: 0px;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    
-}
-
 .middle {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.top {
-    display: flex;
-}
-
-.bottom {
+.attributeBar {
     display: flex;
 }
 
