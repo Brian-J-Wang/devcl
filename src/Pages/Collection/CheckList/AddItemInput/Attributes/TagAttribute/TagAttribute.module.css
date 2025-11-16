@@ -1,16 +1,13 @@
-.title {
-    padding: 2px;
-    color: rgba(29, 29, 29, 0.7);
-    background-color: rgba(29, 29, 29, 0.3);
+.tagList {
+    display: flex;
+    gap: 4px;
 }
 
-.category {
-    padding: 2px 0px 2px 8px;
-    cursor: pointer;
-    color: rgba(29, 29, 29, 0.7)
-}
-
-.category:hover {
-    background-color: rgba(29, 29, 29, 0.05);
+.tag {
+    height: 20px;
+    padding: 0px 4px;
+    background-color: grey;
+    border-radius: 2px;
+    text-align: center;
     font-weight: 700;
 }

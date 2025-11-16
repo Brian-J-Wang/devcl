@@ -1,52 +1,47 @@
-import { AttributeMenu, PrimaryInput, RenderAttributes, RichInput, SecondaryInput, SubmissionItem } from "@brwwang/react-components"
+import { InputWithMenu, Menu, MenuInput, MenuSlot, PrimaryInput } from "@brwwang/react-components";
+import { MenuItem } from "@brwwang/react-components/dist/lib/InputWithMenu/Contexts/menuContext";
+import { TagAttribute } from "./Attributes/TagAttribute/TagAttribute";
 
 import styles from "./AddItemInput.module.css";
-import { AssigneeAttribute } from "./Attributes";
-import { TagAttribute } from "./Attributes/TagAttribute/TagAttribute";
-import { requireContext } from "../../../../utils/helpers";
-import { ItemApiContext } from "../../Collection";
-import { TaskRequest } from "../../../../utils/collectionAPI";
-import AttributeTag from "./AttributeTag";
+import { PostTask } from "../../../../types/task";
 
-const AddItemInput: React.FC = () => {
-    const { postItem } = requireContext(ItemApiContext);
+const menuItems = [
+	{
+		name: "Tag",
+		id: "tag",
+		content: <TagAttribute />
+	},
+	{
+		name: "Assignee",
+		id: "assignee",
+		content: <div></div>
+	}
+];
 
-    const handleSubmit = (submission: SubmissionItem) => {
-        const request: TaskRequest = {
-            blurb: submission.input,
-            attributes: [
-                ...submission.attributes
-            ]
-        }
+const AddItemInput: React.FC<{ onSubmit: (task: PostTask) => Promise<boolean> }> = ({ onSubmit }) => {
+	const handleSubmit = (blurb: string) => {
+		return onSubmit({
+			blurb: blurb
+		}).then(() => {
+			return Promise.resolve(true);
+		});
+	};
 
-        console.log(request);
-        
-        return postItem(request).then(() => {
-            return Promise.resolve();
-        });
-    }
-
-    return (
-        <RichInput onSubmit={handleSubmit} className={styles.main}>
-            <AttributeMenu className={styles.menu}>
-                <AssigneeAttribute/>
-                <TagAttribute/>
-            </AttributeMenu>
-            <div className={styles.inputContainer}>
-                <div className={styles.input}>
-                    <SecondaryInput className={styles.secondaryInput}/>
-                    <PrimaryInput placeholder="Begin typing or use '/' to add attributes." className={styles.primaryInput}/>
-                </div>
-                <div className={styles.attributeRenderer}>
-                    <RenderAttributes render={(attribute, context) => (
-                        <AttributeTag attribute={attribute} showKey/>
-                    )}/>
-                </div>
-            </div>
-            
-            
-        </RichInput>
-    )
-}
+	return (
+		<InputWithMenu onSubmit={handleSubmit} menuItems={menuItems} className={styles.body}>
+			<Menu className={styles.menu}>
+				<MenuInput />
+				<MenuSlot
+					render={(item: MenuItem, isActive: boolean) => (
+						<div className={`${styles.menuItem} ${isActive && styles.menuItemActive}`}>
+							<p>{item.name}</p>
+						</div>
+					)}
+				/>
+			</Menu>
+			<PrimaryInput className={styles.primaryInput} placeholder="Start typing or hit '/' to add more options" />
+		</InputWithMenu>
+	);
+};
 
 export default AddItemInput;

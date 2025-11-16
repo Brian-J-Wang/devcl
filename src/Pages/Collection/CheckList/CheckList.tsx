@@ -1,58 +1,73 @@
 import { Container } from "../../../Components/Container/Container";
 import CLItemElement from "../Task/task";
 import { useContext } from "react";
-import { CollectionContext, ItemApiContext } from "../Collection";
 
 import style from "./checklist.module.css";
 import AddItemInput from "./AddItemInput/AddItemInput";
-import { Task } from "../../../utils/collectionAPI";
+import useTaskAPI from "./Hooks/useTaskAPI";
+import { UserContext } from "../../../Contexts/UserContext";
+import { PostTask, Task } from "@app-types/task";
+import { useParams } from "react-router-dom";
 
 const CheckList: React.FC = () => {
-    const collectionContext = useContext(CollectionContext);
-    const itemAPI = useContext(ItemApiContext);
+	const { id } = useParams();
+	const { token } = useContext(UserContext);
+	const { tasks, isLoading, ...api } = useTaskAPI("http://localhost:5081", id ?? "", token);
 
-    const openPopup = () => {
+	const openPopup = () => {};
 
-    }
+	const onCheckboxClick = (task: Task) => () => {
+		let newStatus: Task["status"] = "incomplete";
 
-    const onCheckboxClick = (task: Task) => () => {
-        itemAPI.updateItem({
-            _id: task._id,
-            status: task.status == "complete" ? "incomplete" : "complete"
-        });
-    }
+		if (task.status == "incomplete") {
+			newStatus = "complete";
+		} else {
+			newStatus = "incomplete";
+		}
 
-    const onDeleteClick = (task: Task) => () => {
-        itemAPI.deleteItem({ _id: task._id })
-    }
+		api.patchTask({
+			_id: task._id,
+			status: newStatus
+		});
+	};
 
-    return (
-        <Container className={style.checklist}>
-            <div className={collectionContext.items.length == 0 ? style.noContent : style.content}>
-                {
-                    collectionContext.items.length == 0
-                    ? (
-                        <h1 className={style.noContentBlurb}>
-                            You don't have any active tasks.
-                        </h1>
-                    ) : (
-                        <>
-                            <div>
-                                
-                            </div>
-                            {
-                                collectionContext.items.map((item) => {
-                                    return <CLItemElement key={item._id} task={item} onClick={openPopup} 
-                                    onCheckboxClick={onCheckboxClick(item)} onDeleteClick={onDeleteClick(item)}/>
-                                })
-                            }
-                        </>
-                    )
-                }
-            </div>
-            <AddItemInput/>
-        </Container>
-    );
-}
+	const onDeleteClick = (task: Task) => () => {
+		api.deleteTask(task._id);
+	};
 
-export default CheckList
+	const onSubmit = (postTask: PostTask) => {
+		return api.addTask(postTask).then(() => true);
+	};
+
+	console.log(tasks);
+
+	return (
+		<Container className={style.checklist}>
+			{isLoading ? (
+				<h1 className={style.noContentBlurb}> Loading... </h1>
+			) : (
+				<div className={tasks.length == 0 ? style.noContent : style.content}>
+					{tasks.length == 0 ? (
+						<h1 className={style.noContentBlurb}>You don't have any active tasks.</h1>
+					) : (
+						tasks.map((item) => {
+							return (
+								<CLItemElement
+									key={item._id}
+									task={item}
+									onClick={openPopup}
+									onCheckboxClick={onCheckboxClick(item)}
+									onDeleteClick={onDeleteClick(item)}
+								/>
+							);
+						})
+					)}
+				</div>
+			)}
+
+			<AddItemInput onSubmit={onSubmit} />
+		</Container>
+	);
+};
+
+export default CheckList;
