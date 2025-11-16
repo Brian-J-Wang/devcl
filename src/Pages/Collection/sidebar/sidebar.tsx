@@ -4,7 +4,7 @@ import { Container } from "../../../Components/Container/Container";
 import collectionIcon from "../../../assets/sidebar-collection-icon.svg";
 import personIcon from "../../../assets/person-icon.svg";
 import patchIcon from "../../../assets/patch-icon.svg";
-import { TaskDoc } from "@/types/taskDoc";
+import { TaskDoc } from "@app-types/taskDoc";
 import { NavLink, NavLinkRenderProps } from "react-router-dom";
 
 interface CollectionSidebarProps {
@@ -21,7 +21,7 @@ const CollectionSidebar: React.FC<CollectionSidebarProps> = ({ taskDoc = { name:
 	};
 
 	const activeState = (state: NavLinkRenderProps) => {
-		return "cl-sidebar__item " + state.isActive ? "cl-sidebar__item_selected" : "";
+		return "cl-sidebar__item " + (state.isActive ? "cl-sidebar__item_selected" : "");
 	};
 
 	return (

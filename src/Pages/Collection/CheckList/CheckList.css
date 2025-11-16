@@ -1,49 +1,49 @@
 .check-list {
-    display: flex;
-    flex-direction: column;
-    padding: 12px 0px 0px;
-    flex: 1;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	padding: 12px 0px 0px;
+	flex: 1;
+	justify-content: space-between;
 }
 
 .check-list__add-item {
-    margin: 4px;
-    height: 32px;
+	margin: 4px;
+	height: 32px;
 }
 
 .check-list__group-element {
-    height: 32px;
-    display: flex;
-    align-items: center;
-    padding-left: 4px;
-    gap: 8px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	padding-left: 4px;
+	gap: 8px;
 }
 
 .check-list__rich-input {
-    position: absolute;
+	position: absolute;
 }
 
 .check-list__rich-input-bar {
-    margin-left: 4px;
+	margin-left: 4px;
 }
 
 .check-list__rich-input-bar-tag {
-    border-radius: 4px;
-    padding: 4px;
+	border-radius: 4px;
+	padding: 4px;
 }
 
 .check-list__rich-input-key {
-    height: 24px;
+	height: 24px;
 }
 
 .check-list__rich-input-key_selected {
-    background-color: var(--color-off-white);
+	background-color: var(--color-off-white);
 }
 
 .check-list__group-element-name {
-    font-weight: 700;
+	font-weight: 700;
 }
 
 .check-list__group-element-desc {
-    opacity: 50%;
+	opacity: 50%;
 }

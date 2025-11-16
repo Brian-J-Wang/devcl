@@ -22,8 +22,9 @@
 		"noUncheckedSideEffectImports": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["src/*"],
-			"@app-types/*": ["src/types/*"]
+			"@app-types/*": ["src/types/*"],
+			"@context/*": ["src/Contexts/*"],
+			"@api/*": ["src/API/*"]
 		}
 	},
 	"include": ["src", "src/API/userTaskDocAPI.ts", "src/API/taskAPI.ts", "src/API/userAPI.ts"]

@@ -1,5 +1,5 @@
-import TaskAttributeAPI from "@/API/taskAttributeAPI";
-import Attribute from "@/types/attributes";
+import TaskAttributeAPI from "@api/taskAttributeAPI";
+import Attribute from "@app-types/attributes";
 import { useEffect, useRef, useState } from "react";
 
 const useTaskAttributeAPI = (endpoint: string, docuId: string, token: string) => {

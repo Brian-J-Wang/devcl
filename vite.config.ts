@@ -6,8 +6,9 @@ export default defineConfig({
 	plugins: [react()],
 	resolve: {
 		alias: {
-			"@": "/src",
-			"@app-types": "/src/types"
+			"@app-types": "/src/types",
+			"@context": "/src/Contexts",
+			"@api": "/src/API"
 		}
 	}
 });

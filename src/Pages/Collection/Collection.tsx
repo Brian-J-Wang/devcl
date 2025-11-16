@@ -8,7 +8,7 @@ import CollaboratorView from "./Views/CollaboratorView/CollaboratorView";
 import { ItemEditor } from "./ItemEditor/ItemEditor";
 import useTaskDocAPI from "./CheckList/Hooks/useTaskDocAPI";
 import { Route, Routes, useParams } from "react-router-dom";
-import { UserContext } from "@/Contexts/UserContext";
+import { UserContext } from "@context/UserContext";
 import useTaskAttributeAPI from "./CheckList/Hooks/useTaskAttributeAPI";
 
 const Collection: React.FC = () => {

@@ -1,4 +1,4 @@
-import TaskDocAPI from "@/API/taskDocAPI";
+import TaskDocAPI from "@api/taskDocAPI";
 import { TaskDoc } from "@app-types/taskDoc";
 import { useEffect, useRef, useState } from "react";
 

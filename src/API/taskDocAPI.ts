@@ -20,5 +20,5 @@ class TaskDocAPI {
 		});
 	}
 }
-
+ 
 export default TaskDocAPI;
