@@ -1,8 +1,8 @@
 import { ReactNode, useState } from "react";
-import { CheckBoxState } from "../../../Components/Icon/Checkbox/Checkbox";
-import Icon from "../../../Components/Icon";
+import { CheckBoxState } from "../../../../../Components/Icon/Checkbox/Checkbox";
+import Icon from "../../../../../Components/Icon";
 import styles from "./task.module.css";
-import { Task } from "../../../types/task";
+import { Task } from "../../../../../types/task";
 
 type itemProps = {
 	task: Task;

@@ -2,6 +2,11 @@ type Attribute = {
 	_id: string;
 	name: string;
 	shared: boolean;
+	type: "enum" | "range";
 };
 
-export default Attribute;
+type EnumAttribute = Attribute & {
+	validValues: string[];
+};
+
+export type { Attribute, EnumAttribute };

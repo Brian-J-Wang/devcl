@@ -1,18 +1,20 @@
-import { Container } from "../../../Components/Container/Container";
-import CLItemElement from "../Task/task";
+import { Container } from "@components/Container/Container";
+import CLItemElement from "./Task/task";
 import { useContext } from "react";
 
 import style from "./checklist.module.css";
 import AddItemInput from "./AddItemInput/AddItemInput";
-import useTaskAPI from "./Hooks/useTaskAPI";
-import { UserContext } from "../../../Contexts/UserContext";
+import useTaskAPI from "../../Hooks/useTaskAPI";
+import { UserContext } from "@context/UserContext";
 import { PostTask, Task } from "@app-types/task";
 import { useParams } from "react-router-dom";
+import useTaskAttributeAPI from "../../Hooks/useTaskAttributeAPI";
 
-const CheckList: React.FC = () => {
+const CheckListView: React.FC = () => {
 	const { id } = useParams();
 	const { token } = useContext(UserContext);
 	const { tasks, isLoading, ...api } = useTaskAPI("http://localhost:5081", id ?? "", token);
+	const taskAttributeAPI = useTaskAttributeAPI("http://localhost:5081/taskDocs", id ?? "", token);
 
 	const openPopup = () => {};
 
@@ -39,8 +41,6 @@ const CheckList: React.FC = () => {
 		return api.addTask(postTask).then(() => true);
 	};
 
-	console.log(tasks);
-
 	return (
 		<Container className={style.checklist}>
 			{isLoading ? (
@@ -65,9 +65,9 @@ const CheckList: React.FC = () => {
 				</div>
 			)}
 
-			<AddItemInput onSubmit={onSubmit} />
+			<AddItemInput onSubmit={onSubmit} attributeApi={taskAttributeAPI} />
 		</Container>
 	);
 };
 
-export default CheckList;
+export default CheckListView;

@@ -8,7 +8,8 @@ export default defineConfig({
 		alias: {
 			"@app-types": "/src/types",
 			"@context": "/src/Contexts",
-			"@api": "/src/API"
+			"@api": "/src/API",
+			"@components": "/src/Components"
 		}
 	}
 });

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import TaskAPI from "../../../../API/taskAPI";
-import { PatchTask, PostTask, Task } from "../../../../types/task";
+import TaskAPI from "../../../API/taskAPI";
+import { PatchTask, PostTask, Task } from "../../../types/task";
 
 const useTaskAPI = (endpoint: string, taskDocId: string, authorization: string) => {
 	const api = useRef(new TaskAPI(endpoint, taskDocId, authorization));
