@@ -1,11 +1,11 @@
 import { CheckBox } from "./Checkbox/Checkbox";
-import { TrashCan } from "./Trashcan.tsx/TrashCan";
-import { Edit } from "./Edit/Edit"
+import { TrashCan } from "./Trashcan/TrashCan";
+import { Edit } from "./Edit/Edit";
 
 const Icon = {
-    TrashCan: TrashCan,
-    CheckBox: CheckBox,
-    Edit: Edit
-}
+	TrashCan: TrashCan,
+	CheckBox: CheckBox,
+	Edit: Edit
+};
 
-export default Icon
+export default Icon;

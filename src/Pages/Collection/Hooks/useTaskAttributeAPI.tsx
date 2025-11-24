@@ -1,5 +1,5 @@
 import TaskAttributeAPI from "@api/taskAttributeAPI";
-import Attribute from "@app-types/attributes";
+import { Attribute } from "@app-types/attributes";
 import { useEffect, useRef, useState } from "react";
 
 const useTaskAttributeAPI = (endpoint: string, docuId: string, token: string) => {
@@ -19,9 +19,20 @@ const useTaskAttributeAPI = (endpoint: string, docuId: string, token: string) =>
 			});
 	}, []);
 
+	const getAttributeById: (id: string) => Attribute = (id: string) => {
+		const result = attributes.find((attribute) => attribute.id == id);
+
+		if (result) {
+			return result;
+		} else {
+			throw new Error("requesting attribute that does not exist");
+		}
+	};
+
 	return {
 		attributes,
-		isLoading
+		isLoading,
+		getAttributeById
 	};
 };
 

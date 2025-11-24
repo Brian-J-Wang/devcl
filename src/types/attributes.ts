@@ -1,5 +1,5 @@
 type Attribute = {
-	_id: string;
+	id: string;
 	name: string;
 	shared: boolean;
 	type: "enum" | "range";

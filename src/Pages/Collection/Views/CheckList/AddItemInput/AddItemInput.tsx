@@ -4,8 +4,10 @@ import { PostTask } from "../../../../../types/task";
 import useTaskAttributeAPI from "src/Pages/Collection/Hooks/useTaskAttributeAPI";
 
 import styles from "./AddItemInput.module.css";
-import { useEffect, useMemo } from "react";
-import AttributeBuilder from "./Attributes";
+import { useMemo } from "react";
+import AttributeBuilder from "./AttributeBuilder";
+import InputAttributeContext from "./InputAttributeContext";
+import useAttributeHook from "./useAttributeHook";
 
 type AddItemInputProps = {
 	onSubmit: (task: PostTask) => Promise<boolean>;
@@ -13,16 +15,17 @@ type AddItemInputProps = {
 };
 
 const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit, attributeApi }) => {
+	const { getAttributeById } = attributeApi;
+	const { taskAttribute, setTaskAttribute, removeTaskAttribute } = useAttributeHook();
 	const menuItems: MenuItem[] = useMemo(() => {
 		if (attributeApi.isLoading) {
 			return [];
 		}
 
 		return attributeApi.attributes.map((attribute) => {
-			console.log(attribute);
 			return {
 				name: attribute.name,
-				id: attribute._id,
+				id: attribute.id,
 				content: <AttributeBuilder attribute={attribute}></AttributeBuilder>
 			};
 		});
@@ -36,24 +39,40 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit, attributeApi }) =
 		});
 	};
 
-	useEffect(() => {
-		console.log(attributeApi.attributes);
-	}, [attributeApi.attributes, attributeApi.isLoading]);
+	const removeAttribute = (id: string) => () => {
+		removeTaskAttribute(id);
+	};
 
 	return (
-		<InputWithMenu onSubmit={handleSubmit} menuItems={menuItems} className={styles.body}>
-			<Menu className={styles.menu}>
-				<MenuInput />
-				<MenuSlot
-					render={(item: MenuItem, isActive: boolean) => (
-						<div className={`${styles.menuItem} ${isActive && styles.menuItemActive}`}>
-							<p>{item.name}</p>
-						</div>
-					)}
-				/>
-			</Menu>
-			<PrimaryInput className={styles.primaryInput} placeholder="Start typing or hit '/' to add more options" />
-		</InputWithMenu>
+		<InputAttributeContext.Provider
+			value={{
+				setTaskAttribute
+			}}>
+			<div className={styles.attributeTagContainer}>
+				{taskAttribute.map((attribute) => (
+					<div className={styles.attributeTag}>
+						<span className={styles.removeAttribute} onClick={removeAttribute(attribute.id)}>
+							X
+						</span>
+						<span style={{ fontWeight: 700 }}>{getAttributeById(attribute.id).name}</span>
+						::{attribute.value as string}
+					</div>
+				))}
+			</div>
+			<InputWithMenu onSubmit={handleSubmit} menuItems={menuItems} className={styles.body}>
+				<Menu className={styles.menu}>
+					<MenuInput />
+					<MenuSlot
+						render={(item: MenuItem, isActive: boolean) => (
+							<div className={`${styles.menuItem} ${isActive && styles.menuItemActive}`}>
+								<p>{item.name}</p>
+							</div>
+						)}
+					/>
+				</Menu>
+				<PrimaryInput className={styles.primaryInput} placeholder="Start typing or hit '/' to add more options" />
+			</InputWithMenu>
+		</InputAttributeContext.Provider>
 	);
 };
 
