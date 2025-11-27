@@ -1,57 +1,59 @@
 .root {
-    position: relative;
-    display: flex;
-    padding: 6px 8px;
-    gap: 8px;
+	position: relative;
+	display: flex;
+	padding: 6px 8px;
+	gap: 8px;
 }
 
 .root:hover {
-    background-color: rgba(29, 29, 29, 0.1);
+	background-color: rgba(29, 29, 29, 0.1);
 }
 
 .middle {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
 .attributeBar {
-    display: flex;
+	display: flex;
 }
 
 .checkbox {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
 }
 
 .label {
-    font-size: 16px;
-    line-height: 16px;
-    font-weight: 400;
-    position: relative;
-    transition: color 0.15s;
+	font-size: 16px;
+	line-height: 16px;
+	font-weight: 400;
+	position: relative;
+	transition: color 0.15s;
 }
 
 .labelStrike {
-    color: rgba(29, 29, 29, 0.5);
-    text-decoration: line-through 1px;
+	color: rgba(29, 29, 29, 0.5);
+	text-decoration: line-through 1px;
 }
 
 .attributeTag {
-    font-weight: 700;
-    font-size: 12px;
-    align-content: center;
-    padding: 1px 4px 1px 4px;
+	background-color: lightgreen;
+	font-weight: 700;
+	font-size: 12px;
+	align-content: center;
+	padding: 1px 4px 2px 4px;
+	border-radius: 3px;
 }
 
 .trashCan {
-    height: 16px;
-    width: 16px;
-    margin: 0px 0px auto auto;
-    visibility: hidden;
+	height: 16px;
+	width: 16px;
+	margin: 0px 0px auto auto;
+	visibility: hidden;
 }
 
 .root:hover .trashCan {
-    visibility: visible;
+	visibility: visible;
 }

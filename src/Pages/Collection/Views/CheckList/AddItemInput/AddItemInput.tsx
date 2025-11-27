@@ -33,7 +33,8 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit, attributeApi }) =
 
 	const handleSubmit = (blurb: string) => {
 		return onSubmit({
-			blurb: blurb
+			blurb: blurb,
+			attributes: taskAttribute
 		}).then(() => {
 			return Promise.resolve(true);
 		});

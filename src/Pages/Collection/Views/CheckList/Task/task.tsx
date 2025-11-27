@@ -30,17 +30,13 @@ const CLItemElement: React.FC<itemProps> = (props) => {
 			/>
 			<div className={styles.middle}>
 				<p className={`${styles.label} ${props.task.status == "complete" && styles.labelStrike}`}>{props.task.blurb}</p>
-				{/* {
-                    props.task.attributes && (        
-                        <div className={styles.attributeBar} hidden={props.task.attributes.length == 0}>
-                            {
-                                props.task.attributes.map((attribute) => (
-                                    <AttributeTag attribute={attribute} className={styles.attributeTag}/>
-                                ))
-                            }
-                        </div>
-                    )
-                } */}
+				{props.task.attributes.length != 0 && (
+					<div className={styles.attributeBar}>
+						{props.task.attributes.map((attribute) => (
+							<div className={styles.attributeTag}>{attribute.value as string}</div>
+						))}
+					</div>
+				)}
 			</div>
 			<Icon.TrashCan onClick={props.onDeleteClick} className={styles.trashCan} data-editorIgnore />
 		</div>
