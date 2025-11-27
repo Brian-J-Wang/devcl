@@ -36,10 +36,15 @@ const useAttributeHook = () => {
 		);
 	};
 
+	const clearTaskAttributes = () => {
+		_setTaskAttribute([]);
+	};
+
 	return {
 		taskAttribute,
 		setTaskAttribute,
-		removeTaskAttribute
+		removeTaskAttribute,
+		clearTaskAttributes
 	};
 };
 

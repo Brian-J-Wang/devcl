@@ -10,16 +10,14 @@ import { UserContext } from "../../Contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import BreadCrumb from "../../Components/BreadCrumb/BreadCrumb";
 import { Container } from "../../Components/Container/Container";
-import useUserTaskDocAPI from "./useUserTaskDocAPI";
 import UserProfileCard from "./UserProfileCard/UserProfileCard";
+import userProjectContext from "@context/userProjectContext";
 
 const UserCollection: React.FC = () => {
 	const modalContextConsumer = useContext(ModalContext);
 	const userContext = useContext(UserContext);
 	const navigate = useNavigate();
-
-	const { token } = useContext(UserContext);
-	const { taskDocs, isLoading, ...api } = useUserTaskDocAPI("http://localhost:5081", token);
+	const { taskDocs, isLoading, ...api } = useContext(userProjectContext);
 
 	const handleCardAdd = () => {
 		modalContextConsumer.setModal(

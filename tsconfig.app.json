@@ -25,7 +25,9 @@
 			"@app-types/*": ["src/types/*"],
 			"@context/*": ["src/Contexts/*"],
 			"@api/*": ["src/API/*"],
-			"@components/*": ["src/Components/*"]
+			"@components/*": ["src/Components/*"],
+			"@shared/*": ["src/shared/*"],
+			"@hooks/*": ["src/hooks/*"]
 		}
 	},
 	"include": ["src", "src/API/userTaskDocAPI.ts", "src/API/taskAPI.ts", "src/API/userAPI.ts"]

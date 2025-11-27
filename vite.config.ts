@@ -9,7 +9,9 @@ export default defineConfig({
 			"@app-types": "/src/types",
 			"@context": "/src/Contexts",
 			"@api": "/src/API",
-			"@components": "/src/Components"
+			"@components": "/src/Components",
+			"@shared": "/src/shared",
+			"@hooks": "/src/hooks"
 		}
 	}
 });

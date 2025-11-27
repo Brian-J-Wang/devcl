@@ -2,22 +2,22 @@ import { ReactNode, useState } from "react";
 import { CheckBoxState } from "../../../../../Components/Icon/Checkbox/Checkbox";
 import Icon from "../../../../../Components/Icon";
 import styles from "./task.module.css";
-import { Task } from "../../../../../types/task";
+import { Task } from "@app-types/task";
 
 type itemProps = {
 	task: Task;
-	onClick?: () => void;
+	onClick?: (task: Task) => void;
 	onCheckboxClick?: () => void;
 	onDeleteClick?: () => void;
 };
 
-const CLItemElement: React.FC<itemProps> = (props) => {
+const TaskItem: React.FC<itemProps> = (props) => {
 	const onClick = (evt: React.MouseEvent) => {
 		//does not open popup if element that was clicked on includes data-editorIgnore
 		if ((evt.target as HTMLElement).hasAttribute("data-editorIgnore") || !props.onClick) {
 			return;
 		}
-		props.onClick();
+		props.onClick(props.task);
 	};
 
 	return (
@@ -73,4 +73,4 @@ export const FakeCLItemElement: React.FC<{
 	);
 };
 
-export default CLItemElement;
+export default TaskItem;

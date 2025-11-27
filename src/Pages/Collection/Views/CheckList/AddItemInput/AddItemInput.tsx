@@ -1,7 +1,7 @@
 import { InputWithMenu, Menu, MenuInput, MenuSlot, PrimaryInput } from "@brwwang/react-components";
 import { MenuItem } from "@brwwang/react-components/dist/lib/InputWithMenu/Contexts/menuContext";
 import { PostTask } from "../../../../../types/task";
-import useTaskAttributeAPI from "src/Pages/Collection/Hooks/useTaskAttributeAPI";
+import useTaskAttributeAPI from "src/Hooks/useTaskAttributeAPI";
 
 import styles from "./AddItemInput.module.css";
 import { useMemo } from "react";
@@ -16,7 +16,7 @@ type AddItemInputProps = {
 
 const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit, attributeApi }) => {
 	const { getAttributeById } = attributeApi;
-	const { taskAttribute, setTaskAttribute, removeTaskAttribute } = useAttributeHook();
+	const { taskAttribute, setTaskAttribute, removeTaskAttribute, clearTaskAttributes } = useAttributeHook();
 	const menuItems: MenuItem[] = useMemo(() => {
 		if (attributeApi.isLoading) {
 			return [];
@@ -36,6 +36,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit, attributeApi }) =
 			blurb: blurb,
 			attributes: taskAttribute
 		}).then(() => {
+			clearTaskAttributes();
 			return Promise.resolve(true);
 		});
 	};
@@ -71,7 +72,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit, attributeApi }) =
 						)}
 					/>
 				</Menu>
-				<PrimaryInput className={styles.primaryInput} placeholder="Start typing or hit '/' to add more options" />
+				<PrimaryInput className={styles.primaryInput} placeholder="Start typing or hit '/' to add more attributes" />
 			</InputWithMenu>
 		</InputAttributeContext.Provider>
 	);

@@ -5,7 +5,7 @@ import BreadCrumb from "../../Components/BreadCrumb/BreadCrumb";
 import "./Collection.css";
 import SideBar from "./sidebar/sidebar";
 import { ItemEditor } from "./ItemEditor/ItemEditor";
-import useTaskDocAPI from "./Hooks/useTaskDocAPI";
+import useTaskDocAPI from "../../Hooks/useTaskDocAPI";
 import { Route, Routes, useParams } from "react-router-dom";
 import { UserContext } from "@context/UserContext";
 
