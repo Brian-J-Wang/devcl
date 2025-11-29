@@ -27,8 +27,8 @@
 			"@api/*": ["src/API/*"],
 			"@components/*": ["src/Components/*"],
 			"@shared/*": ["src/shared/*"],
-			"@hooks/*": ["src/hooks/*"]
+			"@hooks/*": ["src/Hooks/*"]
 		}
 	},
-	"include": ["src", "src/API/userTaskDocAPI.ts", "src/API/taskAPI.ts", "src/API/userAPI.ts"]
+	"include": ["src/**/*"]
 }

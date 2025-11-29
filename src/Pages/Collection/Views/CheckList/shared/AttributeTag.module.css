@@ -1,0 +1,17 @@
+.attributeTag {
+	width: fit-content;
+	padding: 2px 4px;
+	font-size: 12px;
+	border-radius: 2px;
+	background-color: #77a2cf;
+}
+
+.removeAttribute {
+	font-weight: 700;
+	padding: 0px 2px 0px 0px;
+}
+
+.removeAttribute:hover {
+	color: white;
+	cursor: pointer;
+}

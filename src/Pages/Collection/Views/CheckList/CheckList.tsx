@@ -12,6 +12,7 @@ import useTaskAttributeAPI from "../../../../Hooks/useTaskAttributeAPI";
 import TaskEditor from "./TaskEditor/TaskEditor";
 import taskEditorContext from "./TaskEditor/taskEditorContext";
 import { PatchNugget } from "@app-types/patchNuggets";
+import TaskAttributeAPIContext from "../../../../Contexts/taskAttributeAPIContext";
 
 const CheckListView: React.FC = () => {
 	const { id = "undefined" } = useParams();
@@ -60,35 +61,37 @@ const CheckListView: React.FC = () => {
 
 	return (
 		<>
-			<taskEditorContext.Provider value={{ activeEditorTask, setActiveEditorTask }}>
-				<Container className={style.checklist}>
-					{isLoading ? (
-						<h1 className={style.noContentBlurb}> Loading... </h1>
-					) : (
-						<div className={tasks.length == 0 ? style.noContent : style.content}>
-							{tasks.length == 0 ? (
-								<h1 className={style.noContentBlurb}>You don't have any active tasks.</h1>
-							) : (
-								tasks.map((item) => {
-									return (
-										<TaskItem
-											key={item._id}
-											task={item}
-											onClick={openPopup}
-											onCheckboxClick={onCheckboxClick(item)}
-											onDeleteClick={onDeleteClick(item)}
-										/>
-									);
-								})
-							)}
-						</div>
-					)}
+			<TaskAttributeAPIContext.Provider value={taskAttributeAPI}>
+				<taskEditorContext.Provider value={{ activeEditorTask, setActiveEditorTask }}>
+					<Container className={style.checklist}>
+						{isLoading ? (
+							<h1 className={style.noContentBlurb}> Loading... </h1>
+						) : (
+							<div className={tasks.length == 0 ? style.noContent : style.content}>
+								{tasks.length == 0 ? (
+									<h1 className={style.noContentBlurb}>You don't have any active tasks.</h1>
+								) : (
+									tasks.map((item) => {
+										return (
+											<TaskItem
+												key={item._id}
+												task={item}
+												onClick={openPopup}
+												onCheckboxClick={onCheckboxClick(item)}
+												onDeleteClick={onDeleteClick(item)}
+											/>
+										);
+									})
+								)}
+							</div>
+						)}
 
-					<AddItemInput onSubmit={onSubmit} attributeApi={taskAttributeAPI} />
-				</Container>
+						<AddItemInput onSubmit={onSubmit} attributeApi={taskAttributeAPI} />
+					</Container>
 
-				{activeEditorTask != null && <TaskEditor onClose={onEditorClose} />}
-			</taskEditorContext.Provider>
+					{activeEditorTask != null && <TaskEditor onClose={onEditorClose} />}
+				</taskEditorContext.Provider>
+			</TaskAttributeAPIContext.Provider>
 		</>
 	);
 };

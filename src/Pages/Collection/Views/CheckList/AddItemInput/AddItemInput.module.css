@@ -48,16 +48,6 @@
 	align-items: center;
 }
 
-.removeAttribute {
-	font-weight: 700;
-	padding: 0px 2px 0px 0px;
-}
-
-.removeAttribute:hover {
-	color: white;
-	cursor: pointer;
-}
-
 .attributeRenderer {
 	display: flex;
 	background-color: rgba(29, 29, 29, 0.1);
@@ -66,13 +56,6 @@
 .attributeTagContainer {
 	padding: 0px 4px;
 	display: flex;
-}
-
-.attributeTag {
-	padding: 2px 4px;
-	font-size: 12px;
-	border-radius: 2px;
-	background-color: #77a2cf;
 }
 
 .menuItem {
