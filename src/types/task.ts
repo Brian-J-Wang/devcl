@@ -1,3 +1,5 @@
+import { PatchNugget } from "./patchNuggets";
+
 export type Task = {
 	_id: string;
 	blurb: string;
@@ -10,3 +12,7 @@ export type Task = {
 
 export type PostTask = Omit<Task, "_id" | "status">;
 export type PatchTask = Partial<Omit<Task, "_id">> & { _id: string };
+export type PatchTaskNuggets = {
+	_id: string;
+	nuggets: PatchNugget<Task>[];
+};

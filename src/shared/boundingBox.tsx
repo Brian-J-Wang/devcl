@@ -1,19 +1,29 @@
-import { forwardRef, ReactNode, RefObject, useEffect, useImperativeHandle, useRef, useState } from "react";
+import {
+	forwardRef,
+	PropsWithChildren,
+	ReactNode,
+	RefObject,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState
+} from "react";
 import { Position } from "../utils/math/position";
 
-type BoundingBoxProps = {
-	children: ReactNode;
-	onBound?: (evt: MouseEvent) => void;
-	onOutOfBound?: (evt: MouseEvent) => void;
-	active?: boolean;
-};
+type BoundingBoxProps = PropsWithChildren &
+	React.HTMLAttributes<HTMLDivElement> & {
+		children: ReactNode;
+		onBound?: (evt: MouseEvent) => void;
+		onOutOfBound?: (evt: MouseEvent) => void;
+		active?: boolean;
+	};
 
 export type OutofBoundsHandle = {
 	setListen: (value: boolean) => void;
 };
 
 const BoundingBox = forwardRef<OutofBoundsHandle, BoundingBoxProps>(
-	({ children, onBound, onOutOfBound, active = true }, ref) => {
+	({ children, onBound = () => {}, onOutOfBound = () => {}, active = true, ...props }, ref) => {
 		const [listen, setListen] = useState<boolean>(false);
 		const boundingElement = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>;
 
@@ -50,9 +60,9 @@ const BoundingBox = forwardRef<OutofBoundsHandle, BoundingBoxProps>(
 					y: evt.clientY
 				})
 			) {
-				onBound && onBound(evt);
+				onBound(evt);
 			} else {
-				onOutOfBound && onOutOfBound(evt);
+				onOutOfBound(evt);
 			}
 
 			function getBounds() {
@@ -78,7 +88,11 @@ const BoundingBox = forwardRef<OutofBoundsHandle, BoundingBoxProps>(
 			}
 		}
 
-		return <div ref={boundingElement}>{children}</div>;
+		return (
+			<div ref={boundingElement} {...props}>
+				{children}
+			</div>
+		);
 	}
 );
 

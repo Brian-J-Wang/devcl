@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import TaskAPI from "../API/taskAPI";
-import { PatchTask, PostTask, Task } from "@app-types/task";
+import { PostTask, Task } from "@app-types/task";
+import { PatchNugget } from "@app-types/patchNuggets";
 
 const useTaskAPI = (endpoint: string, taskDocId: string, authorization: string) => {
 	const api = useRef(new TaskAPI(endpoint, taskDocId, authorization));
@@ -20,9 +21,9 @@ const useTaskAPI = (endpoint: string, taskDocId: string, authorization: string) 
 		});
 	};
 
-	const patchTask = (patch: PatchTask) => {
-		return api.current.patchTask(patch).then(() => {
-			_setTasks(tasks.map((task) => (task._id != patch._id ? task : Object.assign(task, patch))));
+	const patchTask = (taskId: string, patchNuggets: PatchNugget<Task>[]) => {
+		return api.current.patchTask(taskId, patchNuggets).then((res) => {
+			_setTasks(tasks.map((task) => (task._id != taskId ? task : Object.assign(task, res))));
 		});
 	};
 

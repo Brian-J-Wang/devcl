@@ -1,4 +1,5 @@
-import { PatchTask, PostTask, Task } from "../types/task";
+import { PatchNugget } from "@app-types/patchNuggets";
+import { PostTask, Task } from "../types/task";
 
 class TaskAPI {
 	private endpoint: string;
@@ -33,15 +34,16 @@ class TaskAPI {
 		});
 	}
 
-	patchTask(task: PatchTask) {
-		return fetch(`${this.endpoint}/${task._id}`, {
+	patchTask(taskId: string, patchNuggets: PatchNugget<Task>[]) {
+		return fetch(`${this.endpoint}/${taskId}`, {
 			method: "PATCH",
 			headers: {
 				"Content-Type": "application/json",
 				authorization: `Bearer ${this.jwt}`
 			},
-			body: JSON.stringify(task)
+			body: JSON.stringify(patchNuggets)
 		}).then((res) => {
+			console.log(res);
 			return res.ok ? res.json() : Promise.reject();
 		});
 	}

@@ -6,7 +6,7 @@ import personIcon from "../../../assets/person-icon.svg";
 import patchIcon from "../../../assets/patch-icon.svg";
 import { TaskDoc } from "@app-types/taskDoc";
 import { NavLink, NavLinkRenderProps } from "react-router-dom";
-import CollectionProfile from "./CollectionProfile";
+import CollectionProfile from "./CollectionProfile/CollectionProfile";
 
 interface CollectionSidebarProps {
 	taskDoc: TaskDoc;

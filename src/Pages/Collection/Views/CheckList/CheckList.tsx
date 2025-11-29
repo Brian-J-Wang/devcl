@@ -10,14 +10,14 @@ import { PostTask, Task } from "@app-types/task";
 import { useParams } from "react-router-dom";
 import useTaskAttributeAPI from "../../../../Hooks/useTaskAttributeAPI";
 import TaskEditor from "./TaskEditor/TaskEditor";
-import taskEditorContext from "./TaskEditor/TaskEditorContext";
+import taskEditorContext from "./TaskEditor/taskEditorContext";
+import { PatchNugget } from "@app-types/patchNuggets";
 
 const CheckListView: React.FC = () => {
-	const { id } = useParams();
+	const { id = "undefined" } = useParams();
 	const { token } = useContext(UserContext);
 	const { tasks, isLoading, ...api } = useTaskAPI("http://localhost:5081", id ?? "", token);
 	const taskAttributeAPI = useTaskAttributeAPI("http://localhost:5081/taskDocs", id ?? "", token);
-
 	const [activeEditorTask, setActiveEditorTask] = useState<Task | null>(null);
 
 	const openPopup = (task: Task) => {
@@ -33,10 +33,13 @@ const CheckListView: React.FC = () => {
 			newStatus = "incomplete";
 		}
 
-		api.patchTask({
-			_id: task._id,
-			status: newStatus
-		});
+		api.patchTask(task._id, [
+			{
+				propertyName: "status",
+				value: newStatus,
+				updateType: "update"
+			}
+		]);
 	};
 
 	const onDeleteClick = (task: Task) => () => {
@@ -45,6 +48,14 @@ const CheckListView: React.FC = () => {
 
 	const onSubmit = (postTask: PostTask) => {
 		return api.addTask(postTask).then(() => true);
+	};
+
+	const onEditorClose = (updateNuggets: PatchNugget<Task>[]) => {
+		if (updateNuggets.length == 0) {
+			return;
+		}
+
+		api.patchTask(activeEditorTask?._id ?? "", updateNuggets);
 	};
 
 	return (
@@ -76,7 +87,7 @@ const CheckListView: React.FC = () => {
 					<AddItemInput onSubmit={onSubmit} attributeApi={taskAttributeAPI} />
 				</Container>
 
-				{activeEditorTask != null && <TaskEditor />}
+				{activeEditorTask != null && <TaskEditor onClose={onEditorClose} />}
 			</taskEditorContext.Provider>
 		</>
 	);
