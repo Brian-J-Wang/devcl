@@ -25,3 +25,29 @@
 	background-color: white;
 	box-shadow: 0px 0px 4px rgb(29, 29, 29, 0.2);
 }
+
+.subTask {
+	height: 24px;
+	display: flex;
+	align-items: center;
+	padding: 2px;
+
+	.checkBox {
+		padding: auto 0px;
+		margin-right: 4px;
+	}
+}
+
+.addSubTask {
+	.checkBox {
+		opacity: 50%;
+	}
+
+	input {
+		border: none;
+		padding: 0px;
+		background-color: rgba(0, 0, 0, 0);
+		flex: 1;
+		outline: none;
+	}
+}

@@ -11,7 +11,8 @@ export default defineConfig({
 			"@api": "/src/API",
 			"@components": "/src/Components",
 			"@shared": "/src/shared",
-			"@hooks": "/src/Hooks"
+			"@hooks": "/src/Hooks",
+			"@utils": "/src/utils"
 		}
 	}
 });

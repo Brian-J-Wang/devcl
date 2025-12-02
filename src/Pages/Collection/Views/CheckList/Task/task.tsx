@@ -14,7 +14,7 @@ type itemProps = {
 const TaskItem: React.FC<itemProps> = (props) => {
 	const onClick = (evt: React.MouseEvent) => {
 		//does not open popup if element that was clicked on includes data-editorIgnore
-		if ((evt.target as HTMLElement).hasAttribute("data-editorignore") || !props.onClick) {
+		if ((evt.target as HTMLElement).hasAttribute("data-clickignore") || !props.onClick) {
 			return;
 		}
 		props.onClick(props.task);
@@ -25,7 +25,7 @@ const TaskItem: React.FC<itemProps> = (props) => {
 			<Icon.CheckBox
 				state={props.task.status == "complete" ? CheckBoxState.checked : CheckBoxState.unchecked}
 				onClick={props.onCheckboxClick}
-				data-editorignore
+				data-clickignore
 				className={styles.checkbox}
 			/>
 			<div className={styles.middle}>
@@ -38,7 +38,7 @@ const TaskItem: React.FC<itemProps> = (props) => {
 					</div>
 				)}
 			</div>
-			<Icon.TrashCan onClick={props.onDeleteClick} className={styles.trashCan} data-editorIgnore />
+			<Icon.TrashCan onClick={props.onDeleteClick} className={styles.trashCan} data-clickIgnore />
 		</div>
 	);
 };

@@ -21,7 +21,7 @@ const CheckListView: React.FC = () => {
 	const taskAttributeAPI = useTaskAttributeAPI("http://localhost:5081/taskDocs", id ?? "", token);
 	const [activeEditorTask, setActiveEditorTask] = useState<Task | null>(null);
 
-	const openPopup = (task: Task) => {
+	const openEditor = (task: Task) => {
 		setActiveEditorTask(task);
 	};
 
@@ -51,46 +51,45 @@ const CheckListView: React.FC = () => {
 		return api.addTask(postTask).then(() => true);
 	};
 
-	const onEditorClose = (updateNuggets: PatchNugget<Task>[]) => {
-		if (updateNuggets.length == 0) {
-			return;
+	const handleTaskSave = (patchNuggets: PatchNugget<Task>[]) => {
+		if (patchNuggets.length != 0) {
+			api.patchTask(activeEditorTask?._id ?? "", patchNuggets);
 		}
 
-		api.patchTask(activeEditorTask?._id ?? "", updateNuggets);
+		console.log("task save");
+		setActiveEditorTask(null);
 	};
 
 	return (
 		<>
 			<TaskAttributeAPIContext.Provider value={taskAttributeAPI}>
-				<taskEditorContext.Provider value={{ activeEditorTask, setActiveEditorTask }}>
-					<Container className={style.checklist}>
-						{isLoading ? (
-							<h1 className={style.noContentBlurb}> Loading... </h1>
-						) : (
-							<div className={tasks.length == 0 ? style.noContent : style.content}>
-								{tasks.length == 0 ? (
-									<h1 className={style.noContentBlurb}>You don't have any active tasks.</h1>
-								) : (
-									tasks.map((item) => {
-										return (
-											<TaskItem
-												key={item._id}
-												task={item}
-												onClick={openPopup}
-												onCheckboxClick={onCheckboxClick(item)}
-												onDeleteClick={onDeleteClick(item)}
-											/>
-										);
-									})
-								)}
-							</div>
-						)}
+				<Container className={style.checklist}>
+					{isLoading ? (
+						<h1 className={style.noContentBlurb}> Loading... </h1>
+					) : (
+						<div className={tasks.length == 0 ? style.noContent : style.content}>
+							{tasks.length == 0 ? (
+								<h1 className={style.noContentBlurb}>You don't have any active tasks.</h1>
+							) : (
+								tasks.map((item) => {
+									return (
+										<TaskItem
+											key={item._id}
+											task={item}
+											onClick={openEditor}
+											onCheckboxClick={onCheckboxClick(item)}
+											onDeleteClick={onDeleteClick(item)}
+										/>
+									);
+								})
+							)}
+						</div>
+					)}
 
-						<AddItemInput onSubmit={onSubmit} attributeApi={taskAttributeAPI} />
-					</Container>
+					<AddItemInput onSubmit={onSubmit} attributeApi={taskAttributeAPI} />
+				</Container>
 
-					{activeEditorTask != null && <TaskEditor onClose={onEditorClose} />}
-				</taskEditorContext.Provider>
+				{activeEditorTask != null && <TaskEditor onTaskSave={handleTaskSave} task={activeEditorTask} />}
 			</TaskAttributeAPIContext.Provider>
 		</>
 	);

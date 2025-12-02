@@ -1,5 +1,5 @@
-export type PatchNugget<T> = {
+export type PatchNugget<T, U extends keyof T = keyof T> = {
 	propertyName: keyof T;
-	value: unknown;
+	value: T[U];
 	updateType: "add" | "remove" | "update";
 };

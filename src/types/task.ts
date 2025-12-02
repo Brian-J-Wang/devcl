@@ -4,10 +4,18 @@ export type Task = {
 	_id: string;
 	blurb: string;
 	status: "incomplete" | "inprogress" | "complete";
-	attributes: {
-		id: string;
-		value: unknown;
-	}[];
+	attributes: Attribute[];
+	subTasks: SubTask[];
+};
+
+export type SubTask = {
+	state: "complete" | "incomplete";
+	blurb: string;
+};
+
+export type Attribute = {
+	id: string;
+	value: unknown;
 };
 
 export type PostTask = Omit<Task, "_id" | "status">;

@@ -35,13 +35,18 @@ const BoundingBox = forwardRef<OutofBoundsHandle, BoundingBoxProps>(
 
 		//cleans up event listeners in case this component gets unmounted.
 		useEffect(() => {
-			document.addEventListener("click", handleMouseDown);
+			if (listen) {
+				document.addEventListener("click", handleMouseDown);
+			} else {
+				document.removeEventListener("click", handleMouseDown);
+			}
 
 			return () => {
 				document.removeEventListener("click", handleMouseDown);
 			};
 		}, [listen]);
 
+		//setActive is set to listen after the component mounts to prevent early triggering of mouseclicks;
 		useEffect(() => {
 			setListen(active);
 		}, []);
