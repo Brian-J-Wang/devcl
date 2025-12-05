@@ -4,7 +4,7 @@ import "./assets/DevCL.css";
 import { Routes, Route, Outlet } from "react-router-dom";
 import Collection from "./Pages/Collection/Collection";
 import Home from "./Pages/Home/Home";
-import UserCollection from "./Pages/UserCollections/UserCollections";
+import UserProjects from "./Pages/UserCollections/UserProjects";
 import UserContextProvider from "./Contexts/UserContext";
 import ModalContextProvider from "./Contexts/Modal/ModalContext";
 import ProtectedRoute from "./Components/Protected/ProtectedRoute";
@@ -26,7 +26,7 @@ function App() {
 									</UserProjectsContextProvider>
 								</ProtectedRoute>
 							}>
-							<Route path="collections" element={<UserCollection />} />
+							<Route path="collections" element={<UserProjects />} />
 							<Route path="collections/:id/*" element={<Collection />} />
 						</Route>
 						<Route path="*" element={<NotFound />} />

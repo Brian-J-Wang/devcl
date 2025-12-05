@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Input from "../../../Components/Input";
-import "./NewCollectionModal.css"
+import "./NewProjectModal.css"
 
 interface NewCollectionModalProps {
     onSubmit: (name: string) => void
