@@ -1,67 +1,72 @@
 @font-face {
-	font-family: Lato;
-	src: url(../src/assets/fonts/Lato-Regular.ttf) format("truetype");
-	font-weight: 400;
+    font-family: Lato;
+    src: url(../src/assets/fonts/Lato-Regular.ttf) format('truetype');
+    font-weight: 400;
 }
 
 @font-face {
-	font-family: Lato;
-	src: url(../src/assets/fonts/Lato-Bold.ttf) format("truetype");
-	font-weight: 700;
+    font-family: Lato;
+    src: url(../src/assets/fonts/Lato-Bold.ttf) format('truetype');
+    font-weight: 700;
 }
 
 :root {
-	--color-primary: #74a12e;
-	--color-black: #292929;
-	--color-black-20: rgba(29, 29, 29, 0.2);
-	--color-off-white: rgba(235, 235, 235);
-	--h1: 700 18px/1em #292929;
+    --color-primary: #74a12e;
+    --color-black: #292929;
+    --color-black-20: rgba(29, 29, 29, 0.2);
+    --color-off-white: rgba(235, 235, 235);
+    --h1: 700 18px/1em #292929;
 }
 
 body {
-	font-family: Lato, Helvetica, sans-serif;
-	background: rgb(224, 223, 241);
-	background: linear-gradient(128deg, rgba(224, 223, 241, 1) 0%, rgba(225, 250, 255, 1) 100%);
+    font-family: Lato, Helvetica, sans-serif;
+    background: rgb(224, 223, 241);
+    background: linear-gradient(
+        128deg,
+        rgba(224, 223, 241, 1) 0%,
+        rgba(225, 250, 255, 1) 100%
+    );
 }
 
 h1 {
-	margin: 0;
-	font-size: 18px;
-	font-weight: 700;
-	color: rgba(29, 29, 29, 1);
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(29, 29, 29, 1);
 }
 
 h2 {
-	margin: 0;
-	font-size: 18px;
-	color: rgba(29, 29, 29, 1);
+    margin: 0;
+    font-size: 18px;
+    color: rgba(29, 29, 29, 1);
 }
 
 h3 {
-	margin: 0;
+    margin: 0;
 }
 
 h4 {
-	margin: 0;
+    margin: 0;
 }
 
 h5 {
-	margin: 0;
+    margin: 0;
 }
 
 p {
-	margin: 0;
-	font-size: 14px;
-	line-height: 14px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 14px;
 }
 
 small {
-	font-size: 12px;
-	line-height: 12px;
+    font-size: 12px;
+    line-height: 12px;
 }
 
 .app {
-	padding: 0px;
-	color: var(--color-black);
-	transition: 0.2s -webkit-filter linear;
+    padding: 0px;
+    color: var(--color-black);
+    transition: 0.2s -webkit-filter linear;
+    height: 100vh;
 }

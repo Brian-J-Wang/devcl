@@ -1,133 +1,29 @@
-import { useState } from 'react';
+import { Project } from '../../../types/project';
+
 import './ProjectCard.css';
-import './ContentPanel.css';
-import arrow from '../../../assets/Arrow.svg';
-import popout from '../../../assets/pop-out.svg';
-import { useNavigate } from 'react-router-dom';
-import { Container } from '../../../Components/Container/Container';
-import Input from '../../../Components/Input';
-import { TaskDoc } from '../../../types/project';
 
-interface TaskDocProps {
-    project: TaskDoc;
-    handleDelete: (id: string) => void;
-}
+import styles from '../UserProjects.module.css';
 
-const ProjectCard: React.FC<TaskDocProps> = ({ project, handleDelete }) => {
-    const [hidden, setHidden] = useState<boolean>(true);
-    const [activeTab, setActiveTab] = useState<'Info' | 'People' | 'Settings'>(
-        'Info'
-    );
-    const navigate = useNavigate();
+type TaskDocProps = React.ComponentProps<'tr'> & {
+    project: Project;
+    onCardClicked: (projectId: string) => void;
+};
 
-    const gotToProjectPage = () => {
-        navigate(`./${project.id}`);
+const ProjectCard: React.FC<TaskDocProps> = ({
+    project,
+    onCardClicked,
+    ...props
+}) => {
+    const handleCardClicked = () => {
+        onCardClicked(project.id);
     };
 
     return (
-        <div
-            className={`collection-card ${
-                hidden ? '' : 'collection-card_extended'
-            }`}
-        >
-            <Container className="collection-card__header">
-                <div className="collection-card__left">
-                    <button
-                        className={`collection-card__left-drop ${
-                            !hidden && 'collection-card__left-drop_active'
-                        }`}
-                        onClick={() => {
-                            setHidden(!hidden);
-                        }}
-                    >
-                        <img src={arrow} alt="" />
-                    </button>
-                    <p className="collection-card__title">{project.name}</p>
-                    <button
-                        className="collection-card__left-popout"
-                        onClick={gotToProjectPage}
-                    >
-                        <img src={popout} alt="Popout" />
-                    </button>
-                </div>
-
-                <div className="collection-card__progress-container">
-                    <p className="collection-card__progress-counter"> 8/10 </p>
-                    <div className="collection-card__progress-bar"></div>
-                </div>
-            </Container>
-            <div className="content-panel">
-                <div className="content-panel__tab-bar">
-                    <div
-                        className={`content-panel__tab ${
-                            activeTab == 'Info' && 'content-panel__tab_active'
-                        }`}
-                        onClick={() => setActiveTab('Info')}
-                    >
-                        Info
-                    </div>
-                    <div
-                        className={`content-panel__tab ${
-                            activeTab == 'People' && 'content-panel__tab_active'
-                        }`}
-                        onClick={() => setActiveTab('People')}
-                    >
-                        People
-                    </div>
-                    <div
-                        className={`content-panel__tab ${
-                            activeTab == 'Settings' &&
-                            'content-panel__tab_active'
-                        }`}
-                        onClick={() => setActiveTab('Settings')}
-                    >
-                        Settings
-                    </div>
-                </div>
-                <div
-                    hidden={activeTab != 'People'}
-                    className="content-panel__people-tab"
-                ></div>
-                <div
-                    hidden={activeTab != 'Settings'}
-                    className="content-panel__setting-tab"
-                >
-                    <div className="content-panel__setting">
-                        <div>
-                            <h3>Public Commenting</h3>
-                            <small>
-                                Allow anonymous users to comment on current
-                                tasks
-                            </small>
-                        </div>
-                    </div>
-                    <div className="content-panel__setting">
-                        <div>
-                            <h3>Visibility</h3>
-                            <small>Change who can see this collection</small>
-                        </div>
-                    </div>
-                    <hr />
-                    <div className="content-panel__setting">
-                        <div>
-                            <h3> Delete Collection</h3>
-                            <small>
-                                Removes this collection and all relevant data.
-                                This action CANNOT be undone.
-                            </small>
-                        </div>
-                        <Input.Button
-                            style="negative"
-                            onClick={() => {
-                                handleDelete(project.id);
-                            }}
-                        >
-                            Delete
-                        </Input.Button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <tr {...props} className={styles.listRow} onClick={handleCardClicked}>
+            <td>{project.name}</td>
+            <td> Me </td>
+            <td> 12/5/2025</td>
+        </tr>
     );
 };
 

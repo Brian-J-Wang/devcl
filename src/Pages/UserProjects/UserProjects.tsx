@@ -1,21 +1,21 @@
-import ProjectCard from '../UserCollections/ProjectCard/ProjectCard';
+import ProjectCard from './ProjectCard/ProjectCard';
 
 import add from '../../assets/add.svg';
 
 import './UserProjects.css';
 import { useContext } from 'react';
 import { ModalContext } from '../../Contexts/Modal/ModalContext';
-import NewCollectionModal from '../UserCollections/NewProjectModal/NewProjectModal';
-import { UserContext } from '../../Contexts/UserContext';
+import NewCollectionModal from './NewProjectModal/NewProjectModal';
 import { useNavigate } from 'react-router-dom';
 import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
-import { Container } from '../../Components/Container/Container';
-import UserProfileCard from '../UserCollections/UserProfileCard/UserProfileCard';
 import userProjectContext from '@context/userProjectContext';
+
+import { Container } from '@components/Container/Container';
+
+import styles from './UserProjects.module.css';
 
 const UserProjects: React.FC = () => {
     const modalContextConsumer = useContext(ModalContext);
-    const userContext = useContext(UserContext);
     const navigate = useNavigate();
     const { projects, isLoading, ...api } = useContext(userProjectContext);
 
@@ -31,28 +31,19 @@ const UserProjects: React.FC = () => {
         );
     };
 
-    const handleUserLogOut = () => {
-        userContext.logUserOut().then(() => {
-            navigate('../');
-        });
-    };
-
     const deleteProject = (projectId: string) => {
         api.deleteProject(projectId);
     };
 
+    const handleCardClick = (projectId: string) => {
+        navigate(`./${projectId}`);
+    };
+
     return (
-        <div className="user-collection">
+        <div className={styles.page}>
             <BreadCrumb />
-            <div className="user-collection__dashboard">
-                <UserProfileCard
-                    taskDocCount={0}
-                    onLogOutClick={handleUserLogOut}
-                />
-                <Container className="user-collection__side-info"></Container>
-            </div>
-            <div className="user-collection__header">
-                <h2 className="user-collection__header-title">Collections</h2>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Projects</h1>
                 <button
                     className="user-collection__add-collection"
                     onClick={handleCardAdd}
@@ -64,21 +55,30 @@ const UserProjects: React.FC = () => {
                     />
                 </button>
             </div>
-            <div className="user-collection__collection-list">
-                {isLoading ? (
-                    <></>
-                ) : (
-                    projects.map((project) => {
-                        return (
-                            <ProjectCard
-                                key={project.id}
-                                project={project}
-                                handleDelete={deleteProject}
-                            />
-                        );
-                    })
-                )}
-            </div>
+            <Container className={styles.projectList}>
+                <table className={styles.table}>
+                    <thead>
+                        <tr
+                            className={`${styles.listRow} ${styles.listRowHeader}`}
+                        >
+                            <th> Project name </th>
+                            <th> Owner </th>
+                            <th> Date Created </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {projects.map((project) => {
+                            return (
+                                <ProjectCard
+                                    key={project.id}
+                                    project={project}
+                                    onCardClicked={handleCardClick}
+                                />
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </Container>
         </div>
     );
 };

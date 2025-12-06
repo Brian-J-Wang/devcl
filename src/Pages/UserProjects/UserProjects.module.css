@@ -1,0 +1,58 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 120px);
+    height: 100%;
+    margin: auto;
+    padding-top: 33px;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+    margin: 12px 0px;
+}
+
+.title {
+    font-size: 32px;
+}
+
+.projectList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0px;
+}
+
+.table {
+    border-collapse: collapse;
+}
+
+.listRow {
+    height: 40px;
+    border-bottom: 1px solid rgba(29, 29, 29, 0.1);
+    user-select: none;
+}
+
+tbody .listRow:hover {
+    background-color: rgba(29, 29, 29, 0.05);
+}
+
+tbody .listRow:last-child {
+    border: none;
+}
+
+.listRow th {
+    padding-left: 8px;
+    color: rgba(29, 29, 29, 0.5);
+}
+
+.listRow td {
+    padding-left: 8px;
+}
+
+.listRowHeader th {
+    text-align: start;
+}
