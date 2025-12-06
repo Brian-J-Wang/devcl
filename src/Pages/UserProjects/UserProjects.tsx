@@ -1,16 +1,16 @@
-import ProjectCard from './ProjectCard/ProjectCard';
+import ProjectCard from '../UserCollections/ProjectCard/ProjectCard';
 
 import add from '../../assets/add.svg';
 
 import './UserProjects.css';
 import { useContext } from 'react';
 import { ModalContext } from '../../Contexts/Modal/ModalContext';
-import NewCollectionModal from './NewProjectModal/NewProjectModal';
+import NewCollectionModal from '../UserCollections/NewProjectModal/NewProjectModal';
 import { UserContext } from '../../Contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 import BreadCrumb from '../../Components/BreadCrumb/BreadCrumb';
 import { Container } from '../../Components/Container/Container';
-import UserProfileCard from './UserProfileCard/UserProfileCard';
+import UserProfileCard from '../UserCollections/UserProfileCard/UserProfileCard';
 import userProjectContext from '@context/userProjectContext';
 
 const UserProjects: React.FC = () => {
