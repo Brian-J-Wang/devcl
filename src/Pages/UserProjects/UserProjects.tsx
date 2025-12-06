@@ -31,10 +31,6 @@ const UserProjects: React.FC = () => {
         );
     };
 
-    const deleteProject = (projectId: string) => {
-        api.deleteProject(projectId);
-    };
-
     const handleCardClick = (projectId: string) => {
         navigate(`./${projectId}`);
     };
