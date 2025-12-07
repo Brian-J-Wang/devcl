@@ -9,6 +9,8 @@ import styles from './AddItemInput.module.css';
 import menuStyles from './attributeMenu.module.css';
 import { PostTask } from '@app-types/task';
 import AttributeTag from '../shared/AttributeTag';
+import SelectAttributeView from './MenuViews/SelectAttributeView/SelectAttributeView';
+import SelectAttributeValueView from './MenuViews/SelectAttributeValueView/SelectAttributeValueView';
 
 type AddItemInputProps = {
     onSubmit: (task: PostTask) => void;
@@ -126,6 +128,9 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
                         </button>
                     )}
                 </div>
+                <Container className={`${styles.attributeMenu} ${!menuOpened && styles.attributeMenuHidden}`}>
+                    {activeAttribute != null ? <SelectAttributeValueView /> : <SelectAttributeView />}
+                </Container>
 
                 {focused && (
                     <Container className={`${styles.attributeMenu} ${!menuOpened && styles.attributeMenuHidden}`}>
@@ -133,17 +138,6 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
                             AttributeBuilder(activeAttribute, onAttributeValueAdd(activeAttribute))
                         ) : (
                             <>
-                                <input
-                                    type="text"
-                                    placeholder="Filter attributes"
-                                    id="attributeFilter"
-                                    ref={attributeFilter}
-                                    value={filter}
-                                    onChange={(evt) => {
-                                        setFilter(evt.target.value);
-                                    }}
-                                    className={styles.attributeFilterInput}
-                                />
                                 {visibleAttributes.map((attribute) => {
                                     return (
                                         <div

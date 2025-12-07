@@ -1,17 +1,17 @@
 import { createContext, ReactNode, SetStateAction } from 'react';
 
-type AttributeMenuContextProps = {
+type ContainerContextProps = {
     setHeader: React.Dispatch<SetStateAction<ReactNode>>;
     setBody: React.Dispatch<SetStateAction<ReactNode>>;
 };
 
-const AttributeMenuContext = createContext<AttributeMenuContextProps>({
-    setHeader: function (value: SetStateAction<ReactNode>): void {
+const ContainerContext = createContext<ContainerContextProps>({
+    setHeader: function (): void {
         throw new Error('Function not implemented.');
     },
-    setBody: function (value: SetStateAction<ReactNode>): void {
+    setBody: function (): void {
         throw new Error('Function not implemented.');
     },
 });
 
-export { AttributeMenuContext };
+export { ContainerContext };

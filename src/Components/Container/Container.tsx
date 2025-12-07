@@ -1,16 +1,30 @@
-import "./Container.css"
+import { PropsWithChildren, ReactNode, useState } from 'react';
+import './Container.css';
+import { ContainerContext } from './ContainerContext';
+import ContainerHeader from './ContainerHeader';
+import ContainerBody from './ContainerBody';
 
-interface IContainer extends React.HTMLProps<HTMLDivElement> {
-    children?: React.ReactNode,
-    className?: string,
-    title?: string
-}
+type ContainerProps = React.FC<PropsWithChildren & React.HTMLAttributes<HTMLDivElement>> & {
+    Header: React.FC<PropsWithChildren>;
+    Body: React.FC<PropsWithChildren>;
+};
 
-export const Container : React.FC<IContainer> = (props) => {
+const Container: ContainerProps = (props) => {
+    const [header, setHeader] = useState<ReactNode>(null);
+    const [body, setBody] = useState<ReactNode>(null);
+
     return (
-        <div {...props} className={`${props.className ?? ''} container`} >
-            {props.title && <h2>{props.title}</h2>}
-            {props.children}
-        </div>
-    )
-}
+        <ContainerContext.Provider value={{ setHeader, setBody }}>
+            <div {...props} className={`${props.className ?? ''} container`}>
+                {header != null && <div>{header}</div>}
+                {body != null && <div>{body}</div>}
+                {props.children}
+            </div>
+        </ContainerContext.Provider>
+    );
+};
+
+Container.Header = ContainerHeader;
+Container.Body = ContainerBody;
+
+export { Container };
