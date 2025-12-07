@@ -1,81 +1,166 @@
-import { InputWithMenu, Menu, MenuInput, MenuSlot, PrimaryInput } from "@brwwang/react-components";
-import { MenuItem } from "@brwwang/react-components/dist/lib/InputWithMenu/Contexts/menuContext";
-import { PostTask } from "../../../../../types/task";
-import useTaskAttributeAPI from "src/Hooks/useTaskAttributeAPI";
+import { RefObject, useContext, useMemo, useRef, useState } from 'react';
+import { Container } from '@components/Container/Container';
+import TaskAttributeAPIContext from '@context/taskAttributeAPIContext';
+import { Attribute } from '@app-types/attributes';
+import AttributeBuilder from './AttributeBuilder';
+import useAttributeHook from './useAttributeHook';
 
-import styles from "./AddItemInput.module.css";
-import { useMemo } from "react";
-import AttributeBuilder from "./AttributeBuilder";
-import InputAttributeContext from "./InputAttributeContext";
-import useAttributeHook from "./useAttributeHook";
+import styles from './AddItemInput.module.css';
+import menuStyles from './attributeMenu.module.css';
+import { PostTask } from '@app-types/task';
+import AttributeTag from '../shared/AttributeTag';
 
 type AddItemInputProps = {
-	onSubmit: (task: PostTask) => Promise<boolean>;
-	attributeApi: ReturnType<typeof useTaskAttributeAPI>;
+    onSubmit: (task: PostTask) => void;
 };
 
-const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit, attributeApi }) => {
-	const { getAttributeById } = attributeApi;
-	const { taskAttribute, setTaskAttribute, removeTaskAttribute, clearTaskAttributes } = useAttributeHook();
-	const menuItems: MenuItem[] = useMemo(() => {
-		if (attributeApi.isLoading) {
-			return [];
-		}
+const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
+    const [blurb, setBlurb] = useState<string>('');
+    const [focused, setFocused] = useState<boolean>(false);
+    const [menuOpened, setMenuOpened] = useState<boolean>(false);
+    const attributeFilter = useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
+    const [filter, setFilter] = useState<string>('');
+    const { attributes, isLoading } = useContext(TaskAttributeAPIContext);
+    const visibleAttributes = useMemo(() => {
+        if (filter.length == 0) {
+            console.log();
+            return attributes;
+        } else {
+            return attributes.filter((attribute) => {
+                return attribute.name.substring(0, filter.length).toLowerCase() == filter;
+            });
+        }
+    }, [filter, isLoading]);
+    const [activeAttribute, setActiveAttribute] = useState<Attribute | null>(null);
+    const attributeHook = useAttributeHook();
 
-		return attributeApi.attributes.map((attribute) => {
-			return {
-				name: attribute.name,
-				id: attribute.id,
-				content: <AttributeBuilder attribute={attribute}></AttributeBuilder>
-			};
-		});
-	}, [attributeApi.attributes, attributeApi.isLoading]);
+    const handleFocus = (evt: React.FocusEvent<HTMLTableRowElement, Element>) => {
+        const element = evt.target.querySelector('#blurbInput') as HTMLInputElement;
+        if (element) {
+            element.focus();
+            setFocused(true);
+            document.addEventListener('mousedown', onMouseClick);
+        }
+    };
 
-	const handleSubmit = (blurb: string) => {
-		return onSubmit({
-			blurb: blurb,
-			attributes: taskAttribute
-		}).then(() => {
-			clearTaskAttributes();
-			return Promise.resolve(true);
-		});
-	};
+    const onMouseClick = (evt: MouseEvent) => {
+        if ((evt.target as HTMLElement).closest('#addItemRow') == null) {
+            setFocused(false);
+            setMenuOpened(false);
+            setActiveAttribute(null);
+            document.removeEventListener('mousedown', onMouseClick);
+        } else {
+            setFocused(true);
+        }
+    };
 
-	const removeAttribute = (id: string) => () => {
-		removeTaskAttribute(id);
-	};
+    const handleOnClick = (evt: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
+        if (focused) {
+            return;
+        }
 
-	return (
-		<InputAttributeContext.Provider
-			value={{
-				setTaskAttribute
-			}}>
-			<div className={styles.attributeTagContainer}>
-				{taskAttribute.map((attribute) => (
-					<div className={styles.attributeTag}>
-						<span className={styles.removeAttribute} onClick={removeAttribute(attribute.id)}>
-							X
-						</span>
-						<span style={{ fontWeight: 700 }}>{getAttributeById(attribute.id).name}</span>
-						::{attribute.value as string}
-					</div>
-				))}
-			</div>
-			<InputWithMenu onSubmit={handleSubmit} menuItems={menuItems} className={styles.body}>
-				<Menu className={styles.menu}>
-					<MenuInput />
-					<MenuSlot
-						render={(item: MenuItem, isActive: boolean) => (
-							<div className={`${styles.menuItem} ${isActive && styles.menuItemActive}`}>
-								<p>{item.name}</p>
-							</div>
-						)}
-					/>
-				</Menu>
-				<PrimaryInput className={styles.primaryInput} placeholder="Start typing or hit '/' to add more attributes" />
-			</InputWithMenu>
-		</InputAttributeContext.Provider>
-	);
+        const element = (evt.currentTarget as HTMLElement).querySelector('#blurbInput') as HTMLInputElement;
+        if (element) {
+            element.focus();
+            setFocused(true);
+            document.addEventListener('mousedown', onMouseClick);
+        }
+    };
+
+    const onAddAttributeClick = () => {
+        setMenuOpened(true);
+        attributeFilter.current?.focus();
+    };
+
+    const onAttributeValueAdd = (attribute: Attribute) => (value: unknown) => {
+        attributeHook.setTaskAttribute(attribute.id, value);
+        setActiveAttribute(null);
+        setMenuOpened(false);
+    };
+
+    const handleKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+        if (evt.key == 'Enter') {
+            console.log(blurb);
+            onSubmit({
+                blurb: blurb,
+                attributes: attributeHook.taskAttributes,
+            });
+            setBlurb('');
+            setActiveAttribute(null);
+            attributeHook.clearTaskAttributes();
+        }
+    };
+
+    return (
+        <tr
+            tabIndex={1}
+            onFocus={handleFocus}
+            id="addItemRow"
+            onClick={handleOnClick}
+            className={`${styles.row} ${focused && styles.rowFocused}`}
+        >
+            <td></td>
+            <td className={styles.inputArea}>
+                <input
+                    type="text"
+                    placeholder="Click here or press tab to add task"
+                    id="blurbInput"
+                    value={blurb}
+                    onChange={(evt) => {
+                        setBlurb(evt.target.value);
+                    }}
+                    className={styles.blurbInput}
+                    onKeyDown={handleKeyDown}
+                />
+                <div className={styles.attributeBar}>
+                    {attributeHook.taskAttributes.map((taskAttribute) => (
+                        <AttributeTag
+                            key={taskAttribute.id}
+                            id={taskAttribute.id}
+                            value={taskAttribute.value as string}
+                        ></AttributeTag>
+                    ))}
+                    {focused && (
+                        <button className={styles.addAttributesButton} onClick={onAddAttributeClick}>
+                            + Add Attributes
+                        </button>
+                    )}
+                </div>
+
+                {focused && (
+                    <Container className={`${styles.attributeMenu} ${!menuOpened && styles.attributeMenuHidden}`}>
+                        {activeAttribute != null ? (
+                            AttributeBuilder(activeAttribute, onAttributeValueAdd(activeAttribute))
+                        ) : (
+                            <>
+                                <input
+                                    type="text"
+                                    placeholder="Filter attributes"
+                                    id="attributeFilter"
+                                    ref={attributeFilter}
+                                    value={filter}
+                                    onChange={(evt) => {
+                                        setFilter(evt.target.value);
+                                    }}
+                                    className={styles.attributeFilterInput}
+                                />
+                                {visibleAttributes.map((attribute) => {
+                                    return (
+                                        <div
+                                            className={menuStyles.listItem}
+                                            onClick={() => setActiveAttribute(attribute)}
+                                        >
+                                            <p>{attribute.name}</p>
+                                        </div>
+                                    );
+                                })}
+                            </>
+                        )}
+                    </Container>
+                )}
+            </td>
+        </tr>
+    );
 };
 
 export default AddItemInput;

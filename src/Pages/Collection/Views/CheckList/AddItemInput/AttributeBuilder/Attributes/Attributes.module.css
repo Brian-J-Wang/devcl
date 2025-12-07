@@ -1,0 +1,28 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.goBackButton {
+    color: var(--color-black-50);
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.goBackButton:hover {
+    color: var(--color-black-80);
+    text-decoration: underline;
+}
+
+.attributeListItem {
+    height: 32px;
+    align-content: center;
+    padding: 0px 8px;
+    border-radius: 4px;
+    user-select: none;
+}
+
+.attributeListItem:hover {
+    background-color: var(--color-black-20);
+}

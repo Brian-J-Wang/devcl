@@ -1,0 +1,11 @@
+.listItem {
+    height: 32px;
+    align-content: center;
+    padding: 0px 8px;
+    border-radius: 4px;
+    user-select: none;
+}
+
+.listItem:hover {
+    background-color: var(--color-black-20);
+}

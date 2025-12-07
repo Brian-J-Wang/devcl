@@ -1,27 +1,41 @@
 .checklist {
-	padding: 0px;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	flex: 1;
+    padding: 0px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .content {
-	overflow-x: hidden;
-	overflow-y: auto;
-	height: 100%;
-}
-
-.noContent {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	flex-grow: 2;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .noContentBlurb {
-	font-size: 24px;
-	color: rgba(29, 29, 29, 0.2);
+    font-size: 24px;
+    color: rgba(29, 29, 29, 0.2);
+}
+
+.checklist table {
+    border-collapse: collapse;
+}
+
+.checklist thead tr {
+    border-bottom: 1px solid rgba(29, 29, 29, 0.05);
+}
+
+.checklist th,
+.checklist td {
+    text-align: left;
+}
+
+.checklist tr {
+    height: 30px;
+}
+
+.checkBoxSelect {
+    box-sizing: border-box;
+    width: 30px;
+    padding: 0px 7px;
 }

@@ -1,71 +1,85 @@
-.body {
-	position: relative;
-	width: 100%;
-	padding: 4px;
-	box-sizing: border-box;
+.row {
+    position: relative;
+    padding: 0px 0px 7px 0px;
 }
 
-.menu {
-	position: absolute;
-	transform: translateY(calc(-100% - 4px));
-	background-color: white;
-	border: 1px solid rgba(29, 29, 29, 0.1);
-	max-width: min(100%, 360px);
-	padding: 4px;
-	border-radius: 4px;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
+.rowFocused {
+    box-shadow: inset 0px 0px 4px var(--color-black-20);
 }
 
-.input {
-	display: flex;
-	flex-grow: 1;
-	height: 32px;
+.blurbInput {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    height: 17px;
+    border: none;
+    outline: none;
+    padding: 7px 0px 4px 0px;
 }
 
-.primaryInput {
-	width: 100%;
-	height: 32px;
-	padding: 4px;
-	box-sizing: border-box;
-	outline: none;
-	align-self: center;
-	border: 1px solid rgba(29, 29, 29, 0.1);
-	border-radius: 4px;
-	box-shadow: rgba(29, 29, 29, 0.1) 0px 0px 2px;
+.inputArea {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px 3px 0px;
 }
 
-.menuInput {
-	outline: none;
-	width: 100%;
+.attribute {
+    background-color: rgba(119, 184, 87, 0.4);
+    color: rgb(67, 97, 53);
+    font-weight: 700;
+    font-size: 10px;
+    align-content: center;
+    padding: 0px 8px;
+    border-radius: 4px;
+    user-select: none;
+    height: 18px;
 }
 
-.secondaryInput {
-	background-color: #77a2cf;
-	height: 100%;
-	display: flex;
-	align-items: center;
+.attributeBar {
+    display: flex;
+    gap: 4px;
 }
 
-.attributeRenderer {
-	display: flex;
-	background-color: rgba(29, 29, 29, 0.1);
+.addAttributesButton {
+    display: flex;
+    width: fit-content;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    align-items: center;
+    padding: 0px 4px;
+    border-radius: 4px;
+    height: 18px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-black-40);
 }
 
-.attributeTagContainer {
-	padding: 0px 4px;
-	display: flex;
+.addAttributesButton:hover {
+    background-color: var(--color-black-20);
+    color: var(--color-black-80);
 }
 
-.menuItem {
-	height: 28px;
-	transition: background-color ease-in-out 0.2s;
-	padding-left: 4px;
-	display: flex;
-	align-items: center;
+.addAttributesButton:focus-visible {
+    background-color: var(--color-black-20);
+    color: var(--color-black-80);
+    outline: none;
 }
 
-.menuItemActive {
-	background-color: rgba(29, 29, 29, 0.3);
+.attributeMenu {
+    width: 480px;
+    position: absolute;
+    top: calc(100% + 4px);
+}
+
+.attributeFilterInput {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.attributeMenuHidden {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+    border: 0px;
+    overflow: hidden;
 }
