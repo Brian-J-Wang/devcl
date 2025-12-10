@@ -1,3 +1,4 @@
+import { Container } from '@components/Container/Container';
 import TaskItem from './Task/Task';
 import { useContext, useState } from 'react';
 import AddItemInput from './AddItemInput/AddItemInput';
@@ -13,57 +14,56 @@ import Icon from '@components/Icon';
 import { CheckBoxState } from '@components/Icon/Checkbox/Checkbox';
 
 import styles from './checklist.module.css';
-import BasicContainer from '@components/BasicContainer/BasicContainer';
 
 const CheckListView: React.FC = () => {
-    const { id = 'undefined' } = useParams();
-    const { token } = useContext(UserContext);
-    const { tasks, isLoading, ...api } = useTaskAPI('http://localhost:5081', id ?? '', token);
-    const taskAttributeAPI = useTaskAttributeAPI('http://localhost:5081/taskDocs', id ?? '', token);
-    const [activeEditorTask, setActiveEditorTask] = useState<Task | null>(null);
+	const { id = "undefined" } = useParams();
+	const { token } = useContext(UserContext);
+	const { tasks, isLoading, ...api } = useTaskAPI("http://localhost:5081", id ?? "", token);
+	const taskAttributeAPI = useTaskAttributeAPI("http://localhost:5081/taskDocs", id ?? "", token);
+	const [activeEditorTask, setActiveEditorTask] = useState<Task | null>(null);
 
-    const openEditor = (task: Task) => {
-        setActiveEditorTask(task);
-    };
+	const openEditor = (task: Task) => {
+		setActiveEditorTask(task);
+	};
 
-    const onCheckboxClick = (task: Task) => () => {
-        let newStatus: Task['status'] = 'incomplete';
+	const onCheckboxClick = (task: Task) => () => {
+		let newStatus: Task["status"] = "incomplete";
 
-        if (task.status == 'incomplete') {
-            newStatus = 'complete';
-        } else {
-            newStatus = 'incomplete';
-        }
+		if (task.status == "incomplete") {
+			newStatus = "complete";
+		} else {
+			newStatus = "incomplete";
+		}
 
-        api.patchTask(task._id, [
-            {
-                propertyName: 'status',
-                value: newStatus,
-                updateType: 'update',
-            },
-        ]);
-    };
+		api.patchTask(task._id, [
+			{
+				propertyName: "status",
+				value: newStatus,
+				updateType: "update"
+			}
+		]);
+	};
 
-    const onDeleteClick = (task: Task) => () => {
-        api.deleteTask(task._id);
-    };
+	const onDeleteClick = (task: Task) => () => {
+		api.deleteTask(task._id);
+	};
 
-    const handleSubmit = (postTask: PostTask) => {
-        return api.addTask(postTask).then(() => true);
-    };
+	const handleSubmit = (postTask: PostTask) => {
+		return api.addTask(postTask).then(() => true);
+	};
 
-    const handleTaskSave = (patchNuggets: PatchNugget<Task>[]) => {
-        if (patchNuggets.length != 0) {
-            api.patchTask(activeEditorTask?._id ?? '', patchNuggets);
-        }
+	const handleTaskSave = (patchNuggets: PatchNugget<Task>[]) => {
+		if (patchNuggets.length != 0) {
+			api.patchTask(activeEditorTask?._id ?? "", patchNuggets);
+		}
 
-        setActiveEditorTask(null);
-    };
+		setActiveEditorTask(null);
+	};
 
     return (
         <>
             <TaskAttributeAPIContext.Provider value={taskAttributeAPI}>
-                <BasicContainer className={styles.checklist}>
+                <Container className={styles.checklist}>
                     <table>
                         <thead>
                             <tr>
@@ -88,12 +88,12 @@ const CheckListView: React.FC = () => {
                             <AddItemInput onSubmit={handleSubmit} />
                         </tbody>
                     </table>
-                </BasicContainer>
+                </Container>
 
-                {activeEditorTask != null && <TaskEditor onTaskSave={handleTaskSave} task={activeEditorTask} />}
-            </TaskAttributeAPIContext.Provider>
-        </>
-    );
+				{activeEditorTask != null && <TaskEditor onTaskSave={handleTaskSave} task={activeEditorTask} />}
+			</TaskAttributeAPIContext.Provider>
+		</>
+	);
 };
 
 export default CheckListView;
