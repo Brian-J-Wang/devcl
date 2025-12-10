@@ -1,4 +1,3 @@
-import { Container } from '@components/Container/Container';
 import TaskItem from './Task/Task';
 import { useContext, useState } from 'react';
 import AddItemInput from './AddItemInput/AddItemInput';
@@ -14,6 +13,7 @@ import Icon from '@components/Icon';
 import { CheckBoxState } from '@components/Icon/Checkbox/Checkbox';
 
 import styles from './checklist.module.css';
+import BasicContainer from '@components/BasicContainer/BasicContainer';
 
 const CheckListView: React.FC = () => {
     const { id = 'undefined' } = useParams();
@@ -63,7 +63,7 @@ const CheckListView: React.FC = () => {
     return (
         <>
             <TaskAttributeAPIContext.Provider value={taskAttributeAPI}>
-                <Container className={styles.checklist}>
+                <BasicContainer className={styles.checklist}>
                     <table>
                         <thead>
                             <tr>
@@ -88,7 +88,7 @@ const CheckListView: React.FC = () => {
                             <AddItemInput onSubmit={handleSubmit} />
                         </tbody>
                     </table>
-                </Container>
+                </BasicContainer>
 
                 {activeEditorTask != null && <TaskEditor onTaskSave={handleTaskSave} task={activeEditorTask} />}
             </TaskAttributeAPIContext.Provider>

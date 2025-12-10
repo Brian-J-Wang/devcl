@@ -4,7 +4,7 @@ export type Task = {
     _id: string;
     blurb: string;
     status: 'incomplete' | 'inprogress' | 'complete';
-    attributes: Attribute[];
+    attributes: TaskAttribute[];
     subTasks: SubTask[];
 };
 
@@ -13,7 +13,7 @@ export type SubTask = {
     blurb: string;
 };
 
-export type Attribute = {
+export type TaskAttribute = {
     id: string;
     value: unknown;
 };

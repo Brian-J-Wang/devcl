@@ -2,15 +2,13 @@ import { RefObject, useContext, useMemo, useRef, useState } from 'react';
 import { Container } from '@components/Container/Container';
 import TaskAttributeAPIContext from '@context/taskAttributeAPIContext';
 import { Attribute } from '@app-types/attributes';
-import AttributeBuilder from './AttributeBuilder';
 import useAttributeHook from './useAttributeHook';
 
 import styles from './AddItemInput.module.css';
-import menuStyles from './attributeMenu.module.css';
 import { PostTask } from '@app-types/task';
 import AttributeTag from '../shared/AttributeTag';
-import SelectAttributeView from './MenuViews/SelectAttributeView/SelectAttributeView';
-import SelectAttributeValueView from './MenuViews/SelectAttributeValueView/SelectAttributeValueView';
+import AttributeMenu from './AttributeMenu/AttributeMenu';
+import useAttributeMenu from './useAttributeMenuHook';
 
 type AddItemInputProps = {
     onSubmit: (task: PostTask) => void;
@@ -19,22 +17,11 @@ type AddItemInputProps = {
 const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
     const [blurb, setBlurb] = useState<string>('');
     const [focused, setFocused] = useState<boolean>(false);
-    const [menuOpened, setMenuOpened] = useState<boolean>(false);
     const attributeFilter = useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
     const [filter, setFilter] = useState<string>('');
-    const { attributes, isLoading } = useContext(TaskAttributeAPIContext);
-    const visibleAttributes = useMemo(() => {
-        if (filter.length == 0) {
-            console.log();
-            return attributes;
-        } else {
-            return attributes.filter((attribute) => {
-                return attribute.name.substring(0, filter.length).toLowerCase() == filter;
-            });
-        }
-    }, [filter, isLoading]);
     const [activeAttribute, setActiveAttribute] = useState<Attribute | null>(null);
     const attributeHook = useAttributeHook();
+    const attributeMenu = useAttributeMenu();
 
     const handleFocus = (evt: React.FocusEvent<HTMLTableRowElement, Element>) => {
         const element = evt.target.querySelector('#blurbInput') as HTMLInputElement;
@@ -48,7 +35,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
     const onMouseClick = (evt: MouseEvent) => {
         if ((evt.target as HTMLElement).closest('#addItemRow') == null) {
             setFocused(false);
-            setMenuOpened(false);
+            attributeMenu.setMenuVisible(false);
             setActiveAttribute(null);
             document.removeEventListener('mousedown', onMouseClick);
         } else {
@@ -70,14 +57,13 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
     };
 
     const onAddAttributeClick = () => {
-        setMenuOpened(true);
-        attributeFilter.current?.focus();
+        attributeMenu.setMenuVisible(true);
     };
 
     const onAttributeValueAdd = (attribute: Attribute) => (value: unknown) => {
         attributeHook.setTaskAttribute(attribute.id, value);
         setActiveAttribute(null);
-        setMenuOpened(false);
+        attributeMenu.setMenuVisible(false);
     };
 
     const handleKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
@@ -112,6 +98,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
                         setBlurb(evt.target.value);
                     }}
                     className={styles.blurbInput}
+                    autoComplete={'off'}
                     onKeyDown={handleKeyDown}
                 />
                 <div className={styles.attributeBar}>
@@ -128,30 +115,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
                         </button>
                     )}
                 </div>
-                <Container className={`${styles.attributeMenu} ${!menuOpened && styles.attributeMenuHidden}`}>
-                    {activeAttribute != null ? <SelectAttributeValueView /> : <SelectAttributeView />}
-                </Container>
-
-                {focused && (
-                    <Container className={`${styles.attributeMenu} ${!menuOpened && styles.attributeMenuHidden}`}>
-                        {activeAttribute != null ? (
-                            AttributeBuilder(activeAttribute, onAttributeValueAdd(activeAttribute))
-                        ) : (
-                            <>
-                                {visibleAttributes.map((attribute) => {
-                                    return (
-                                        <div
-                                            className={menuStyles.listItem}
-                                            onClick={() => setActiveAttribute(attribute)}
-                                        >
-                                            <p>{attribute.name}</p>
-                                        </div>
-                                    );
-                                })}
-                            </>
-                        )}
-                    </Container>
-                )}
+                <AttributeMenu attributeMenu={attributeMenu} />
             </td>
         </tr>
     );
