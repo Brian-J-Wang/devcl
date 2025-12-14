@@ -4,7 +4,6 @@ import "./BreadCrumb.css";
 
 const BreadCrumb: React.FC = () => {
 	const buildUrl = (index: number, arr: Array<string>): string => {
-		console.log(index, arr);
 		let string = "";
 
 		if (index == 0) {
@@ -18,8 +17,6 @@ const BreadCrumb: React.FC = () => {
 				string += arr[i];
 			}
 		}
-
-		console.log(string);
 
 		return string;
 	};

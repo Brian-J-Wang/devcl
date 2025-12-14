@@ -1,29 +1,30 @@
-import { Container } from '@components/Container/Container';
-import TaskItem from './Task/Task';
-import { useContext, useState } from 'react';
-import AddItemInput from './AddItemInput/AddItemInput';
-import useTaskAPI from '../../../../Hooks/useTaskAPI';
-import { UserContext } from '@context/UserContext';
-import { PostTask, Task } from '@app-types/task';
-import { useParams } from 'react-router-dom';
-import useTaskAttributeAPI from '../../../../Hooks/useTaskAttributeAPI';
-import TaskEditor from './TaskEditor/TaskEditor';
-import { PatchNugget } from '@app-types/patchNuggets';
-import TaskAttributeAPIContext from '../../../../Contexts/taskAttributeAPIContext';
-import Icon from '@components/Icon';
-import { CheckBoxState } from '@components/Icon/Checkbox/Checkbox';
+import { Container } from "@components/Container/Container";
+import TaskItem from "./Task/task";
+import { useContext } from "react";
+import AddItemInput from "./AddItemInput/AddItemInput";
+import useTaskAPI from "../../../../Hooks/useTaskAPI";
+import { UserContext } from "@context/UserContext";
+import { PostTask, Task } from "@app-types/task";
+import { useParams } from "react-router-dom";
+import useTaskAttributeAPI from "../../../../Hooks/useTaskAttributeAPI";
+import TaskEditor from "./TaskEditor/TaskEditor";
+import { PatchNugget } from "@app-types/patchNuggets";
+import TaskAttributeAPIContext from "../../../../Contexts/taskAttributeAPIContext";
+import Icon from "@components/Icon";
+import { CheckBoxState } from "@components/Icon/Checkbox/Checkbox";
 
-import styles from './checklist.module.css';
+import styles from "./checklist.module.css";
+import useEditorController from "./controllers/useEditorController";
 
 const CheckListView: React.FC = () => {
 	const { id = "undefined" } = useParams();
 	const { token } = useContext(UserContext);
-	const { tasks, isLoading, ...api } = useTaskAPI("http://localhost:5081", id ?? "", token);
+	const { tasks, ...api } = useTaskAPI("http://localhost:5081", id ?? "", token);
 	const taskAttributeAPI = useTaskAttributeAPI("http://localhost:5081/taskDocs", id ?? "", token);
-	const [activeEditorTask, setActiveEditorTask] = useState<Task | null>(null);
+	const editorController = useEditorController();
 
-	const openEditor = (task: Task) => {
-		setActiveEditorTask(task);
+	const openEditor = (task: Task) => () => {
+		editorController.setCurrentTask(task).withOpenEditor();
 	};
 
 	const onCheckboxClick = (task: Task) => () => {
@@ -53,44 +54,46 @@ const CheckListView: React.FC = () => {
 	};
 
 	const handleTaskSave = (patchNuggets: PatchNugget<Task>[]) => {
-		if (patchNuggets.length != 0) {
-			api.patchTask(activeEditorTask?._id ?? "", patchNuggets);
+		if (patchNuggets.length == 0) {
+			return;
 		}
-
-		setActiveEditorTask(null);
 	};
 
-    return (
-        <>
-            <TaskAttributeAPIContext.Provider value={taskAttributeAPI}>
-                <Container className={styles.checklist}>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th className={styles.checkBoxSelect}>
-                                    <Icon.CheckBox state={CheckBoxState.unchecked}></Icon.CheckBox>
-                                </th>
-                                <th colSpan={2}></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tasks.map((item) => {
-                                return (
-                                    <TaskItem
-                                        key={item._id}
-                                        task={item}
-                                        onClick={openEditor}
-                                        onCheckboxClick={onCheckboxClick(item)}
-                                        onDeleteClick={onDeleteClick(item)}
-                                    />
-                                );
-                            })}
-                            <AddItemInput onSubmit={handleSubmit} />
-                        </tbody>
-                    </table>
-                </Container>
+	return (
+		<>
+			<TaskAttributeAPIContext.Provider value={taskAttributeAPI}>
+				<Container className={styles.checklist}>
+					<table>
+						<thead>
+							<tr>
+								<th className={styles.checkBoxSelect}>
+									<Icon.CheckBox state={CheckBoxState.unchecked}></Icon.CheckBox>
+								</th>
+								<th colSpan={2}></th>
+							</tr>
+						</thead>
+						<tbody>
+							{tasks.map((task) => {
+								return (
+									<TaskItem
+										key={task._id}
+										task={task}
+										onClick={openEditor(task)}
+										onCheckboxClick={onCheckboxClick(task)}
+										onDeleteClick={onDeleteClick(task)}
+									/>
+								);
+							})}
+							<AddItemInput onSubmit={handleSubmit} />
+						</tbody>
+					</table>
+				</Container>
 
-				{activeEditorTask != null && <TaskEditor onTaskSave={handleTaskSave} task={activeEditorTask} />}
+				<TaskEditor
+					focusedTask={editorController.currentTask!}
+					onTaskSave={handleTaskSave}
+					editorController={editorController}
+				/>
 			</TaskAttributeAPIContext.Provider>
 		</>
 	);
