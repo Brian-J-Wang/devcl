@@ -1,0 +1,21 @@
+.attributeTag {
+    background-color: rgba(119, 184, 87, 0.4);
+    color: rgb(67, 97, 53);
+    font-weight: 700;
+    font-size: 10px;
+    align-content: center;
+    padding: 0px 8px;
+    border-radius: 4px;
+    user-select: none;
+    height: 18px;
+}
+
+.removeAttribute {
+    font-weight: 700;
+    padding: 0px 2px 0px 0px;
+}
+
+.removeAttribute:hover {
+    color: white;
+    cursor: pointer;
+}
