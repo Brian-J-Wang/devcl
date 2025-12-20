@@ -1,10 +1,10 @@
+import styles from "./Task.module.css";
+
 import { ReactNode, useState } from "react";
 import { CheckBoxState } from "../../../../../Components/Icon/Checkbox/Checkbox";
 import Icon from "../../../../../Components/Icon";
 import { Task } from "@app-types/task";
-
-import styles from "./Task.module.css";
-import AttributeTag from "../shared/AttributeTag";
+import { AttributeTag } from "@features/Attributes";
 
 type itemProps = {
 	task: Task;

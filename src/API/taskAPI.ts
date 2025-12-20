@@ -34,16 +34,28 @@ class TaskAPI {
 		});
 	}
 
-	patchTask(taskId: string, patchNuggets: PatchNugget<Task>[]) {
+	replaceTask(taskId: string, task: Task) {
+		return fetch(`${this.endpoint}/${taskId}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				authorization: `Bearer ${this.jwt}`
+			},
+			body: JSON.stringify(task)
+		}).then((res) => {
+			return res.ok ? res.json() : Promise.reject();
+		});
+	}
+
+	patchTask(taskId: string, nuggets: PatchNugget<Task>[]) {
 		return fetch(`${this.endpoint}/${taskId}`, {
 			method: "PATCH",
 			headers: {
 				"Content-Type": "application/json",
 				authorization: `Bearer ${this.jwt}`
 			},
-			body: JSON.stringify(patchNuggets)
+			body: JSON.stringify(nuggets)
 		}).then((res) => {
-			console.log(res);
 			return res.ok ? res.json() : Promise.reject();
 		});
 	}

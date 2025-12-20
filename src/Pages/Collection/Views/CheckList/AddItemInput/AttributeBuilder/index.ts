@@ -1,3 +1,3 @@
-import AttributeBuilder from "./AttributesBuilder";
+import AttributeFactory from "../AttributeMenu/AttributeFactory/AttributeFactory";
 
-export default AttributeBuilder;
+export default AttributeFactory;

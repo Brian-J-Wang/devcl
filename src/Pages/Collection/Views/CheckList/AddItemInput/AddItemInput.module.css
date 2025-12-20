@@ -1,85 +1,90 @@
 .row {
-    position: relative;
-    padding: 0px 0px 7px 0px;
+	position: relative;
+	padding: 0px 0px 7px 0px;
 }
 
 .rowFocused {
-    box-shadow: inset 0px 0px 4px var(--color-black-20);
+	box-shadow: inset 0px 0px 4px var(--color-black-20);
 }
 
 .blurbInput {
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0);
-    height: 17px;
-    border: none;
-    outline: none;
-    padding: 7px 0px 4px 0px;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	height: 17px;
+	border: none;
+	outline: none;
+	padding: 7px 0px 4px 0px;
 }
 
 .inputArea {
-    display: flex;
-    flex-direction: column;
-    padding: 0px 0px 3px 0px;
+	display: flex;
+	flex-direction: column;
+	padding: 0px 0px 3px 0px;
 }
 
 .attribute {
-    background-color: rgba(119, 184, 87, 0.4);
-    color: rgb(67, 97, 53);
-    font-weight: 700;
-    font-size: 10px;
-    align-content: center;
-    padding: 0px 8px;
-    border-radius: 4px;
-    user-select: none;
-    height: 18px;
+	background-color: rgba(119, 184, 87, 0.4);
+	color: rgb(67, 97, 53);
+	font-weight: 700;
+	font-size: 10px;
+	align-content: center;
+	padding: 0px 8px;
+	border-radius: 4px;
+	user-select: none;
+	height: 18px;
 }
 
 .attributeBar {
-    display: flex;
-    gap: 4px;
+	display: flex;
+	gap: 4px;
 }
 
 .addAttributesButton {
-    display: flex;
-    width: fit-content;
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
-    align-items: center;
-    padding: 0px 4px;
-    border-radius: 4px;
-    height: 18px;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--color-black-40);
+	display: flex;
+	width: fit-content;
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+	align-items: center;
+	padding: 0px 4px;
+	border-radius: 4px;
+	height: 18px;
+	font-size: 10px;
+	font-weight: 700;
+	color: var(--color-black-40);
+}
+
+.hiddenAttributesButton {
+	opacity: 0%;
+	user-select: none;
 }
 
 .addAttributesButton:hover {
-    background-color: var(--color-black-20);
-    color: var(--color-black-80);
+	background-color: var(--color-black-20);
+	color: var(--color-black-80);
 }
 
 .addAttributesButton:focus-visible {
-    background-color: var(--color-black-20);
-    color: var(--color-black-80);
-    outline: none;
+	background-color: var(--color-black-20);
+	color: var(--color-black-80);
+	outline: none;
 }
 
 .attributeMenu {
-    width: 480px;
-    position: absolute;
-    top: calc(100% + 4px);
+	width: 480px;
+	position: absolute;
+	top: calc(100% + 4px);
 }
 
 .attributeFilterInput {
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 8px;
+	width: 100%;
+	box-sizing: border-box;
+	margin-bottom: 8px;
 }
 
 .attributeMenuHidden {
-    width: 0px;
-    height: 0px;
-    padding: 0px;
-    border: 0px;
-    overflow: hidden;
+	width: 0px;
+	height: 0px;
+	padding: 0px;
+	border: 0px;
+	overflow: hidden;
 }

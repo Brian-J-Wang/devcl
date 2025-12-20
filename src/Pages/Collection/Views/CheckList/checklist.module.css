@@ -4,6 +4,29 @@
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+	overflow: auto;
+	scrollbar-width: thin;
+}
+
+.checklist::-webkit-scrollbar-button {
+	display: none;
+}
+
+.table th {
+	position: sticky;
+	z-index: 2;
+	top: 0;
+	background-color: white;
+	box-shadow: inset 0px -1px #ccc;
+}
+
+.tableBody {
+	display: flex;
+}
+
+.checklistBody {
+	display: flex;
+	flex: 1;
 	overflow-y: scroll;
 }
 
@@ -14,10 +37,6 @@
 
 .checklist table {
 	border-collapse: collapse;
-}
-
-.checklist thead tr {
-	border-bottom: 1px solid rgba(29, 29, 29, 0.05);
 }
 
 .checklist th,

@@ -1,5 +1,21 @@
 .container {
-    width: 480px;
-    position: absolute;
-    top: calc(100% + 4px);
+	width: 480px;
+	position: absolute;
+}
+
+.containerHidden {
+	opacity: 0%;
+	bottom: 0;
+	user-select: none;
+	pointer-events: none;
+}
+
+.containerVisible {
+	opacity: 100%;
+	top: calc(100% + 4px);
+}
+
+.containerVisibleAlternative {
+	opacity: 100%;
+	bottom: calc(100% + 4px);
 }

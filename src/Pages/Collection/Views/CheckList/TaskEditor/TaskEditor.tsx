@@ -6,7 +6,6 @@ import Icon from "@components/Icon";
 import { CheckBoxState } from "@components/Icon/Checkbox/Checkbox";
 
 import styles from "./TaskEditor.module.css";
-import AttributeTag from "../shared/AttributeTag";
 import { PatchNugget } from "@app-types/patchNuggets";
 import { useEffect, useState } from "react";
 import useEditorController from "../controllers/useEditorController";
@@ -80,15 +79,6 @@ const TaskEditor: React.FC<TaskEditorProps> = ({ editorController }) => {
 				<div>
 					<h3> Attributes </h3>
 				</div>
-				{task.attributes.map((attribute) => {
-					return (
-						<AttributeTag
-							key={attribute.id}
-							id={attribute.id}
-							value={attribute.value as string}
-							onDeleteClick={() => {}}></AttributeTag>
-					);
-				})}
 				<h3> Subtasks </h3>
 				{task.subTasks.map((subTask) => {
 					return (

@@ -1,6 +1,6 @@
-import { Attribute } from "@app-types/attributes";
+import { Attribute } from "src/Features/Attributes/attribute.types";
 import { createContext } from "react";
-import useTaskAttributeAPI from "@hooks/useTaskAttributeAPI";
+import useTaskAttributeAPI from "src/Features/Attributes/attribute.hook";
 
 const TaskAttributeAPIContext = createContext<ReturnType<typeof useTaskAttributeAPI>>({
 	attributes: [],

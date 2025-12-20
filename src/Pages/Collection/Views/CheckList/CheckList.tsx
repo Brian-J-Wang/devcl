@@ -1,12 +1,12 @@
 import { Container } from "@components/Container/Container";
 import TaskItem from "./Task/task";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AddItemInput from "./AddItemInput/AddItemInput";
 import useTaskAPI from "../../../../Hooks/useTaskAPI";
 import { UserContext } from "@context/UserContext";
 import { PostTask, Task } from "@app-types/task";
 import { useParams } from "react-router-dom";
-import useTaskAttributeAPI from "../../../../Hooks/useTaskAttributeAPI";
+import useTaskAttributeAPI from "../../../../Features/Attributes/attribute.hook";
 import TaskEditor from "./TaskEditor/TaskEditor";
 import { PatchNugget } from "@app-types/patchNuggets";
 import TaskAttributeAPIContext from "../../../../Contexts/taskAttributeAPIContext";
@@ -28,19 +28,11 @@ const CheckListView: React.FC = () => {
 	};
 
 	const onCheckboxClick = (task: Task) => () => {
-		let newStatus: Task["status"] = "incomplete";
-
-		if (task.status == "incomplete") {
-			newStatus = "complete";
-		} else {
-			newStatus = "incomplete";
-		}
-
 		api.patchTask(task._id, [
 			{
 				propertyName: "status",
-				value: newStatus,
-				updateType: "update"
+				updateType: "update",
+				value: task.status == "complete" ? "incomplete" : "complete"
 			}
 		]);
 	};
@@ -50,7 +42,14 @@ const CheckListView: React.FC = () => {
 	};
 
 	const handleSubmit = (postTask: PostTask) => {
-		return api.addTask(postTask).then(() => true);
+		return api.addTask(postTask).then(() => {
+			requestAnimationFrame(() => {
+				document.querySelector("#addItemRow")!.scrollIntoView({
+					behavior: "smooth",
+					block: "end"
+				});
+			});
+		});
 	};
 
 	const handleTaskSave = (patchNuggets: PatchNugget<Task>[]) => {
@@ -59,12 +58,14 @@ const CheckListView: React.FC = () => {
 		}
 	};
 
+	useEffect(() => {}, [tasks]);
+
 	return (
 		<>
 			<TaskAttributeAPIContext.Provider value={taskAttributeAPI}>
-				<Container className={styles.checklist}>
-					<table>
-						<thead>
+				<Container className={styles.checklist} id="checklistViewport">
+					<table className={styles.table}>
+						<thead className={styles.tableHeader}>
 							<tr>
 								<th className={styles.checkBoxSelect}>
 									<Icon.CheckBox state={CheckBoxState.unchecked}></Icon.CheckBox>
@@ -72,7 +73,7 @@ const CheckListView: React.FC = () => {
 								<th colSpan={2}></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody className={styles.checklistbody}>
 							{tasks.map((task) => {
 								return (
 									<TaskItem
@@ -88,7 +89,6 @@ const CheckListView: React.FC = () => {
 						</tbody>
 					</table>
 				</Container>
-
 				<TaskEditor
 					focusedTask={editorController.currentTask!}
 					onTaskSave={handleTaskSave}

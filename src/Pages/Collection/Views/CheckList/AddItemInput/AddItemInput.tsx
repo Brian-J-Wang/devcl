@@ -1,124 +1,121 @@
-import { RefObject, useContext, useMemo, useRef, useState } from 'react';
-import { Container } from '@components/Container/Container';
-import TaskAttributeAPIContext from '@context/taskAttributeAPIContext';
-import { Attribute } from '@app-types/attributes';
-import useAttributeHook from './useAttributeHook';
+import styles from "./AddItemInput.module.css";
 
-import styles from './AddItemInput.module.css';
-import { PostTask } from '@app-types/task';
-import AttributeTag from '../shared/AttributeTag';
-import AttributeMenu from './AttributeMenu/AttributeMenu';
-import useAttributeMenu from './useAttributeMenuHook';
+import { useEffect, useState } from "react";
+import { PostTask } from "@app-types/task";
+import { AttributeTag } from "@features/Attributes";
+import AttributeMenu from "./AttributeMenu/AttributeMenu";
+import useAttributeMenu from "./AttributeMenu/useAttributeMenuHook";
+import AttributeMenuContext from "./AttributeMenu/AttributeMenuContext";
 
 type AddItemInputProps = {
-    onSubmit: (task: PostTask) => void;
+	onSubmit: (task: PostTask) => void;
 };
 
 const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
-    const [blurb, setBlurb] = useState<string>('');
-    const [focused, setFocused] = useState<boolean>(false);
-    const attributeFilter = useRef<HTMLInputElement>() as RefObject<HTMLInputElement>;
-    const [filter, setFilter] = useState<string>('');
-    const [activeAttribute, setActiveAttribute] = useState<Attribute | null>(null);
-    const attributeHook = useAttributeHook();
-    const attributeMenu = useAttributeMenu();
+	const [blurb, setBlurb] = useState<string>("");
+	const [focused, setFocused] = useState<boolean>(false);
+	const attributeMenu = useAttributeMenu();
 
-    const handleFocus = (evt: React.FocusEvent<HTMLTableRowElement, Element>) => {
-        const element = evt.target.querySelector('#blurbInput') as HTMLInputElement;
-        if (element) {
-            element.focus();
-            setFocused(true);
-            document.addEventListener('mousedown', onMouseClick);
-        }
-    };
+	useEffect(() => {
+		function closeAttributeMenu() {
+			attributeMenu.setMenuVisible(false);
+		}
+		attributeMenu.onTaskAttributeSelect.subscribe(closeAttributeMenu);
 
-    const onMouseClick = (evt: MouseEvent) => {
-        if ((evt.target as HTMLElement).closest('#addItemRow') == null) {
-            setFocused(false);
-            attributeMenu.setMenuVisible(false);
-            setActiveAttribute(null);
-            document.removeEventListener('mousedown', onMouseClick);
-        } else {
-            setFocused(true);
-        }
-    };
+		return () => {
+			attributeMenu.onTaskAttributeSelect.unsubscribe(closeAttributeMenu);
+		};
+	}, [attributeMenu]);
 
-    const handleOnClick = (evt: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
-        if (focused) {
-            return;
-        }
+	const handleFocus = (evt: React.FocusEvent<HTMLTableRowElement, Element>) => {
+		const element = evt.target.querySelector("#blurbInput") as HTMLInputElement;
+		if (element) {
+			element.focus();
+			setFocused(true);
+			document.addEventListener("mousedown", onMouseClick);
+		}
+	};
 
-        const element = (evt.currentTarget as HTMLElement).querySelector('#blurbInput') as HTMLInputElement;
-        if (element) {
-            element.focus();
-            setFocused(true);
-            document.addEventListener('mousedown', onMouseClick);
-        }
-    };
+	const onMouseClick = (evt: MouseEvent) => {
+		if ((evt.target as HTMLElement).closest("#addItemRow") == null) {
+			setFocused(false);
+			attributeMenu.setMenuVisible(false);
+			attributeMenu.setActiveAttribute(null);
+			document.removeEventListener("mousedown", onMouseClick);
+		} else {
+			setFocused(true);
+		}
+	};
 
-    const onAddAttributeClick = () => {
-        attributeMenu.setMenuVisible(true);
-    };
+	const handleOnClick = (evt: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => {
+		if (focused) {
+			return;
+		}
 
-    const onAttributeValueAdd = (attribute: Attribute) => (value: unknown) => {
-        attributeHook.setTaskAttribute(attribute.id, value);
-        setActiveAttribute(null);
-        attributeMenu.setMenuVisible(false);
-    };
+		const element = (evt.currentTarget as HTMLElement).querySelector("#blurbInput") as HTMLInputElement;
+		if (element) {
+			element.focus();
+			setFocused(true);
+			document.addEventListener("mousedown", onMouseClick);
+		}
+	};
 
-    const handleKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        if (evt.key == 'Enter') {
-            console.log(blurb);
-            onSubmit({
-                blurb: blurb,
-                attributes: attributeHook.taskAttributes,
-            });
-            setBlurb('');
-            setActiveAttribute(null);
-            attributeHook.clearTaskAttributes();
-        }
-    };
+	const onAddAttributeClick = () => {
+		attributeMenu.setMenuVisible(true);
+	};
 
-    return (
-        <tr
-            tabIndex={1}
-            onFocus={handleFocus}
-            id="addItemRow"
-            onClick={handleOnClick}
-            className={`${styles.row} ${focused && styles.rowFocused}`}
-        >
-            <td></td>
-            <td className={styles.inputArea}>
-                <input
-                    type="text"
-                    placeholder="Click here or press tab to add task"
-                    id="blurbInput"
-                    value={blurb}
-                    onChange={(evt) => {
-                        setBlurb(evt.target.value);
-                    }}
-                    className={styles.blurbInput}
-                    autoComplete={'off'}
-                    onKeyDown={handleKeyDown}
-                />
-                <div className={styles.attributeBar}>
-                    {attributeHook.taskAttributes.map((taskAttribute) => (
-                        <AttributeTag
-                            key={taskAttribute.id}
-                            id={taskAttribute.id}
-                            value={taskAttribute.value as string}
-                        ></AttributeTag>
-                    ))}
-                    {focused && (
-                        <button className={styles.addAttributesButton} onClick={onAddAttributeClick}>
-                            + Add Attributes
-                        </button>
-                    )}
-                </div>
-                <AttributeMenu attributeMenu={attributeMenu} />
-            </td>
-        </tr>
-    );
+	const handleKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+		if (evt.key == "Enter") {
+			onSubmit({
+				blurb: blurb,
+				attributes: attributeMenu.taskAttributes
+			});
+			setBlurb("");
+			attributeMenu.taskAttributes.clear();
+			attributeMenu.setActiveAttribute(null);
+		}
+	};
+
+	return (
+		<tr
+			tabIndex={1}
+			onFocus={handleFocus}
+			id="addItemRow"
+			onClick={handleOnClick}
+			className={`${styles.row} ${focused && styles.rowFocused}`}>
+			<td></td>
+			<td className={styles.inputArea}>
+				<input
+					type="text"
+					placeholder="Click here or press tab to add task"
+					id="blurbInput"
+					value={blurb}
+					onChange={(evt) => {
+						setBlurb(evt.target.value);
+					}}
+					className={styles.blurbInput}
+					autoComplete={"off"}
+					onKeyDown={handleKeyDown}
+				/>
+				<div className={styles.attributeBar}>
+					{attributeMenu.taskAttributes.map((taskAttribute) => (
+						<AttributeTag
+							key={taskAttribute.id}
+							id={taskAttribute.id}
+							value={taskAttribute.value as string}></AttributeTag>
+					))}
+					<button
+						className={`${styles.addAttributesButton} ${!focused && styles.hiddenAttributesButton}`}
+						onClick={onAddAttributeClick}>
+						+ Add Attributes
+					</button>
+				</div>
+				<AttributeMenuContext.Provider value={attributeMenu}>
+					<AttributeMenu />
+				</AttributeMenuContext.Provider>
+			</td>
+		</tr>
+	);
 };
 
 export default AddItemInput;

@@ -1,4 +1,4 @@
-import TaskAttributeAPI from "@api/taskAttributeAPI";
+import TaskAttributeAPI from "./attribute.api";
 import { useEffect, useRef, useState } from "react";
 import { AttributeFactory } from "./attribute.factory";
 import { Attribute } from "./attribute.class";

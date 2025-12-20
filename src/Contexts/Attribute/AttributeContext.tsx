@@ -1,4 +1,4 @@
-import { Attribute } from "@app-types/attributes";
+import { Attribute } from "src/Features/Attributes/attribute.types";
 import { createContext } from "react";
 
 type AttributeContextProps = {

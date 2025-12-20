@@ -29,7 +29,8 @@
             "@shared/*": ["src/shared/*"],
             "@hooks/*": ["src/Hooks/*"],
             "@utils/*": ["src/utils/*"],
-            "@styles/*": ["src/styles/*"]
+            "@styles/*": ["src/styles/*"],
+            "@features/*": ["src/Features/*"]
         }
     },
     "include": ["./src/**/*"]
