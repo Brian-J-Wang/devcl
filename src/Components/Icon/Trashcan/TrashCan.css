@@ -1,25 +1,33 @@
 .trashcan {
-	cursor: pointer;
-	height: 16px;
-	width: 16px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 14px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
 }
 
 .trashcan:hover {
-	background-color: rgba(29, 29, 29, 0.1);
+    background-color: var(--color-black-10);
 }
 
 .trashcan__icon {
-	pointer-events: none;
+    pointer-events: none;
+}
+
+.trashcan__icon path {
+    stroke: var(--color-black-50);
+}
+
+.trashcan:hover path {
+    stroke: var(--color-red);
 }
 
 .trashcan__icon #lid {
-	transition: transform 0.1s ease-in-out;
+    transition: transform 0.1s ease-in-out;
 }
 
 .trashcan:hover #lid {
-	transform: translate(0.5px, -2px) rotate(5deg);
+    transform: translate(0.5px, -2px) rotate(5deg);
 }

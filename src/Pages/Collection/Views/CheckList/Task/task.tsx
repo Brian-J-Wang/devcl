@@ -51,7 +51,7 @@ const TaskItem: React.FC<itemProps> = ({ onClick = () => {}, ...props }) => {
                 </div>
             </td>
             <td>
-                <Icon.TrashCan onClick={props.onDeleteClick} className={styles.trashCan} data-clickIgnore />
+                <Icon.TrashCan onClick={props.onDeleteClick} className={styles.trashCan} data-clickignore />
             </td>
         </tr>
     );

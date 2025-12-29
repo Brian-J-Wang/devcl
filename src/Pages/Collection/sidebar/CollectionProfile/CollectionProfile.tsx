@@ -29,9 +29,7 @@ const CollectionProfile: React.FC<CollectionProfileType> = (props) => {
                         setDropDownVisible(true);
                     }}
                 >
-                    <div className={styles.contentLeft}>
-                        {generateImagePlaceHolder(props.name)}
-                    </div>
+                    <div className={styles.contentLeft}>{generateImagePlaceHolder(props.name)}</div>
                     <h1>{props.name}</h1>
                 </div>
                 {dropDownVisible && (
@@ -41,7 +39,7 @@ const CollectionProfile: React.FC<CollectionProfileType> = (props) => {
                             console.log('here');
                             setDropDownVisible(false);
                         }}
-                        active={dropDownVisible}
+                        disabled={!dropDownVisible}
                     >
                         {projects.length > 1 ? (
                             projects

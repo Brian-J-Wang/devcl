@@ -3,9 +3,10 @@ import styles from './AddItemInput.module.css';
 import { useEffect, useState } from 'react';
 import { PostTask } from '@app-types/task';
 import { AttributeTag } from '@features/Attributes';
-import AttributeMenu from './AttributeMenu/AttributeMenu';
-import useAttributeMenu from './AttributeMenu/useAttributeMenuHook';
-import AttributeMenuContext from './AttributeMenu/AttributeMenuContext';
+import AttributeMenu from './AttributeMenu/attributeMenu.component';
+import useAttributeMenu from './AttributeMenu/attributeMenu.hook';
+import AttributeMenuContext from './AttributeMenu/attributeMenu.context';
+import useListController from '@components/List/List.controller';
 
 type AddItemInputProps = {
     /** submits the new task and expects a boolean for whether or not to close the menu */
@@ -16,6 +17,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
     const [blurb, setBlurb] = useState<string>('');
     const [focused, setFocused] = useState<boolean>(false);
     const attributeMenu = useAttributeMenu();
+    const listController = useListController();
 
     useEffect(() => {
         function handleAttributeAdd() {
@@ -40,7 +42,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
     const onMouseClick = (evt: MouseEvent) => {
         if ((evt.target as HTMLElement).closest('#addItemRow') == null) {
             setFocused(false);
-            attributeMenu.setMenuVisible(false);
+            attributeMenu.setMenuState('closed');
             attributeMenu.setActiveAttribute(null);
             document.removeEventListener('mousedown', onMouseClick);
         } else {
@@ -61,19 +63,57 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
         }
     };
 
-    const onAddAttributeClick = () => {
-        attributeMenu.setMenuVisible(true);
+    const inputRouter = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+        switch (attributeMenu.menuState) {
+            case 'closed':
+                handleStandardInput(evt);
+                break;
+            case 'selectAttribute':
+            case 'selectAttributeValue':
+            case 'typeAttribute':
+                handleTypeAttributeInput(evt);
+                break;
+            case 'typeAttributeValue':
+        }
     };
 
-    const handleKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        if (evt.key == 'Enter') {
-            onSubmit({
-                blurb: blurb,
-                attributes: attributeMenu.taskAttributes,
-            });
-            setBlurb('');
-            attributeMenu.taskAttributes.clear();
-            attributeMenu.setActiveAttribute(null);
+    const handleStandardInput = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+        switch (evt.key) {
+            case 'Enter':
+                onSubmit({
+                    blurb: blurb,
+                    attributes: attributeMenu.taskAttributes,
+                });
+                setBlurb('');
+                attributeMenu.taskAttributes.clear();
+                attributeMenu.setActiveAttribute(null);
+                break;
+            case '/':
+                setBlurb('');
+                attributeMenu.setMenuState('typeAttribute');
+                break;
+        }
+    };
+
+    const handleTypeAttributeInput = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+        switch (evt.key) {
+            case 'ArrowUp':
+                evt.preventDefault();
+                listController.events.shiftUpEvent.publish();
+                break;
+            case 'ArrowDown':
+                evt.preventDefault();
+                listController.events.shiftDownEvent.publish();
+                break;
+            case 'Enter':
+                //get the current attribute from the list controller and set menuState to
+                // 'typeAttributeValue'
+                break;
+            case 'Backspace':
+                if (evt.currentTarget.value.length == 1) {
+                    attributeMenu.setMenuState('closed');
+                }
+                break;
         }
     };
 
@@ -97,7 +137,7 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
                     }}
                     className={styles.blurbInput}
                     autoComplete={'off'}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={inputRouter}
                 />
                 <div className={styles.attributeBar}>
                     {attributeMenu.taskAttributes.map((taskAttribute) => (
@@ -109,13 +149,15 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
                     ))}
                     <button
                         className={`${styles.addAttributesButton} ${!focused && styles.hiddenAttributesButton}`}
-                        onClick={onAddAttributeClick}
+                        onClick={() => {
+                            attributeMenu.setMenuState('selectAttribute');
+                        }}
                     >
                         + Add Attributes
                     </button>
                 </div>
                 <AttributeMenuContext.Provider value={attributeMenu}>
-                    <AttributeMenu />
+                    <AttributeMenu listController={listController} />
                 </AttributeMenuContext.Provider>
             </td>
         </tr>

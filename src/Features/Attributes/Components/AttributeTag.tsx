@@ -30,11 +30,6 @@ const AttributeTag: React.FC<AttributeTagProps> = ({ id, value, simpleTag = fals
           }
         : attribute.getValue(value);
 
-    if (attribute.name == 'Priority') {
-        console.log(attribute);
-        console.log(attributeValue);
-    }
-
     const textColor =
         attribute.config?.coloringMode == 'secondary'
             ? `rgba(${hexToRGB(attributeValue.secondaryColor!).join(',')})`

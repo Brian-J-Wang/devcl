@@ -1,0 +1,24 @@
+.listItem {
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+}
+
+.sizeSmall {
+    height: 12px;
+    font-size: 12px;
+    box-sizing: content-box;
+}
+
+.sizeMedium {
+    height: 16px;
+    font-size: 14px;
+    box-sizing: content-box;
+}
+
+.sizeLarge {
+    height: 20px;
+    font-size: 16px;
+    box-sizing: content-box;
+}

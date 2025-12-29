@@ -7,3 +7,7 @@
     border-radius: 4px;
     outline: none;
 }
+
+.listItemActive {
+    background-color: var(--color-black-20);
+}
