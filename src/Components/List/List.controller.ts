@@ -1,6 +1,8 @@
 import usePublisher from '@hooks/usePublisher';
+import { useState } from 'react';
 
 const useListController = () => {
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
     const shiftDownEvent = usePublisher();
     const shiftUpEvent = usePublisher();
 
@@ -13,6 +15,8 @@ const useListController = () => {
     };
 
     return {
+        currentIndex,
+        setCurrentIndex,
         events: {
             shiftDownEvent,
             shiftUpEvent,

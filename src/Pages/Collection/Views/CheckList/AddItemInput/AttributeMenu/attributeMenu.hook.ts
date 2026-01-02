@@ -13,12 +13,7 @@ type TaskAttributeMemo = Array<TaskAttribute> & {
     clear: () => void;
 };
 
-export type AttributeMenuState =
-    | 'closed'
-    | 'selectAttribute'
-    | 'selectAttributeValue'
-    | 'typeAttribute'
-    | 'typeAttributeValue';
+export type AttributeMenuState = 'closed' | 'selectAttribute' | 'selectAttributeValue';
 
 const useAttributeMenu = () => {
     const [menuState, setMenuState] = useState<AttributeMenuState>('closed');
@@ -56,11 +51,7 @@ const useAttributeMenu = () => {
     }, [_taskAttributes, onTaskAttributeSelect]);
 
     const setActiveAttribute = (attribute: Attribute | null) => {
-        if (menuState == 'selectAttribute') {
-            setMenuState('selectAttributeValue');
-        } else if (menuState == 'typeAttribute') {
-            setMenuState('typeAttributeValue');
-        }
+        setMenuState('selectAttributeValue');
         _setActiveAttribute(attribute);
     };
 

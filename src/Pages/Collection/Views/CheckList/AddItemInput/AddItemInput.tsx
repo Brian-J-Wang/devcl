@@ -66,54 +66,67 @@ const AddItemInput: React.FC<AddItemInputProps> = ({ onSubmit }) => {
     const inputRouter = (evt: React.KeyboardEvent<HTMLInputElement>) => {
         switch (attributeMenu.menuState) {
             case 'closed':
-                handleStandardInput(evt);
+                handleStandardInput();
                 break;
             case 'selectAttribute':
+                handleSelectAttributeInput();
+                break;
             case 'selectAttributeValue':
-            case 'typeAttribute':
-                handleTypeAttributeInput(evt);
-                break;
-            case 'typeAttributeValue':
-        }
-    };
-
-    const handleStandardInput = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        switch (evt.key) {
-            case 'Enter':
-                onSubmit({
-                    blurb: blurb,
-                    attributes: attributeMenu.taskAttributes,
-                });
-                setBlurb('');
-                attributeMenu.taskAttributes.clear();
-                attributeMenu.setActiveAttribute(null);
-                break;
-            case '/':
-                setBlurb('');
-                attributeMenu.setMenuState('typeAttribute');
                 break;
         }
-    };
 
-    const handleTypeAttributeInput = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        switch (evt.key) {
-            case 'ArrowUp':
-                evt.preventDefault();
-                listController.events.shiftUpEvent.publish();
-                break;
-            case 'ArrowDown':
-                evt.preventDefault();
-                listController.events.shiftDownEvent.publish();
-                break;
-            case 'Enter':
-                //get the current attribute from the list controller and set menuState to
-                // 'typeAttributeValue'
-                break;
-            case 'Backspace':
-                if (evt.currentTarget.value.length == 1) {
-                    attributeMenu.setMenuState('closed');
-                }
-                break;
+        function handleStandardInput() {
+            switch (evt.key) {
+                case 'Enter':
+                    onSubmit({
+                        blurb: blurb,
+                        attributes: attributeMenu.taskAttributes,
+                    });
+                    setBlurb('');
+                    attributeMenu.taskAttributes.clear();
+                    attributeMenu.setActiveAttribute(null);
+                    break;
+                case '/':
+                    setBlurb('');
+                    attributeMenu.setMenuState('selectAttribute');
+                    break;
+            }
+        }
+
+        function handleSelectAttributeInput() {
+            switch (evt.key) {
+                case 'ArrowUp':
+                    evt.preventDefault();
+                    listController.events.shiftUpEvent.publish();
+                    break;
+                case 'ArrowDown':
+                    evt.preventDefault();
+                    listController.events.shiftDownEvent.publish();
+                    break;
+                case 'Enter':
+                    //get the current attribute from the list controller and set menuState to
+                    // 'typeAttributeValue'
+
+                    break;
+                case 'Backspace':
+                    if (evt.currentTarget.value.length == 1) {
+                        attributeMenu.setMenuState('closed');
+                    }
+                    break;
+            }
+        }
+
+        function handleSelectAttributeValueInput() {
+            switch (evt.key) {
+                case 'ArrowUp':
+                    evt.preventDefault();
+                    listController.events.shiftUpEvent.publish();
+                    break;
+                case 'ArrowDown':
+                    evt.preventDefault();
+                    listController.events.shiftDownEvent.publish();
+                    break;
+            }
         }
     };
 

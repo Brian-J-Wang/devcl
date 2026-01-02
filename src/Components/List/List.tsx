@@ -18,6 +18,8 @@ const List = <T,>({ items, render, controller }: ListProps<T>) => {
             return;
         }
 
+        controller.setCurrentIndex(currentIndex);
+
         const onShiftDown = () => {
             _setIndex((prev) => {
                 if (prev < items.length - 1) {
@@ -25,6 +27,9 @@ const List = <T,>({ items, render, controller }: ListProps<T>) => {
                 } else {
                     return prev;
                 }
+            });
+            controller.setCurrentIndex((prev) => {
+                if (prev < items.length -)
             });
         };
         controller.events.shiftDownEvent.subscribe(onShiftDown);

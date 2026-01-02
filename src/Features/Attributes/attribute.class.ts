@@ -38,7 +38,12 @@ export class EnumAttribute extends Attribute {
                 name: '000',
             };
         }
-
         return value;
+    }
+}
+
+export class DiscreteAttribute extends Attribute {
+    getValue(value: string): AttributeValue {
+        throw new Error('Method not implemented.');
     }
 }
